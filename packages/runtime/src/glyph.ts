@@ -1,9 +1,9 @@
-// <autosvg-glyph>: draws any vector in the set from the settings held in CSS custom properties.
+// <autosvg>: draws any vector in the set from the settings held in CSS custom properties.
 //
 // Two layers, and why:
 //  - Stroke weight, caps, joins, dash and colour are plain CSS (see css/icons.css). No JavaScript.
 //  - Geometry (corner radius, curve character) cannot be changed by CSS: a path's shape can't take
-//    var(). So <autosvg-glyph> reads the variables and redraws from the stored recipes.
+//    var(). So <autosvg> reads the variables and redraws from the stored recipes.
 //
 // CSS variables (set them on any element; every vector inside follows):
 //   --autosvg-stroke  --autosvg-cap  --autosvg-join  --autosvg-dash  --autosvg-color  --autosvg-size     (CSS only)
@@ -34,90 +34,118 @@ export function readParams(el: Element): Style {
   }
 }
 
-/** <autosvg-glyph name="home"></autosvg-glyph>: redraws itself when the geometry variables change. */
-class AutosvgGlyph extends HTMLElement {
-  static observedAttributes = ['name', 'state']
-  #key: string | undefined
+const TAG = 'autosvg'
 
-  connectedCallback(): void {
-    this.render()
-  }
+/** The geometry each <autosvg> was last drawn with, so only a change in it redraws. */
+const drawn = new WeakMap<Element, string>()
 
-  attributeChangedCallback(attr: string): void {
-    if (!this.isConnected) return
-    if (attr === 'state') this.syncState(this.getAttribute('name'))
-    else this.render()
+/**
+ * Put the vector in its state. The state is a number, --autosvg-state, so the change can transition (see icons.css).
+ * `state="off"` names it; a name such as `mic-off` means the same. A missing attribute leaves the variable alone, so
+ * CSS can drive --autosvg-state itself.
+ */
+function syncState(el: HTMLElement, name: string | null): void {
+  const found = name ? resolve(name) : null
+  const wanted = el.getAttribute('state')
+  let stop: number | null = null
+  if (found?.state) stop = found.state // the name itself says the state: mic-off
+  if (wanted !== null) stop = wanted === '' ? 0 : (POSES[found?.base ?? name ?? '']?.states?.indexOf(wanted) ?? -1) + 1
+  if (stop === null) {
+    el.style.removeProperty('--autosvg-state')
+    return
   }
-  /**
-   * Put the vector in its state. The state is a number, --autosvg-state, so the change can transition (see icons.css).
-   * `state="off"` names it; a name such as `mic-off` means the same. A missing attribute leaves the variable alone, so
-   * CSS can drive --autosvg-state itself.
-   */
-  syncState(name: string | null): void {
-    const found = name ? resolve(name) : null
-    const wanted = this.getAttribute('state')
-    let stop: number | null = null
-    if (found?.state) stop = found.state // the name itself says the state: mic-off
-    if (wanted !== null)
-      stop = wanted === '' ? 0 : (POSES[found?.base ?? name ?? '']?.states?.indexOf(wanted) ?? -1) + 1
-    if (stop === null) {
-      this.style.removeProperty('--autosvg-state')
-      return
-    }
-    this.style.setProperty('--autosvg-state', String(stop))
-  }
+  el.style.setProperty('--autosvg-state', String(stop))
+}
 
-  render(): void {
-    const name = this.getAttribute('name')
-    if (!name) return
-    // decorative unless it is given a label: the control that holds a vector should carry the name
-    if (this.hasAttribute('aria-label')) this.setAttribute('role', 'img')
-    else this.setAttribute('aria-hidden', 'true')
-    this.syncState(name)
-    const p = readParams(this)
-    // while a CSS transition runs these change every frame; steps of 0.05 are invisible and bound the work
-    // Clamped too: a spring or bounce easing overshoots its target, and a negative radius would break the geometry.
-    p.radius = Math.round(Math.max(0, p.radius) * 20) / 20
-    p.curve = Math.round(Math.min(1.2, Math.max(0, p.curve)) * 20) / 20
-    const key = [name, p.radius, p.curve].join('|')
-    if (key === this.#key) return // only geometry needs a redraw; stroke etc. are pure CSS
-    this.#key = key
-    try {
-      this.innerHTML = renderIcon(resolve(name)?.base ?? name, p)
-    } catch (e) {
-      this.textContent = ''
-      // biome-ignore lint/suspicious/noConsole: a wrong vector name should be visible to the developer
-      console.warn(e instanceof Error ? e.message : e)
-    }
+/** <autosvg name="home"></autosvg>: draws the vector, and redraws it when the geometry variables change. */
+function renderGlyph(el: HTMLElement): void {
+  const name = el.getAttribute('name')
+  if (!name) return
+  // decorative unless it is given a label: the control that holds a vector should carry the name
+  if (el.hasAttribute('aria-label')) el.setAttribute('role', 'img')
+  else el.setAttribute('aria-hidden', 'true')
+  syncState(el, name)
+  const p = readParams(el)
+  // while a CSS transition runs these change every frame; steps of 0.05 are invisible and bound the work
+  // Clamped too: a spring or bounce easing overshoots its target, and a negative radius would break the geometry.
+  p.radius = Math.round(Math.max(0, p.radius) * 20) / 20
+  p.curve = Math.round(Math.min(1.2, Math.max(0, p.curve)) * 20) / 20
+  const key = [name, p.radius, p.curve].join('|')
+  if (key === drawn.get(el)) return // only geometry needs a redraw; stroke etc. are pure CSS
+  drawn.set(el, key)
+  try {
+    el.innerHTML = renderIcon(resolve(name)?.base ?? name, p)
+  } catch (e) {
+    el.textContent = ''
+    // biome-ignore lint/suspicious/noConsole: a wrong vector name should be visible to the developer
+    console.warn(e instanceof Error ? e.message : e)
   }
 }
 
 /** An element that draws itself from the CSS variables around it. */
-interface RenderedIcon extends HTMLElement {
+interface RenderedMorph extends HTMLElement {
   render(): void
 }
 
 let scheduled = false
+const roots = new Set<Document | ShadowRoot>()
 
-/** Redraw every glyph whose geometry variables changed. Cheap when nothing changed. Call it each frame during a CSS transition. */
+/** Redraw every <autosvg> and <autosvg-morph> whose geometry variables changed. Cheap when nothing changed. Call it each frame during a CSS transition. */
 export function refreshVectors(): void {
   scheduled = false
-  for (const el of document.querySelectorAll<RenderedIcon>('autosvg-glyph, autosvg-morph')) el.render()
-}
-
-/** Register <autosvg-glyph> and keep every glyph in step when a style or class attribute changes anywhere. */
-export function defineAutosvgGlyph(): void {
-  if (customElements.get('autosvg-glyph')) return
-  customElements.define('autosvg-glyph', AutosvgGlyph)
-  new MutationObserver(() => {
-    if (scheduled) return
-    scheduled = true
-    requestAnimationFrame(refreshVectors)
-  }).observe(document.documentElement, { attributes: true, subtree: true, attributeFilter: ['style', 'class'] })
-}
-
-declare global {
-  interface HTMLElementTagNameMap {
-    'autosvg-glyph': AutosvgGlyph
+  for (const root of roots) {
+    for (const el of root.querySelectorAll<HTMLElement>(TAG)) renderGlyph(el)
+    for (const el of root.querySelectorAll<RenderedMorph>('autosvg-morph')) el.render()
   }
+}
+
+/**
+ * Draw every <autosvg> in a document or shadow root, now and as they are added.
+ *
+ * Browsers only allow a custom element a name with a hyphen, so a bare <autosvg> cannot be registered. It is a plain
+ * element instead, and one observer per root does what the registry would: it draws the <autosvg> already there and each
+ * one added later, redraws on a change of name or state, and keeps every vector in step when a style or class attribute
+ * changes. The drawing happens a microtask after the element appears, not synchronously. The page's document is watched
+ * by {@link defineAutosvgGlyph}; call this on a shadow root to watch that too.
+ */
+export function watchAutosvg(root: Document | ShadowRoot): void {
+  if (roots.has(root)) return
+  roots.add(root)
+  const draw = (node: ParentNode): void => {
+    if (node instanceof HTMLElement && node.localName === TAG) renderGlyph(node)
+    for (const el of node.querySelectorAll<HTMLElement>(TAG)) renderGlyph(el)
+  }
+  const observer = new MutationObserver((records) => {
+    let geometry = false
+    for (const r of records) {
+      if (r.type === 'childList') {
+        for (const n of r.addedNodes) if (n instanceof Element) draw(n)
+      } else if (
+        r.target instanceof HTMLElement &&
+        r.target.localName === TAG &&
+        r.attributeName !== 'style' &&
+        r.attributeName !== 'class'
+      ) {
+        renderGlyph(r.target)
+      } else {
+        geometry = true
+      }
+    }
+    if (geometry && !scheduled) {
+      scheduled = true
+      requestAnimationFrame(refreshVectors)
+    }
+  })
+  draw(root)
+  observer.observe(root instanceof Document ? root.documentElement : root, {
+    childList: true,
+    subtree: true,
+    attributes: true,
+    attributeFilter: ['name', 'state', 'style', 'class'],
+  })
+}
+
+/** Start drawing <autosvg> in the page. */
+export function defineAutosvgGlyph(): void {
+  watchAutosvg(document)
 }

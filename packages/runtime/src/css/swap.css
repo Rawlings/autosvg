@@ -1,7 +1,7 @@
 /*
   Vector swap: change one vector into another smoothly, with CSS only.
 
-    <span class="autosvg-swap" data-state="on"> <autosvg-glyph name="sun"> <autosvg-glyph name="moon"> </span>
+    <span class="autosvg-swap" data-state="on"> <autosvg name="sun"> <autosvg name="moon"> </span>
 
   The first vector turns out (scales down, turns, blurs, fades) while the second turns in. The whole thing is driven by one
   number, --autosvg-swap (0 shows the first vector, 1 the second): set data-state="on", or set --autosvg-swap on the element or any

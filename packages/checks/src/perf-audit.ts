@@ -3,7 +3,7 @@
 //
 //   style      how long the browser takes to restyle posed shapes when a pose number changes
 //              (all vectors at once, and one vector on its own: the realistic hover case)
-//   render     how long <autosvg-glyph> takes to draw a vector from its recipe when radius or curve change
+//   render     how long <autosvg> takes to draw a vector from its recipe when radius or curve change
 //   weight     bytes of pose data per vector, beats per vector, size of the one stylesheet
 import { DEFAULT_STYLE, POSES, poseBytes } from '@autosvg/core'
 import { clearVectorCache, renderIcon } from '@autosvg/runtime'
@@ -80,9 +80,7 @@ export interface PerfReport {
 export async function perfAudit(names: readonly string[] = VECTORS.map((i) => i.name)): Promise<PerfReport> {
   const box = document.createElement('div')
   box.style.cssText = 'position:absolute;left:-10000px;top:0;width:900px;contain:layout'
-  box.innerHTML = names
-    .map((n) => `<span data-vector="${n}"><autosvg-glyph name="${n}"></autosvg-glyph></span>`)
-    .join('')
+  box.innerHTML = names.map((n) => `<span data-vector="${n}"><autosvg name="${n}"></autosvg></span>`).join('')
   document.body.append(box)
   const flagged: string[] = []
   try {

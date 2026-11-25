@@ -275,7 +275,7 @@
   color: var(--k-aab6cb);
   filter: drop-shadow(0 1px 0 rgb(255 255 255 / 0.45)) drop-shadow(0 -1px 0 rgb(0 0 0 / 0.7));
 }
-.fx-card-vector autosvg-glyph {
+.fx-card-vector autosvg {
   --autosvg-stroke: calc(var(--s) * 1.3);
 }
 .fx-holofoil-stage {
@@ -310,7 +310,7 @@
     linear-gradient(135deg, var(--k-e6c46a), var(--k-b98f2e) 45%, var(--k-e8cf86) 60%, var(--k-a47a22));
   color: var(--k-5a3f0c);
 }
-.fx-brass autosvg-glyph {
+.fx-brass autosvg {
   --autosvg-stroke: calc(var(--s) * 1.6);
   filter: drop-shadow(0 1px 0 rgb(255 240 190 / 0.7)) drop-shadow(0 -1px 0 rgb(0 0 0 / 0.45));
 }
@@ -387,7 +387,7 @@
   clip-path: polygon(50% 0, 93% 25%, 93% 75%, 50% 100%, 7% 75%, 7% 25%);
   background: radial-gradient(circle at 50% 35%, var(--k-2c1b52), var(--k-0f0a1f));
 }
-.fx-rare-hex autosvg-glyph {
+.fx-rare-hex autosvg {
   --autosvg-stroke: calc(var(--s) * 1.15);
   position: relative;
   filter: drop-shadow(0 0 6px var(--k-ffb703)) drop-shadow(0 0 16px var(--k-fb5607));
@@ -454,7 +454,7 @@
   background: #fff;
   box-shadow: 0 10px 26px -8px rgb(15 158 148 / 0.45);
 }
-.fx-pulse autosvg-glyph {
+.fx-pulse autosvg {
   --autosvg-stroke: calc(var(--s) * 1.1);
 }
 .fx-monitor {
@@ -463,7 +463,7 @@
     repeating-linear-gradient(90deg, rgb(0 255 120 / 0.06) 0 1px, transparent 1px 22px), var(--k-020a06);
   color: var(--k-38ff8b);
 }
-.fx-monitor autosvg-glyph {
+.fx-monitor autosvg {
   --autosvg-stroke: calc(var(--s) * 1.2);
 }
 .fx-trail {
@@ -535,7 +535,7 @@
   mix-blend-mode: multiply;
   transform: rotate(-9deg);
 }
-.fx-stamp autosvg-glyph {
+.fx-stamp autosvg {
   --autosvg-stroke: calc(var(--s) * 1.4);
 }
 .fx-barber-stage {
@@ -570,7 +570,7 @@
 .fx-balloon {
   background: linear-gradient(var(--k-bfe6ff), #f4fbff);
 }
-.fx-balloon autosvg-glyph {
+.fx-balloon autosvg {
   --autosvg-stroke: calc(var(--s) * 3.1);
   color: var(--k-ff4f9a);
   animation: fx-float 3s ease-in-out infinite alternate;
@@ -684,7 +684,7 @@
   border: 2px dashed var(--k-f6e7c1);
   border-radius: 50%;
 }
-.fx-felt autosvg-glyph {
+.fx-felt autosvg {
   grid-area: 1 / 1;
 }
 .fx-sat {
@@ -750,7 +750,7 @@
     #f7f6f0;
   color: #111;
 }
-.fx-tech > autosvg-glyph {
+.fx-tech > autosvg {
   --autosvg-stroke: calc(var(--s) * 0.6);
 }
 .fx-dims {
@@ -922,7 +922,7 @@
   box-shadow: 0 0 0 3px var(--k-f1c0c4);
   color: #fff;
 }
-.fx-label-disc autosvg-glyph {
+.fx-label-disc autosvg {
   --autosvg-stroke: calc(var(--s) * 1.2);
 }
 
@@ -995,7 +995,7 @@
 .fx-topo {
   background: var(--k-e8dcc0);
 }
-.fx-topo autosvg-glyph {
+.fx-topo autosvg {
   --autosvg-stroke: calc(var(--s) * 0.4);
 }
 .fx-contour-ring {
@@ -1063,7 +1063,7 @@
   color: #fff;
   filter: drop-shadow(0 0 8px var(--k-9ec5ff));
 }
-.fx-warp-core autosvg-glyph {
+.fx-warp-core autosvg {
   --autosvg-stroke: calc(var(--s) * 1.1);
 }
 
@@ -1120,10 +1120,10 @@
   color: var(--k-fff2a0);
   mask: radial-gradient(circle 72px at var(--px) var(--py), #000 0 35%, transparent 100%);
 }
-.fx-torch autosvg-glyph {
+.fx-torch autosvg {
   --autosvg-stroke: calc(var(--s) * 1.5);
 }
-.fx-torch-lit autosvg-glyph {
+.fx-torch-lit autosvg {
   filter: drop-shadow(0 0 6px var(--k-ffe14d));
 }
 .fx-torch::after {
@@ -1296,7 +1296,7 @@
 .fx-rare-hex::before {
   background: radial-gradient(circle at 50% 35%, color-mix(in oklab, var(--c) 26%, #0f0a1f), #0f0a1f);
 }
-.fx-rare-hex autosvg-glyph {
+.fx-rare-hex autosvg {
   filter: drop-shadow(0 0 6px var(--c)) drop-shadow(0 0 16px var(--c));
 }
 .fx-spark {
@@ -1323,7 +1323,7 @@
 .fx-balloon {
   background: linear-gradient(color-mix(in oklab, var(--c-x) 30%, white), color-mix(in oklab, var(--c-x) 6%, white));
 }
-.fx-balloon autosvg-glyph {
+.fx-balloon autosvg {
   color: var(--c);
 }
 .fx-kal-arm {
@@ -1361,7 +1361,7 @@
   background: color-mix(in oklab, var(--c) 8%, #060309);
   color: var(--c-l);
 }
-.fx-neon autosvg-glyph {
+.fx-neon autosvg {
   filter: drop-shadow(0 0 1.5px #fff) drop-shadow(0 0 8px var(--c)) drop-shadow(0 0 24px var(--c-d));
 }
 .fx-e {
@@ -1391,7 +1391,7 @@
   background: radial-gradient(circle at 50% 60%, color-mix(in oklab, var(--c) 35%, #020b12), #020b12 70%);
   color: var(--c-l);
 }
-.fx-holo autosvg-glyph {
+.fx-holo autosvg {
   filter: drop-shadow(0 0 3px var(--c-l)) drop-shadow(0 0 14px var(--c));
 }
 .fx-holo::after {

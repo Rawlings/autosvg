@@ -2,7 +2,7 @@
   "name": "@autosvg/runtime",
   "version": "0.0.1",
   "private": true,
-  "description": "What a consumer loads: the <autosvg-glyph> and <autosvg-morph> elements and the stylesheets that turn CSS variables into look, state and motion.",
+  "description": "What a consumer loads: the <autosvg> and <autosvg-morph> elements and the stylesheets that turn CSS variables into look, state and motion.",
   "license": "MIT",
   "type": "module",
   "exports": {

@@ -12,14 +12,14 @@ interface GlyphProps {
   depth?: string | undefined
 }
 
-/** One vector from the set, drawn by the <autosvg-glyph> runtime so it follows the --autosvg-* variables. */
+/** One vector from the set, drawn by the <autosvg> runtime so it follows the --autosvg-* variables. */
 import { cssVars } from '../lib/css.ts'
 
 export function Glyph({ name, size, className, state, label, depth }: GlyphProps) {
   return (
-    <autosvg-glyph
+    <autosvg
       name={name}
-      class={className}
+      className={className}
       state={state}
       depth={depth}
       aria-label={label}

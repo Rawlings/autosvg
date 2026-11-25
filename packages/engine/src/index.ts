@@ -5,7 +5,7 @@ import { defineAutosvgGlyph, defineAutosvgMorph, renderIcon } from '@autosvg/run
 import { VECTORS } from '@autosvg/vectors'
 import { type AutosvgApi, api, getSVG } from './api.ts'
 
-defineAutosvgGlyph() // <autosvg-glyph>: every vector in the app is drawn through its real CSS-variable interface
+defineAutosvgGlyph() // <autosvg>: every vector in the app is drawn through its real CSS-variable interface
 defineAutosvgMorph() // <autosvg-morph>: any vector turning into any other
 
 declare global {

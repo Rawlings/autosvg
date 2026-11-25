@@ -75,8 +75,8 @@ Four pages: **Library** to browse and play with every vector, **Studio** to draw
 ## Use a vector
 
 ```html
-<autosvg-glyph name="bell"></autosvg-glyph>
-<autosvg-glyph name="mic" state="off"></autosvg-glyph>
+<autosvg name="bell"></autosvg>
+<autosvg name="mic" state="off"></autosvg>
 ```
 
 That is a ringing, mutable microphone and a bell, themed by CSS variables and following your text colour. The full guide, with motion, state, morphing and export, is in [docs/USAGE.md](docs/USAGE.md).

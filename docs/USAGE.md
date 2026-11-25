@@ -34,7 +34,7 @@ A pnpm workspace in TypeScript (strict), formatted and linted with Biome. Rules 
 packages/
   vectors/     the vector files (svg/), the source of truth, and the list of them as a module
   core/      the rules and the drawing: spec tokens, geometry, parametric recipes, the pose table. No DOM
-  runtime/   what a consumer loads: <autosvg-glyph>, <autosvg-morph> and the stylesheets (css/)
+  runtime/   what a consumer loads: <autosvg>, <autosvg-morph> and the stylesheets (css/)
   checks/    everything that judges a vector: rule lint, raster measurement, Paper.js shape analysis, audits
   engine/    the headless model behind the app, and window.autosvg for devtools and agents
 apps/
@@ -46,10 +46,10 @@ Each package depends only on the ones above it in this list (`core` on nothing, 
 
 ## Using the vectors in your own project
 
-The packages are not published yet; inside this workspace, depend on `@autosvg/runtime` and load the runtime and the stylesheets, then use `<autosvg-glyph>`:
+The packages are not published yet; inside this workspace, depend on `@autosvg/runtime` and load the runtime and the stylesheets, then use `<autosvg>`:
 
 ```js
-import '@autosvg/runtime/register' // defines <autosvg-glyph> and <autosvg-morph>
+import '@autosvg/runtime/register' // defines <autosvg> and <autosvg-morph>
 import '@autosvg/runtime/css/icons.css' // --autosvg-* variables, off and state transitions
 import '@autosvg/runtime/css/poses.css' // the one stylesheet that turns each vector's data into motion
 import '@autosvg/runtime/css/swap.css' // optional: one vector turning into another (fade and turn)
@@ -57,10 +57,12 @@ import '@autosvg/runtime/css/morph.css' // optional: one vector turning into ano
 ```
 
 ```html
-<autosvg-glyph name="bell"></autosvg-glyph>
-<autosvg-glyph name="mic" state="off"></autosvg-glyph>       <!-- or name="mic-off" -->
-<autosvg-glyph name="arrow-left"></autosvg-glyph>             <!-- the arrow, turned -->
+<autosvg name="bell"></autosvg>
+<autosvg name="mic" state="off"></autosvg>       <!-- or name="mic-off" -->
+<autosvg name="arrow-left"></autosvg>             <!-- the arrow, turned -->
 ```
+
+`<autosvg>` is a plain element, not a registered custom element: browsers only allow a hyphen in custom element names, so a bare name cannot be registered. A small observer draws each `<autosvg>` as it appears (a moment after, not synchronously). Inside a shadow root, call `watchAutosvg(shadowRoot)` once so it is watched too.
 
 An icon is decorative by default (`aria-hidden="true"`); put the name and state on the button that holds it. Give it an `aria-label` and it becomes a labelled image.
 
@@ -139,7 +141,7 @@ A lit, glossy look and a cast shadow for a few large icons. Load `depth.css` and
 ```
 
 ```html
-<autosvg-glyph name="bell" depth="tube shadow" style="--autosvg-size: 96px"></autosvg-glyph>
+<autosvg name="bell" depth="tube shadow" style="--autosvg-size: 96px"></autosvg>
 ```
 
 `depth="tube"` lights the strokes as glossy tubes (an SVG lighting filter, tuned for about 48 to 160 px), `depth="shadow"` casts a shadow. `--autosvg-lift` (0 to 1) floats the icon: the shadow moves away and softens, and a transition on that number is the animation. `--autosvg-light` (degrees) turns the shadow. Chromium shows all of it; elsewhere the icon is flat. Use it on dozens of icons, not hundreds: see the cost note at the top of `depth.css`.
@@ -165,7 +167,7 @@ renderIcon('mic-off', { stroke: 0.75 }, { inline: true }) // a plain static SVG 
 
 ### Weight
 
-Measured with a production build of the runtime entry (every icon, every recipe, the state table, `<autosvg-glyph>`): about 283 KB minified, 48 KB gzipped for 235 icons, which is roughly 0.2 KB gzipped per icon. `<autosvg-morph>` adds about 12 KB (4 KB gzipped). The styles are 14.6 KB for `poses.css` (2.9 KB gzipped), 2.9 KB for `icons.css` (1.3 KB gzipped) and 2.3 KB for `morph.css` (1 KB gzipped), and they do not grow with the icon count. Per-icon motion is a handful of `data-` attributes in the SVG (about 350 bytes on average).
+Measured with a production build of the runtime entry (every icon, every recipe, the state table, `<autosvg>`): about 283 KB minified, 48 KB gzipped for 235 icons, which is roughly 0.2 KB gzipped per icon. `<autosvg-morph>` adds about 12 KB (4 KB gzipped). The styles are 14.6 KB for `poses.css` (2.9 KB gzipped), 2.9 KB for `icons.css` (1.3 KB gzipped) and 2.3 KB for `morph.css` (1 KB gzipped), and they do not grow with the icon count. Per-icon motion is a handful of `data-` attributes in the SVG (about 350 bytes on average).
 
 ## Browser support
 

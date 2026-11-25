@@ -28,13 +28,6 @@
     "domains": { "react": "recommended", "project": "recommended" },
     "rules": {
       "preset": "recommended",
-      "correctness": {
-        "noUnusedImports": "error",
-        "noUnusedVariables": "error",
-        "noUnusedFunctionParameters": "error",
-        "useImportExtensions": "error",
-        "useExhaustiveDependencies": "error"
-      },
       "style": {
         "noNonNullAssertion": "error",
         "noParameterAssign": "error",
@@ -50,6 +43,13 @@
         "noConsole": "error",
         "noEmptyBlockStatements": "error",
         "noVar": "error"
+      },
+      "correctness": {
+        "noUnusedImports": "error",
+        "noUnusedVariables": "error",
+        "noUnusedFunctionParameters": "error",
+        "useImportExtensions": "error",
+        "useExhaustiveDependencies": "error"
       },
       "complexity": {
         "noForEach": "error",
@@ -85,7 +85,13 @@
       "includes": ["apps/studio/src/lib/tube-gl.ts"],
       "linter": { "rules": { "correctness": { "useHookAtTopLevel": "off" } } }
     },
-    // The cascade in the studio's stylesheet relies on source order in a few places.
-    { "includes": ["**/*.css"], "linter": { "rules": { "style": { "noDescendingSpecificity": "off" } } } }
+    // The cascade in the studio's stylesheet relies on source order in a few places. And <autosvg> is a plain element, not a
+    // registered custom element (the browser only allows custom element names with a hyphen), so the rule would call it a typo.
+    {
+      "includes": ["**/*.css"],
+      "linter": {
+        "rules": { "style": { "noDescendingSpecificity": "off" }, "correctness": { "noUnknownTypeSelector": "off" } }
+      }
+    }
   ]
 }
