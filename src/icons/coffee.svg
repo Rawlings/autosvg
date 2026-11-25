@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" data-motion="steam">
+  <path d="M4 9h11v6a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5z" />
+  <path d="M15 10h1.5c2.8 0 2.8 5 0 5H15" />
+  <path data-c1="1" data-w1="0.5" data-y1="-1.6" data-a1="-1" data-c2="1" data-t2="0.5" data-w2="0.001" data-y2="2.7" data-c3="1" data-t3="0.5" data-w3="0.5" data-y3="-1.1" data-a3="1" d="M7 3.5v2.5" />
+  <path data-c1="1" data-t1="0.1" data-w1="0.4" data-y1="-1.6" data-a1="-1" data-c2="1" data-t2="0.55" data-w2="0.001" data-y2="2.7" data-c3="1" data-t3="0.55" data-w3="0.4" data-y3="-1.1" data-a3="1" d="M11 3.5v2.5" />
+</svg>

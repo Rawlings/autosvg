@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" data-motion="grin" data-states="wink">
+  <circle data-ox="12" data-oy="12" data-c1="1" data-k1="1" data-s1="0.03" cx="12" cy="12" r="9" />
+  <circle data-ox="9" data-oy="10" data-c1="1" data-k1="1" data-v1="-0.6" cx="9" cy="10" r="0.5" />
+  <circle data-ox="15" data-oy="10" data-c1="1" data-k1="1" data-v1="-0.6" data-c2="2" data-v2="-0.9" cx="15" cy="10" r="0.5" />
+  <path data-ox="12" data-oy="15" data-c1="1" data-k1="1" data-h1="0.22" data-v1="0.5" data-c2="2" data-q2="-8" d="M8 14.5c1 1.8 2.5 2.7 4 2.7s3-.9 4-2.7" />
+</svg>

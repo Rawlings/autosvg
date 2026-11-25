@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" data-motion="propose">
+  <circle data-ox="6" data-oy="5.5" data-c1="1" data-k1="1" data-w1="0.35" data-s1="0.2" cx="6" cy="5.5" r="2.5" />
+  <circle data-ox="6" data-oy="18.5" data-c1="1" data-k1="1" data-t1="0.15" data-w1="0.35" data-s1="0.2" cx="6" cy="18.5" r="2.5" />
+  <circle data-ox="18" data-oy="18.5" data-c1="1" data-k1="1" data-t1="0.3" data-w1="0.35" data-s1="0.2" cx="18" cy="18.5" r="2.5" />
+  <path pathLength="1" data-ox="6" data-oy="8" data-c1="1" data-w1="0.12" data-g1="-1" data-c2="1" data-t2="0.1" data-w2="0.35" data-g2="1" d="M6 8v8" />
+  <path pathLength="1" data-ox="18" data-oy="16" data-c1="1" data-w1="0.12" data-g1="-1" data-c2="1" data-t2="0.4" data-w2="0.4" data-g2="1" d="M18 16V9a2 2 0 0 0-2-2h-3" />
+  <path data-ox="13" data-oy="7" data-c1="1" data-k1="1" data-t1="0.55" data-w1="0.45" data-x1="-1" d="M15.5 4.5L13 7l2.5 2.5" />
+</svg>

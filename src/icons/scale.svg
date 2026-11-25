@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" data-motion="weigh">
+  <path d="M12 4v16" />
+  <path d="M8 20h8" />
+  <path data-ox="12" data-oy="7.5" data-c1="1" data-k1="2" data-n1="1.5" data-r1="8" d="M4.5 7.5h15" />
+  <path data-ox="6" data-oy="7.5" data-c1="1" data-k1="2" data-n1="1.5" data-y1="-0.9" d="M6 7.5L3 14h6z" />
+  <path data-ox="18" data-oy="7.5" data-c1="1" data-k1="2" data-n1="1.5" data-y1="0.9" d="M18 7.5L15 14h6z" />
+</svg>

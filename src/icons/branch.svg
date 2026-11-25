@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" data-motion="commit">
+  <circle data-ox="6" data-oy="6" data-c1="1" data-k1="1" data-w1="0.5" data-s1="0.22" cx="6" cy="6" r="2.5" />
+  <circle data-ox="6" data-oy="18" data-c1="1" data-k1="1" data-t1="0.2" data-w1="0.5" data-s1="0.22" cx="6" cy="18" r="2.5" />
+  <circle data-ox="18" data-oy="6" data-c1="1" data-k1="1" data-t1="0.4" data-w1="0.5" data-s1="0.22" cx="18" cy="6" r="2.5" />
+  <path data-c1="1" data-k1="1" data-t1="0.2" data-w1="0.5" data-a1="-0.3" d="M6 8.5v7" />
+  <path d="M18 8.5V10a3 3 0 0 1 -3 3H8.5a2.5 2.5 0 0 0 -2.5 2.5" />
+</svg>

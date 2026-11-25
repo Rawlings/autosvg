@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" data-motion="spin" data-states="off">
+  <circle data-ox="12" data-oy="12" data-c1="1" data-k1="1" data-s1="0.02" cx="12" cy="12" r="9" />
+  <path d="M3 12h18" />
+  <ellipse data-ox="12" data-oy="12" data-c1="1" data-h1="-2" cx="12" cy="12" rx="4" ry="9" />
+  <path data-st="" opacity="0" pathLength="1" data-b="0" data-c1="2" data-g1="1" d="M4 4l16 16" />
+</svg>

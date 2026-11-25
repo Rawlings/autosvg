@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" data-motion="bounce" data-states="vertical">
+  <g data-gr="" data-ox="12" data-oy="12" data-c1="2" data-r1="90">
+  <circle data-ox="5" data-oy="12" data-c1="1" data-k1="1" data-w1="0.5" data-y1="-2.2" data-s1="1" cx="5" cy="12" r="0.5" />
+  <circle data-ox="12" data-oy="12" data-c1="1" data-k1="1" data-t1="0.18" data-w1="0.5" data-y1="-2.2" data-s1="1" cx="12" cy="12" r="0.5" />
+  <circle data-ox="19" data-oy="12" data-c1="1" data-k1="1" data-t1="0.36" data-w1="0.5" data-y1="-2.2" data-s1="1" cx="19" cy="12" r="0.5" />
+  </g>
+</svg>

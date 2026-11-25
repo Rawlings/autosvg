@@ -1,0 +1,55 @@
+/*
+  Icon morph: one icon turning into another, shape to shape. Works for any two icons in the set.
+
+    <icon-morph from="sun" to="moon"></icon-morph>
+
+  One number says which icon is shown, --icon-morph (0 the first icon, 1 the second): set state="to", or set --icon-morph: 1 on
+  the element or any ancestor (a hover rule, a class, aria-pressed). Changing it is a CSS transition: every stroke of the first
+  icon moves into a stroke of the second (see src/morph.js); a stroke with no partner shrinks and fades. It is a switch with
+  a transition, not a scrubber: CSS computes animation properties before animations run, so a paused animation cannot be
+  scrubbed by a number that is itself moving.
+  The icon is decorative: put the label and the state on the button that holds it.
+
+  Tuning (optional): --icon-morph-duration (420ms), --icon-morph-easing.
+  Needs CSS `d` (Chrome, Edge, Firefox); without it the icon changes instantly. Under prefers-reduced-motion it does too.
+  data-fit="rough" on the element says the two icons have little in common (most strokes fade rather than move): the plain
+  swap (swap.css) may suit that pair better.
+*/
+@property --icon-morph { syntax: '<number>'; inherits: true; initial-value: 0; }
+
+icon-morph {
+  display: inline-flex;
+  width: var(--icon-size, 24px);
+  height: var(--icon-size, 24px);
+  color: var(--icon-color, inherit);
+}
+icon-morph[state='to'] {
+  --icon-morph: 1;
+}
+icon-morph svg {
+  width: 100%;
+  height: 100%;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: var(--icon-stroke, 1.5);
+  stroke-linecap: var(--icon-cap, round);
+  stroke-linejoin: var(--icon-join, round);
+}
+/* every stroke carries both ends as variables (set by src/morph.js); the number picks one and a transition does the rest */
+icon-morph path {
+  d: var(--im-a);
+  opacity: var(--im-oa, 1);
+  transition: d var(--icon-morph-duration, 420ms) var(--icon-morph-easing, cubic-bezier(0.4, 0, 0.2, 1)),
+    opacity var(--icon-morph-duration, 420ms) var(--icon-morph-easing, cubic-bezier(0.4, 0, 0.2, 1));
+}
+@container style(--icon-morph: 1) {
+  icon-morph path {
+    d: var(--im-b);
+    opacity: var(--im-ob, 1);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  icon-morph path {
+    transition-duration: 1ms;
+  }
+}

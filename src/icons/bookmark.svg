@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" data-motion="hop" data-states="plus minus check x">
+  <path data-ox="12" data-oy="10" data-c1="1" data-k1="2" data-n1="1" data-y1="-2.2" data-c2="1" data-k2="1" data-t2="0.5" data-w2="0.5" data-v2="-0.08" d="M6.5 4.5A1 1 0 0 1 7.5 3.5L16.5 3.5A1 1 0 0 1 17.5 4.5L17.5 20.5L17.5 20.5L12 16.5L12 16.5L6.5 20.5L6.5 20.5Z" />
+  <path data-st="" opacity="0" pathLength="1" data-b="0" data-c1="2" data-w1="0.7" data-g1="1" data-c2="2" data-t2="1" data-w2="0.6" data-g2="-1" d="M12 7.5v4" />
+  <path data-st="" opacity="0" pathLength="1" data-b="0" data-c1="2" data-t1="0.3" data-w1="0.7" data-g1="1" data-c2="2" data-t2="2" data-w2="0.6" data-g2="-1" d="M10 9.5h4" />
+  <path data-st="" opacity="0" pathLength="1" data-b="0" data-c1="2" data-t1="2" data-g1="1" data-c2="2" data-t2="3" data-w2="0.6" data-g2="-1" d="M10 9.7L11.6 11.1L14 7.9" />
+  <path data-st="" opacity="0" pathLength="1" data-b="0" data-c1="2" data-t1="3" data-w1="0.7" data-g1="1" d="M10.4 7.9L13.6 11.1" />
+  <path data-st="" opacity="0" pathLength="1" data-b="0" data-c1="2" data-t1="3.3" data-w1="0.7" data-g1="1" d="M13.6 7.9L10.4 11.1" />
+</svg>

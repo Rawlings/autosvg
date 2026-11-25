@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" data-motion="sail">
+  <path data-ox="12" data-oy="21" data-c1="1" data-k1="2" data-r1="4" d="M12 3v14.5" />
+  <path data-ox="12" data-oy="21" data-c1="1" data-k1="2" data-r1="4" data-c2="1" data-k2="2" data-h2="0.1" d="M12 4.5L19 14.5H12" />
+  <path data-ox="12" data-oy="21" data-c1="1" data-k1="2" data-r1="4" data-c2="1" data-k2="2" data-h2="0.1" d="M12 7L6 14.5h6" />
+  <path data-ox="12" data-oy="21" data-c1="1" data-k1="2" data-r1="4" d="M4.35 18.35A0.5 0.5 0 0 1 4.71 17.5L19.29 17.5A0.5 0.5 0 0 1 19.65 18.35L17.29 20.71A1 1 0 0 1 16.59 21L7.41 21A1 1 0 0 1 6.71 20.71Z" />
+</svg>

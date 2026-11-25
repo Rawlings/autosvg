@@ -1,0 +1,4 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" data-motion="choose" data-states="selected">
+  <circle data-ox="12" data-oy="12" data-c1="1" data-k1="1" data-w1="0.5" data-s1="-0.07" data-c2="1" data-k2="1" data-t2="0.5" data-w2="0.5" data-s2="0.05" cx="12" cy="12" r="9" />
+  <circle data-st="" opacity="0" data-o="0" data-z="0" data-ox="12" data-oy="12" data-c1="2" data-a1="1" data-s1="1" cx="12" cy="12" r="3.5" />
+</svg>

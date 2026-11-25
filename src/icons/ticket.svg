@@ -1,0 +1,4 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" data-motion="wobble">
+  <path data-ox="12" data-oy="12" data-c1="1" data-k1="2" data-n1="2.5" data-r1="8" data-c2="1" data-k2="1" data-s2="0.04" d="M4.5 5H19.5a1.5 1.5 0 0 1 1.5 1.5v2.5a2.5 2.5 0 0 0 0 5V17.5a1.5 1.5 0 0 1-1.5 1.5H4.5a1.5 1.5 0 0 1-1.5-1.5v-2.5a2.5 2.5 0 0 0 0-5V6.5a1.5 1.5 0 0 1 1.5-1.5z" />
+  <path data-ox="12" data-oy="12" data-c1="1" data-k1="2" data-n1="2.5" data-r1="8" data-c2="1" data-k2="1" data-s2="0.04" d="M14.5 8.5V10M14.5 14v1.5" />
+</svg>

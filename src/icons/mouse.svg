@@ -1,0 +1,4 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" data-motion="scroll">
+  <rect data-ox="12" data-oy="12" data-c1="1" data-k1="1" data-t1="0.7" data-w1="0.3" data-s1="0.03" x="6.5" y="3" width="11" height="18" rx="5.5" />
+  <path data-ox="12" data-oy="8" data-c1="1" data-k1="1" data-w1="0.35" data-y1="1.6" data-c2="1" data-k2="1" data-t2="0.35" data-w2="0.35" data-y2="1.6" d="M12 6.5v3" />
+</svg>
