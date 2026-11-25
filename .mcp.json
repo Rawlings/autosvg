@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "icons": {
+      "command": "node",
+      "args": ["tools/src/mcp.ts"]
+    }
+  }
+}

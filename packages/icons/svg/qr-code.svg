@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" data-motion="scan">
+  <rect data-ox="6.5" data-oy="6.5" data-c1="1" data-k1="1" data-w1="0.4" data-s1="0.12" x="3" y="3" width="7" height="7" rx="1.5" />
+  <rect data-ox="17.5" data-oy="6.5" data-c1="1" data-k1="1" data-t1="0.2" data-w1="0.4" data-s1="0.12" x="14" y="3" width="7" height="7" rx="1.5" />
+  <rect data-ox="6.5" data-oy="17.5" data-c1="1" data-k1="1" data-t1="0.4" data-w1="0.4" data-s1="0.12" x="3" y="14" width="7" height="7" rx="1.5" />
+  <circle data-ox="6.5" data-oy="6.5" data-c1="1" data-k1="1" data-w1="0.4" data-s1="0.12" cx="6.5" cy="6.5" r="0.5" />
+  <circle data-ox="17.5" data-oy="6.5" data-c1="1" data-k1="1" data-t1="0.2" data-w1="0.4" data-s1="0.12" cx="17.5" cy="6.5" r="0.5" />
+  <circle data-ox="6.5" data-oy="17.5" data-c1="1" data-k1="1" data-t1="0.4" data-w1="0.4" data-s1="0.12" cx="6.5" cy="17.5" r="0.5" />
+  <path data-ox="17.5" data-oy="17.5" data-c1="1" data-k1="1" data-t1="0.6" data-w1="0.4" data-s1="0.12" d="M14 14h3M21 14v3.5M14 21v-3.5M17.5 17.5H21M17.5 21H21" />
+</svg>

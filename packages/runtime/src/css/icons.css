@@ -1,0 +1,64 @@
+/*
+  Icon set contract. Set these custom properties on any element (:root, any wrapper element, one button);
+  every icon inside follows. All are optional; the defaults are the set's own look.
+
+  Pure CSS (no JavaScript):
+    --icon-stroke   stroke width in icon units, default 1.5
+    --icon-cap      butt | round | square, default round
+    --icon-join     miter | round | bevel, default round
+    --icon-dash     stroke-dasharray, default none
+    --icon-color    icon colour, default currentColor
+    --icon-size     rendered size, default 24px
+
+  Geometry (needs the <icon-glyph> runtime, because CSS cannot reshape a path); icons with a recipe only:
+    --icon-radius   corner radius multiplier, default 1 (0 sharp, 2 very soft)
+    --icon-curve    0 = circles, 1 = squircles, default 0
+*/
+icon-glyph {
+  display: inline-flex;
+  width: var(--icon-size, 24px);
+  height: var(--icon-size, 24px);
+  color: var(--icon-color, inherit);
+}
+
+icon-glyph svg,
+svg.icon {
+  width: 100%;
+  height: 100%;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: var(--icon-stroke, 1.5);
+  stroke-linecap: var(--icon-cap, round);
+  stroke-linejoin: var(--icon-join, round);
+  stroke-dasharray: var(--icon-dash, none);
+}
+
+/*
+  Motion and state, the two things an icon can do. Both are numbers set on the icon or any ancestor.
+
+    --icon-motion   0 to 1    a momentary gesture: a bell rings, an arrow lunges. It plays and settles back to rest.
+    --icon-state    0, 1, 2   which state the icon is in. 0 is its normal look; 1 and up are its named states (a
+                              microphone: 1 is off; Wi-Fi: 1 is weak, 2 is off; a lock: 1 is open).
+
+  A state persists, so moving --icon-state IS the transition: entering draws the slash, opens the lock, hides the arcs, and
+  leaving plays it back. Because they are numbers, both can be transitioned or animated with plain CSS, and an icon can
+  ring while it is off.
+
+  For markup that is not CSS-driven, <icon-glyph> takes a state attribute:
+    <icon-glyph name="mic" state="off">     and the names mic-off, lock-open (or unlock), wifi-weak resolve to it
+  --icon-state-enter (420ms, eased out) and --icon-state-exit (240ms, eased in) are how long entering and leaving a state take.
+*/
+/* Entering a state is slower and settles; leaving is quicker and gets out of the way. The transition used is the one of the
+   state being moved to, so this needs no JavaScript. It applies to the state attribute only: if you drive --icon-state from CSS yourself,
+   your own transition is the only one. Tune with --icon-state-enter and --icon-state-exit. */
+icon-glyph[state] {
+  transition: --icon-state var(--icon-state-exit, 240ms) cubic-bezier(0.4, 0, 1, 1);
+}
+icon-glyph[state]:not([state='']) {
+  transition: --icon-state var(--icon-state-enter, 420ms) cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+@media (prefers-reduced-motion: reduce) {
+  icon-glyph[state] {
+    transition: none;
+  }
+}

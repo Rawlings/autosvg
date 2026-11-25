@@ -1,2 +1,21 @@
+packages:
+  - packages/*
+  - apps/*
+  - tools
+
+# One version per dependency for the whole repo. Packages say `catalog:` instead of a number.
+catalog:
+  "@biomejs/biome": 2.6.8
+  "@types/node": 26.6.6
+  "@types/react": 19.3.0
+  "@types/react-dom": 19.3.0
+  "@vitejs/plugin-react": 6.3.0
+  paper: 0.17.0
+  react: 19.3.1
+  react-dom: 19.3.1
+  typescript: 7.0.2
+  vite: 8.3.8
+
+# Install scripts are off unless listed. esbuild only arrives as an optional peer of Vite, which does not use it.
 allowBuilds:
-  esbuild: set this to true or false
+  esbuild: false

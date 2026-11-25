@@ -1,0 +1,32 @@
+{
+  "name": "@icon-canvas/runtime",
+  "version": "0.0.1",
+  "private": true,
+  "description": "What a consumer loads: the <icon-glyph> and <icon-morph> elements and the stylesheets that turn CSS variables into look, state and motion.",
+  "license": "MIT",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./render": "./src/render.ts",
+    "./register": "./src/register.ts",
+    "./css/*": "./src/css/*"
+  },
+  "sideEffects": [
+    "*.css",
+    "./src/register.ts"
+  ],
+  "files": [
+    "src"
+  ],
+  "scripts": {
+    "typecheck": "tsc -p ."
+  },
+  "dependencies": {
+    "@icon-canvas/core": "workspace:*",
+    "@icon-canvas/icons": "workspace:*"
+  },
+  "devDependencies": {
+    "typescript": "catalog:",
+    "vite": "catalog:"
+  }
+}

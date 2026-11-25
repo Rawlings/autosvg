@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" data-motion="swing">
+  <path data-ox="12" data-oy="3" data-c1="1" data-k1="2" data-r1="4" data-c2="1" data-k2="1" data-w2="0.5" data-y2="0.5" d="M9.5 7.5V5.5a2.5 2.5 0 0 1 5 0v2" />
+  <rect data-ox="12" data-oy="3" data-c1="1" data-k1="2" data-r1="4" data-c2="1" data-k2="1" data-w2="0.5" data-y2="0.5" x="5" y="7.5" width="14" height="13.5" rx="3" />
+  <path data-ox="12" data-oy="3" data-c1="1" data-k1="2" data-r1="4" data-c2="1" data-k2="1" data-w2="0.5" data-y2="0.5" d="M9 21L9 16.5A1.5 1.5 0 0 1 10.5 15L13.5 15A1.5 1.5 0 0 1 15 16.5L15 21" />
+  <path data-ox="12" data-oy="3" data-c1="1" data-k1="2" data-r1="4" data-c2="1" data-k2="1" data-w2="0.5" data-y2="0.5" d="M5 11.5h14" />
+</svg>

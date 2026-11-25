@@ -1,0 +1,91 @@
+{
+  "$schema": "https://biomejs.dev/schemas/2.6.8/schema.json",
+  "vcs": { "enabled": true, "clientKind": "git", "useIgnoreFile": true },
+  "files": {
+    "ignoreUnknown": true,
+    // The icon files, the generated stylesheet, the lockfile and the prose docs are not formatted by a tool.
+    "includes": ["**", "!**/svg", "!**/css/poses.css", "!pnpm-lock.yaml", "!**/*.md", "!**/batches/index.ts"]
+  },
+  "formatter": {
+    "enabled": true,
+    "indentStyle": "space",
+    "indentWidth": 2,
+    "lineWidth": 120,
+    "lineEnding": "lf"
+  },
+  "javascript": {
+    "formatter": {
+      "quoteStyle": "single",
+      "semicolons": "asNeeded",
+      "trailingCommas": "all",
+      "arrowParentheses": "always"
+    }
+  },
+  "css": { "formatter": { "enabled": true, "quoteStyle": "single" } },
+  "assist": { "actions": { "source": { "organizeImports": "on" } } },
+  "linter": {
+    "enabled": true,
+    "domains": { "react": "recommended", "project": "recommended" },
+    "rules": {
+      "preset": "recommended",
+      "correctness": {
+        "noUnusedImports": "error",
+        "noUnusedVariables": "error",
+        "noUnusedFunctionParameters": "error",
+        "useImportExtensions": "error",
+        "useExhaustiveDependencies": "error"
+      },
+      "style": {
+        "noNonNullAssertion": "error",
+        "noParameterAssign": "error",
+        "useConst": "error",
+        "useImportType": "error",
+        "useExportType": "error",
+        "useNodejsImportProtocol": "error",
+        "useTemplate": "error",
+        "useConsistentArrayType": { "level": "error", "options": { "syntax": "shorthand" } }
+      },
+      "suspicious": {
+        "noExplicitAny": "error",
+        "noConsole": "error",
+        "noEmptyBlockStatements": "error",
+        "noVar": "error"
+      },
+      "complexity": {
+        "noForEach": "error",
+        // TypeScript's noPropertyAccessFromIndexSignature requires dataset['x'] and record['x']; this rule asks for the opposite.
+        "useLiteralKeys": "off"
+      }
+    }
+  },
+  "overrides": [
+    // Scripts talk to the terminal.
+    { "includes": ["tools/**"], "linter": { "rules": { "suspicious": { "noConsole": "off" } } } },
+    // The studio puts ARIA roles on divs and buttons on purpose: role="group" for a segmented control (a <fieldset> brings its own
+    // border, padding and min-width into a toolbar), and in the Showcase role="switch" or "radio" on a button, where aria-checked is what
+    // moves the icon.
+    {
+      "includes": ["apps/studio/**"],
+      "linter": { "rules": { "a11y": { "useSemanticElements": "off" } } }
+    },
+    {
+      "includes": ["apps/studio/src/pages/showcase/**"],
+      "linter": {
+        "rules": {
+          "a11y": {
+            "useFocusableInteractive": "off",
+            "noNoninteractiveTabindex": "off",
+            "useAriaPropsSupportedByRole": "off"
+          }
+        }
+      }
+    },
+    // WebGL's `gl.useProgram` is not a React hook; the rule goes by the name alone.
+    {
+      "includes": ["apps/studio/src/lib/tube-gl.ts"],
+      "linter": { "rules": { "correctness": { "useHookAtTopLevel": "off" } } }
+    },
+    // The cascade in the studio's stylesheet relies on source order in a few places.
+    { "includes": ["**/*.css"], "linter": { "rules": { "style": { "noDescendingSpecificity": "off" } } } }
+  ]
+}

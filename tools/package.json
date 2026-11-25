@@ -1,0 +1,31 @@
+{
+  "name": "@icon-canvas/tools",
+  "version": "0.0.1",
+  "private": true,
+  "description": "Scripts that write files: seed the icon files from recipes and the pose table, generate poses.css, export static SVGs.",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "seed": "node src/batches.ts && node src/seed-poses.ts",
+    "seed:check": "node src/batches.ts && node src/seed-poses.ts --check",
+    "css": "node src/gen-poses-css.ts",
+    "export": "node src/export-svgs.ts",
+    "typecheck": "tsc -p .",
+    "verify-icons": "node src/verify-icons.ts",
+    "quick": "node src/quick.ts",
+    "geom": "node src/geom.ts",
+    "batches": "node src/batches.ts",
+    "shot": "node src/shot.ts"
+  },
+  "dependencies": {
+    "@icon-canvas/checks": "workspace:*",
+    "@icon-canvas/core": "workspace:*",
+    "@icon-canvas/icons": "workspace:*",
+    "@icon-canvas/runtime": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "catalog:",
+    "typescript": "catalog:",
+    "vite": "catalog:"
+  }
+}

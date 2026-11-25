@@ -1,0 +1,29 @@
+{
+  "name": "@icon-canvas/checks",
+  "version": "0.0.1",
+  "private": true,
+  "description": "Everything that judges an icon: rule lint, raster measurement, shape analysis, coverage, pose lint, performance and accessibility audits.",
+  "license": "MIT",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./paper": "./src/paper-tools.ts",
+    "./quick": "./src/quick.ts"
+  },
+  "files": [
+    "src"
+  ],
+  "scripts": {
+    "typecheck": "tsc -p ."
+  },
+  "dependencies": {
+    "@icon-canvas/core": "workspace:*",
+    "@icon-canvas/icons": "workspace:*",
+    "@icon-canvas/runtime": "workspace:*",
+    "paper": "catalog:"
+  },
+  "devDependencies": {
+    "typescript": "catalog:",
+    "vite": "catalog:"
+  }
+}

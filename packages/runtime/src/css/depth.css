@@ -1,0 +1,61 @@
+/*
+  Depth, opt-in: a lit, glossy look and a cast shadow for the line icons. Nothing here is on by default; an icon asks for it
+  with the `depth` attribute, and the numbers below move it. Pure line stays pure line: the strokes are lit, never filled.
+
+    <icon-glyph name="bell" depth="tube shadow"></icon-glyph>
+
+    depth="tube"     the strokes read as glossy tubes (an SVG lighting filter, tuned for icons about 48 to 160 px across)
+    depth="shadow"   a soft shadow falls from the icon; it follows --icon-light and gets softer as --icon-lift rises
+
+    --icon-lift     0 to 1     how far the icon floats above the page: the shadow moves away and softens (default 0)
+    --icon-light    degrees    the direction the shadow falls: 0 right, 90 down, default 60
+    --icon-shadow   0 to 1     the shadow's strength (default 1)
+
+  The numbers are registered, so a transition on --icon-lift is the animation (a hover, a press). Under prefers-reduced-motion
+  the transition is off; the look stays.
+
+  Cost, measured in headless Chrome with CPU rendering (so pessimistic) while one icon's lift animates: 50 icons with tube and
+  shadow hold about 50 fps, 200 fall to about 14 fps; the shadow alone holds 60 fps at 50 icons. Use it on dozens of icons, such
+  as a hero, a feature grid or a pressed button, not on a table's every row. The tube filter is tuned for about 48 to 160 px.
+*/
+@property --icon-lift {
+  syntax: '<number>';
+  inherits: true;
+  initial-value: 0;
+}
+@property --icon-light {
+  syntax: '<number>';
+  inherits: true;
+  initial-value: 60;
+}
+@property --icon-shadow {
+  syntax: '<number>';
+  inherits: true;
+  initial-value: 1;
+}
+
+/* the tube filter sits on the drawing itself and the shadow on the icon around it, so animating the lift never re-lights the tube */
+icon-glyph[depth~='tube'] {
+  --icon-tube: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='t' x='-12%25' y='-12%25' width='124%25' height='124%25' color-interpolation-filters='sRGB'%3E%3CfeGaussianBlur in='SourceAlpha' stdDeviation='2' result='h'/%3E%3CfeDiffuseLighting in='h' surfaceScale='5' diffuseConstant='1.25' lighting-color='%23fff' result='d'%3E%3CfeDistantLight azimuth='225' elevation='58'/%3E%3C/feDiffuseLighting%3E%3CfeSpecularLighting in='h' surfaceScale='5' specularConstant='1.1' specularExponent='26' lighting-color='%23fff' result='s'%3E%3CfeDistantLight azimuth='225' elevation='48'/%3E%3C/feSpecularLighting%3E%3CfeComposite in='SourceGraphic' in2='d' operator='arithmetic' k1='0.8' k2='0.38' k3='0' k4='0' result='lit'/%3E%3CfeComposite in='lit' in2='s' operator='arithmetic' k1='0' k2='1' k3='0.9' k4='0' result='shiny'/%3E%3CfeComposite in='shiny' in2='SourceAlpha' operator='in'/%3E%3C/filter%3E%3C/svg%3E#t");
+}
+icon-glyph[depth~='tube'] svg {
+  filter: var(--icon-tube);
+}
+
+icon-glyph[depth~='shadow'] {
+  /* how far the shadow lands: grows with the icon's size and its lift */
+  --icon-throw: calc(var(--icon-size, 24px) * 0.045 * (0.5 + var(--icon-lift) * 2.4));
+  --icon-cast: drop-shadow(
+    calc(cos(var(--icon-light) * 1deg) * var(--icon-throw)) calc(sin(var(--icon-light) * 1deg) * var(--icon-throw))
+      calc(var(--icon-throw) * 1.15) rgb(0 0 0 / calc(var(--icon-shadow) * (0.55 - var(--icon-lift) * 0.25)))
+  );
+  filter: var(--icon-cast);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  icon-glyph[depth~='shadow'] {
+    transition:
+      --icon-lift 400ms cubic-bezier(0.2, 0.7, 0.2, 1),
+      --icon-light 400ms linear;
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "name": "@icon-canvas/icons",
+  "version": "0.0.1",
+  "private": true,
+  "description": "The icon files: one 24px line drawing per file in svg/, the source of truth for the set.",
+  "license": "MIT",
+  "type": "module",
+  "exports": {
+    ".": {
+      "node": "./src/node.ts",
+      "default": "./src/index.ts"
+    },
+    "./svg/*": "./svg/*"
+  },
+  "files": [
+    "src",
+    "svg"
+  ],
+  "scripts": {
+    "typecheck": "tsc -p ."
+  },
+  "devDependencies": {
+    "@types/node": "catalog:",
+    "typescript": "catalog:",
+    "vite": "catalog:"
+  }
+}

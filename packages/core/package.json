@@ -1,0 +1,25 @@
+{
+  "name": "@icon-canvas/core",
+  "version": "0.0.1",
+  "private": true,
+  "description": "The rules and the drawing: spec tokens, geometry helpers, parametric recipes and the pose table. No DOM.",
+  "license": "MIT",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./spec": "./src/spec.ts",
+    "./geo": "./src/geo.ts",
+    "./recipes": "./src/recipes.ts",
+    "./poses": "./src/poses/index.ts",
+    "./kit": "./src/recipe-kit.ts"
+  },
+  "files": [
+    "src"
+  ],
+  "scripts": {
+    "typecheck": "tsc -p ."
+  },
+  "devDependencies": {
+    "typescript": "catalog:"
+  }
+}

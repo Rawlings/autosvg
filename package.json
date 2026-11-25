@@ -6,25 +6,30 @@
   "license": "MIT",
   "author": "Jonathan Rawlings",
   "type": "module",
+  "packageManager": "pnpm@12.15.0",
   "engines": {
-    "node": ">=20.19"
+    "node": ">=22.18",
+    "pnpm": ">=12"
   },
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview",
-    "seed": "node scripts/seed-poses.mjs",
-    "seed:check": "node scripts/seed-poses.mjs --check",
-    "css": "node scripts/gen-poses-css.mjs",
-    "export": "node scripts/export-svgs.mjs"
+    "dev": "pnpm --filter @icon-canvas/studio dev",
+    "build": "pnpm --filter @icon-canvas/studio build",
+    "preview": "pnpm --filter @icon-canvas/studio preview",
+    "seed": "pnpm --filter @icon-canvas/tools seed",
+    "seed:check": "pnpm --filter @icon-canvas/tools seed:check",
+    "css": "pnpm --filter @icon-canvas/tools css",
+    "export": "pnpm --filter @icon-canvas/tools export",
+    "typecheck": "pnpm -r --parallel typecheck",
+    "lint": "biome check .",
+    "format": "biome check --write .",
+    "check": "pnpm lint && pnpm typecheck && pnpm seed:check",
+    "verify-icons": "pnpm --filter @icon-canvas/tools verify-icons",
+    "quick": "pnpm --filter @icon-canvas/tools quick",
+    "geom": "pnpm --filter @icon-canvas/tools geom",
+    "shot": "pnpm --filter @icon-canvas/tools shot"
   },
   "devDependencies": {
-    "@vitejs/plugin-react": "^5.2.0",
-    "vite": "^7.0.0"
-  },
-  "dependencies": {
-    "paper": "^0.17.0",
-    "react": "^19.3.1",
-    "react-dom": "^19.3.1"
+    "@biomejs/biome": "catalog:",
+    "typescript": "catalog:"
   }
 }
