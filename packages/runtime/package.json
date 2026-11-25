@@ -1,5 +1,5 @@
 {
-  "name": "@icon-canvas/runtime",
+  "name": "@autosvg/runtime",
   "version": "0.0.1",
   "private": true,
   "description": "What a consumer loads: the <icon-glyph> and <icon-morph> elements and the stylesheets that turn CSS variables into look, state and motion.",
@@ -22,8 +22,8 @@
     "typecheck": "tsc -p ."
   },
   "dependencies": {
-    "@icon-canvas/core": "workspace:*",
-    "@icon-canvas/icons": "workspace:*"
+    "@autosvg/core": "workspace:*",
+    "@autosvg/vectors": "workspace:*"
   },
   "devDependencies": {
     "typescript": "catalog:",

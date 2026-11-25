@@ -1,5 +1,5 @@
 // Batch 7: twenty everyday objects (a magnet, glasses, a plug ... an apple).
-// A batch is one file with its recipes and its poses together, so adding icons never touches the long tables.
+// A batch is one file with its recipes and its poses together, so adding vectors never touches the long tables.
 import { superPoint } from '../geo.ts'
 import { ALL, on, P, type PoseSpec, pulse, ramp, redraw, simple, wave } from '../poses/dsl.ts'
 import { dot, ellipse, exponent, n, path, pline, poly, R, type Recipe, rect, round } from '../recipe-kit.ts'

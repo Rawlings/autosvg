@@ -15,7 +15,7 @@ export function LookMenu() {
   const root = useRef<HTMLDivElement>(null)
   const look = useLook()
   const snap = useEngine()
-  const [icon] = useCarried()
+  const [vector] = useCarried()
   const { path } = useRouter()
   const [copied, copy] = useCopy()
 
@@ -47,7 +47,7 @@ export function LookMenu() {
         aria-controls="look-panel"
         onClick={() => setOpen((o) => !o)}
       >
-        <Glyph name={icon} size={20} />
+        <Glyph name={vector} size={20} />
         <span>Look</span>
       </button>
       {open && (

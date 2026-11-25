@@ -156,7 +156,7 @@ main {
   margin-bottom: 16px;
 }
 
-/* ---------- icon grid ---------- */
+/* ---------- vector grid ---------- */
 
 .grid {
   --tile: 32px;
@@ -873,7 +873,7 @@ main {
   }
 }
 
-/* the carried icon's stage travels between pages (see the router): same name on both ends */
+/* the carried vector's stage travels between pages (see the router): same name on both ends */
 .carried-stage {
   view-transition-name: carried;
   color: var(--look-ink);

@@ -1,4 +1,4 @@
-/* Showcase: icons inside real components. Every animation here is CSS driving --icon-pose-* / --icon-swap. */
+/* Showcase: vectors inside real components. Every animation here is CSS driving --icon-pose-* / --icon-swap. */
 @keyframes sc-pose {
   from {
     --icon-motion: 0;
@@ -117,7 +117,7 @@
     --icon-motion: 0;
   }
 }
-/* real 3D: a canvas, a strip of icons, a material and two numbers */
+/* real 3D: a canvas, a strip of vectors, a material and two numbers */
 .sc-3d {
   display: grid;
   width: 100%;
@@ -149,12 +149,12 @@
   display: grid;
   gap: 24px;
 }
-.sc-3d-icons {
+.sc-3d-vectors {
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
 }
-.sc-3d-icon {
+.sc-3d-vector {
   display: grid;
   place-items: center;
   width: 44px;
@@ -165,12 +165,12 @@
   color: var(--ink-2);
   cursor: pointer;
 }
-.sc-3d-icon[aria-pressed='true'] {
+.sc-3d-vector[aria-pressed='true'] {
   background: var(--surface);
   color: var(--ink);
   box-shadow: 0 0 0 1px var(--line);
 }
-.sc-3d-icon:focus-visible {
+.sc-3d-vector:focus-visible {
   outline: 2px solid var(--ink);
   outline-offset: 1px;
 }
@@ -183,7 +183,7 @@
     grid-template-columns: minmax(0, 1fr);
   }
 }
-/* the carried icon, at the top of the Showcase */
+/* the carried vector, at the top of the Showcase */
 .sc-hero > h2 {
   font-size: clamp(28px, 4vw, 44px);
   letter-spacing: -0.02em;
@@ -235,7 +235,7 @@
   font-size: 12px;
   font-variant-numeric: tabular-nums;
 }
-/* the same icon in real places */
+/* the same vector in real places */
 .sc-c-sizes {
   display: flex;
   flex-wrap: wrap;
@@ -913,4 +913,40 @@
   .fx .fx-draw svg {
     stroke-dashoffset: 0;
   }
+}
+
+/* the carried vector's state and motion: numbers on the page, followed by every tile and by the 3D view */
+.showcase {
+  transition: --icon-state 700ms linear;
+}
+.sc-3d-probe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 96px;
+  height: 96px;
+  pointer-events: none;
+  visibility: hidden;
+}
+.sc-pose {
+  display: grid;
+  gap: 12px;
+}
+.sc-pose-motion {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+@media (prefers-reduced-motion: reduce) {
+  .showcase {
+    transition: none;
+  }
+}
+/* the other vectors on the page (the strip of vectors to jump to, the neighbours in the tab bar) stay at rest */
+.sc-3d-vector icon-glyph {
+  --icon-state: 0;
+  --icon-motion: 0;
+}
+.sc-c-tab:not([aria-pressed='true']) icon-glyph {
+  --icon-state: 0;
 }

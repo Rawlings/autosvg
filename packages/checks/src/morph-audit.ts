@@ -1,5 +1,5 @@
-import type { Style } from '@icon-canvas/core'
-import { morphPlan } from '@icon-canvas/runtime'
+import type { Style } from '@autosvg/core'
+import { morphPlan } from '@autosvg/runtime'
 
 const shape = (d: string): string => d.replace(/-?\d+(\.\d+)?/g, '#')
 const numbers = (d: string): number[] => (d.match(/-?\d+(\.\d+)?/g) ?? []).map(Number)
@@ -12,7 +12,7 @@ export interface MorphAuditReport {
 }
 
 /**
- * Checks morphs for a set of pairs (by default every icon into the next one, round the whole set): both ends of every
+ * Checks morphs for a set of pairs (by default every vector into the next one, round the whole set): both ends of every
  * stroke have the same commands (what CSS needs to interpolate), no number is broken, every point stays on the canvas at
  * both ends (and so at every value in between, since a morph moves each point in a straight line), and a plan is
  * cheap enough to make on demand. Reports how many pairs are rough (a plain swap suits them better).

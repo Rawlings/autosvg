@@ -1,5 +1,5 @@
-import { POSES, SPEC } from '@icon-canvas/core'
-import { api, getSnapshot, ICONS, setSourceText } from '@icon-canvas/engine'
+import { POSES, SPEC } from '@autosvg/core'
+import { api, getSnapshot, setSourceText, VECTORS } from '@autosvg/engine'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { useChecks, useCopy, useEngine } from '../app/hooks.ts'
 import { Link, useRouter } from '../app/router.tsx'
@@ -14,7 +14,7 @@ export default function Studio() {
   const snap = useEngine()
   const { path, navigate } = useRouter()
   const param = path.split('/')[2] || ''
-  const known = ICONS.some((i) => i.name === param)
+  const known = VECTORS.some((i) => i.name === param)
   const states = POSES[snap.name]?.states ?? []
   const paramRef = useRef(param)
   paramRef.current = param
@@ -24,13 +24,13 @@ export default function Studio() {
   const [copied, copy] = useCopy()
   const { svg, rows, status, info } = useChecks(snap)
 
-  // the address names the icon: load it, and follow the engine if something else (an agent) loads another
+  // the address names the vector: load it, and follow the engine if something else (an agent) loads another
   useEffect(() => {
     if (known) {
       if (getSnapshot().name !== param) api.load(param)
     } else {
       navigate(
-        `/studio/${getSnapshot().name || (ICONS.some((i) => i.name === 'layers') ? 'layers' : (ICONS[0]?.name ?? ''))}`,
+        `/studio/${getSnapshot().name || (VECTORS.some((i) => i.name === 'layers') ? 'layers' : (VECTORS[0]?.name ?? ''))}`,
         { replace: true },
       )
     }
@@ -40,10 +40,10 @@ export default function Studio() {
     if (live && live !== paramRef.current) navigate(`/studio/${live}`, { replace: true })
   }, [snap.name, navigate])
 
-  const idx = ICONS.findIndex((i) => i.name === snap.name)
+  const idx = VECTORS.findIndex((i) => i.name === snap.name)
   const go = useCallback(
     (d: number) => {
-      const next = ICONS[(idx + d + ICONS.length) % ICONS.length]
+      const next = VECTORS[(idx + d + VECTORS.length) % VECTORS.length]
       if (next) navigate(`/studio/${next.name}`)
     },
     [idx, navigate],
@@ -62,7 +62,7 @@ export default function Studio() {
     <div className="page studio">
       <div className="studio-head">
         <nav className="crumbs" aria-label="Breadcrumb">
-          <Link to={snap.name ? `/?icon=${snap.name}` : '/'}>Library</Link>
+          <Link to={snap.name ? `/?vector=${snap.name}` : '/'}>Library</Link>
           <span aria-hidden="true">/</span>
           <h1>{snap.name || 'Untitled'}</h1>
         </nav>
@@ -70,25 +70,25 @@ export default function Studio() {
           <div className="stepper">
             <button
               type="button"
-              className="btn icon-btn"
+              className="btn vector-btn"
               onClick={() => go(-1)}
-              aria-label="Previous icon"
+              aria-label="Previous vector"
               title="Previous ( [ )"
             >
               <Chevron dir="left" />
             </button>
             <button
               type="button"
-              className="btn icon-btn"
+              className="btn vector-btn"
               onClick={() => go(1)}
-              aria-label="Next icon"
+              aria-label="Next vector"
               title="Next ( ] )"
             >
               <Chevron dir="right" />
             </button>
           </div>
           {snap.name && (
-            <Link to={`/showcase?icon=${snap.name}`} className="btn">
+            <Link to={`/showcase?vector=${snap.name}`} className="btn">
               See it in 3D
             </Link>
           )}
@@ -153,7 +153,7 @@ export default function Studio() {
                 ))}
               </ul>
               <p className="muted small">
-                The same icon in each state, drawn from the pose table. Names:{' '}
+                The same vector in each state, drawn from the pose table. Names:{' '}
                 {states.map((st) => `${snap.name}-${st}`).join(', ')}.
               </p>
             </section>
@@ -176,7 +176,7 @@ export default function Studio() {
   )
 }
 
-/** The markup that uses this icon, with the state when it has one: what to paste into a page. */
+/** The markup that uses this vector, with the state when it has one: what to paste into a page. */
 function Usage({ name }: { name: string }) {
   const [copied, copy] = useCopy()
   const states = POSES[name]?.states ?? []
@@ -195,9 +195,9 @@ function Usage({ name }: { name: string }) {
 }
 
 function Neighbours({ name, idx, svg }: { name: string; idx: number; svg: string }) {
-  if (idx < 0) return <p className="muted">Load an icon to compare it.</p>
+  if (idx < 0) return <p className="muted">Load a vector to compare it.</p>
   const around: string[] = []
-  for (let d = -3; d <= 3; d++) around.push(ICONS[(idx + d + ICONS.length) % ICONS.length]?.name ?? '')
+  for (let d = -3; d <= 3; d++) around.push(VECTORS[(idx + d + VECTORS.length) % VECTORS.length]?.name ?? '')
   return (
     <ul className="context">
       {around.map((n) => (

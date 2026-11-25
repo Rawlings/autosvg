@@ -1,4 +1,4 @@
-/** Words people search by that are not the icon's name: the library page only, the runtime does not ship them. */
+/** Words people search by that are not the vector's name: the library page only, the runtime does not ship them. */
 export const SEARCH_TERMS: Readonly<Record<string, string>> = {
   trash: 'delete remove bin garbage',
   settings: 'cog gear preferences options',

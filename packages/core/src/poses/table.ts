@@ -1,8 +1,8 @@
-// Every icon's choreography. Source of truth for motion (see dsl.ts for the vocabulary, poses.ts for how it
+// Every vector's choreography. Source of truth for motion (see dsl.ts for the vocabulary, poses.ts for how it
 // is written into the SVG, runtime/src/css/poses.css for how it runs).
 //
-// Channel 1 is the icon's main gesture and channel 2 a second one (both 0 to 1). Channels 3 and 4 are look and lean
-// (-1 to 1): icons tilt toward them as a whole, and the eyes give them beats of their own.
+// Channel 1 is the vector's main gesture and channel 2 a second one (both 0 to 1). Channels 3 and 4 are look and lean
+// (-1 to 1): vectors tilt toward them as a whole, and the eyes give them beats of their own.
 // A beat that is a `ramp` holds its end value (a state: open, closed, turned). `pulse` goes there and back, `wave`
 // swings and settles to rest: both play during the transition and end at rest, like a hover that rings a bell.
 //
@@ -32,7 +32,7 @@ import {
   withStates,
 } from './dsl.ts'
 
-/** The icon deliberately leaves its box for a moment (the viewport clips it), so the bounds lint skips it. */
+/** The vector deliberately leaves its box for a moment (the viewport clips it), so the bounds lint skips it. */
 const X = (spec: PoseSpec): PoseSpec => ({ ...spec, exits: true })
 
 /** A slash drawn corner to corner: the off state of a microphone, a camera, a bell, a signal, an eye. */
@@ -41,7 +41,7 @@ const SLASH = 'M4 4l16 16'
 const n2 = (v: number): number => +v.toFixed(2)
 /**
  * The four marks that things with a badge share: plus, minus, check and x, drawn at (cx, cy) with half-size h. They are
- * the states `plus`, `minus`, `check`, `x`, so user-plus, user-check, folder-x, calendar-minus and the rest are one icon each.
+ * the states `plus`, `minus`, `check`, `x`, so user-plus, user-check, folder-x, calendar-minus and the rest are one vector each.
  * Each mark is drawn in as its state arrives and drawn out as the next takes over. Plus and minus are neighbours and share the
  * horizontal bar, so going from one to the other only draws the vertical bar on or off; the states are on one axis, so a jump
  * from normal to x plays the marks in between (see lessons.md).
@@ -66,7 +66,7 @@ export const POSES: Record<string, PoseSpec> = {
   // ======================================== arrows and chevrons ========================================
   // An arrow lunges: it coils back a little, then the head drives forward and the shaft stretches to stay joined.
   // A chevron steps off one side and comes in from the other.
-  // Pause is not another icon: the triangle is drawn off while two bars are drawn on. `pause` is this icon in that state.
+  // Pause is not another vector: the triangle is drawn off while two bars are drawn on. `pause` is this vector in that state.
   play: X(
     withStates(
       P(1, ['play'], on(0, ...through(1, 6, 0), ramp(2, { g: -1 }))),
@@ -81,7 +81,7 @@ export const POSES: Record<string, PoseSpec> = {
   // ======================================== transfer ========================================
   // download: the arrow drops into the tray, which catches it; a new one comes down from above.
   // A download has three states. The arrow can turn to point up (it is an upload), and in `done` the arrow is drawn off while a
-  // check is drawn on, so nothing fades and nothing is swapped. `upload` is this icon, turned.
+  // check is drawn on, so nothing fades and nothing is swapped. `upload` is this vector, turned.
   download: X(
     withStates(
       groupedAt(
@@ -139,8 +139,8 @@ export const POSES: Record<string, PoseSpec> = {
   // ======================================== state: check, close, plus ========================================
   check: P(1, ['draw'], on(0, [12, 12], ...redraw(1, 0.2, 0.55, 0.2), pulse(1, { t: 0.55, w: 0.45, s: 0.16 }))),
   close: S(1, [0], P(2, ['spin'], on(ALL, [12, 12], ramp(1, { r: 180 }), pulse(1, { s: -0.2 })))),
-  // plus becomes a cross: that is a state of the icon, not a gesture
-  // A plus and a minus are one icon: the vertical bar is drawn off. (close is a cross of its own, not a turned plus.)
+  // plus becomes a cross: that is a state of the vector, not a gesture
+  // A plus and a minus are one vector: the vertical bar is drawn off. (close is a cross of its own, not a turned plus.)
   plus: withStates(
     S(
       1,
@@ -186,7 +186,7 @@ export const POSES: Record<string, PoseSpec> = {
     ['open'],
   ),
   // The shackle clicks up, swings out; a shake says "denied".
-  // The lock refuses with a shake; its open state lifts the shackle and swings it out. `unlock` is this icon, open.
+  // The lock refuses with a shake; its open state lifts the shackle and swings it out. `unlock` is this vector, open.
   lock: withStates(
     P(
       3,
@@ -369,7 +369,7 @@ export const POSES: Record<string, PoseSpec> = {
     ['locked'],
   ),
   // ======================================== devices and media ========================================
-  // The handset rings (rocks on its cradle); put down, it turns over to lie flat, the hang-up icon.
+  // The handset rings (rocks on its cradle); put down, it turns over to lie flat, the hang-up vector.
   phone: withStates(
     grouped(
       P(1, ['ring'], on(0, [12, 12], wave(1, { n: 4, r: 14 }), wave(1, { t: 0.05, w: 0.95, n: 6, x: 0.5 }))),
@@ -476,7 +476,7 @@ export const POSES: Record<string, PoseSpec> = {
     on(3, [12, 20.5], pulse(1, { v: 0.155 }), wave(1, { t: 0.4, w: 0.6, n: 1, v: -0.044 })),
     on(4, [12, 20.5], pulse(1, { t: 0.2, w: 0.8, s: 0.06 })),
   ),
-  // A thumbs-up: the hand tips up and settles; the cuff stays. Turned over it is a thumbs-down: the same icon, flipped.
+  // A thumbs-up: the hand tips up and settles; the cuff stays. Turned over it is a thumbs-down: the same vector, flipped.
   'thumbs-up': withStates(
     grouped(
       P(2, ['approve'], on(1, [9, 20], pulse(1, { r: -12 }), wave(1, { t: 0.3, w: 0.7, n: 1.5, r: 4 }))),
@@ -750,7 +750,7 @@ export const POSES: Record<string, PoseSpec> = {
     ),
   ),
   // Two arrows along the diagonal. Pointing out, they are maximize; each head is drawn off, a head drawn on at the other end of its
-  // shaft, and the shafts slide a step: they point in, minimize. One icon, the arrows swapping ends.
+  // shaft, and the shafts slide a step: they point in, minimize. One vector, the arrows swapping ends.
   maximize: withStates(
     S(
       1,
@@ -873,9 +873,9 @@ export const POSES: Record<string, PoseSpec> = {
     ),
     ['wink'],
   ),
-  // Off states: these icons need no second icon. The slash (or the speaker's cross) exists only in the off state and is
-  // drawn on when --icon-off goes from 0 to 1; mic-off, eye-off and the like resolve to the same icon with it on.
-  // Off: a slash is drawn through the eye. mic-off, bell-off, eye-off and the like are these icons in their off state.
+  // Off states: these vectors need no second vector. The slash (or the speaker's cross) exists only in the off state and is
+  // drawn on when --icon-off goes from 0 to 1; mic-off, eye-off and the like resolve to the same vector with it on.
+  // Off: a slash is drawn through the eye. mic-off, bell-off, eye-off and the like are these vectors in their off state.
   eye: withStates(
     P(
       2,
@@ -1083,7 +1083,7 @@ export const POSES: Record<string, PoseSpec> = {
     [],
     { 'more-horizontal': 'normal' },
   ),
-  // Skip forward and skip back are one icon: back mirrors the group, and the nudge turns with it.
+  // Skip forward and skip back are one vector: back mirrors the group, and the nudge turns with it.
   skip: withStates(
     grouped(
       P(
@@ -1133,9 +1133,9 @@ export const POSES: Record<string, PoseSpec> = {
     [],
     { 'zoom-in': 'normal' },
   ),
-  // One ring, seven marks. Check, cross, alert, info, plus, minus and help are not seven icons but seven states of the ring:
+  // One ring, seven marks. Check, cross, alert, info, plus, minus and help are not seven vectors but seven states of the ring:
   // each mark is drawn in as its state arrives and drawn out as the next takes over. check-circle, x-circle, alert-circle,
-  // info, plus-circle, minus-circle and help-circle are all this icon.
+  // info, plus-circle, minus-circle and help-circle are all this vector.
   circle: withStates(
     P(1, ['confirm'], on(0, [12, 12], ...redraw(1, 0.12, 0.5), pulse(1, { t: 0.6, w: 0.4, s: 0.06 }))),
     ['check', 'x', 'alert', 'info', 'plus', 'minus', 'help'],
@@ -1169,19 +1169,19 @@ function addPoses(more: Record<string, PoseSpec>): void {
   Object.assign(POSES, more)
 }
 
-/** Give an icon already in the table a different pose: more states, or a group around it. */
+/** Give a vector already in the table a different pose: more states, or a group around it. */
 function refine(name: string, change: (spec: PoseSpec) => PoseSpec): void {
   const spec = POSES[name]
   if (!spec) throw new Error(`pose table: nothing to refine for ${name}`)
   POSES[name] = change(spec)
 }
 
-/** Replace an icon's pose with a new one. */
+/** Replace a vector's pose with a new one. */
 function define(name: string, spec: PoseSpec): void {
   POSES[name] = spec
 }
 
-// ---- badge families: a thing that can be added to, checked, removed or taken from is one icon with four marks ----
+// ---- badge families: a thing that can be added to, checked, removed or taken from is one vector with four marks ----
 refine('folder', (spec) => withStates(spec, BADGE, marks(12, 14)))
 refine('calendar', (spec) => withStates(spec, BADGE, marks(12, 15.25)))
 refine('file', (spec) => withStates(spec, BADGE, marks(11.5, 14.5)))
@@ -1198,7 +1198,7 @@ refine('shopping-bag', (spec) => withStates(spec, BADGE, marks(12, 14.5)))
 refine('cart', (spec) => withStates(spec, BADGE, marks(13, 9.5, 2)))
 // a broken heart: a crack is drawn down the middle
 refine('heart', (spec) => withStates(spec, ['broken'], [{ d: 'M12 7l-1.5 3.5 3 2-2.5 3 1 4.5' }]))
-// ---- text alignment is a state: one icon, four alignments ----
+// ---- text alignment is a state: one vector, four alignments ----
 // Left is the normal look. The short lines move to the middle, then to the right, then back and stretch to the full width.
 define(
   'align',
@@ -1220,7 +1220,7 @@ define(
     { 'align-left': 'normal' },
   ),
 )
-// ---- mirrored pairs are one icon: redo is undo, log-in is log-out ----
+// ---- mirrored pairs are one vector: redo is undo, log-in is log-out ----
 define(
   'undo',
   withStates(

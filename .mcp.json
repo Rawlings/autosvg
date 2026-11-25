@@ -1,6 +1,6 @@
 {
   "mcpServers": {
-    "icons": {
+    "autosvg": {
       "command": "node",
       "args": ["tools/src/mcp.ts"]
     }

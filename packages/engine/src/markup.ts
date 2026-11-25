@@ -1,5 +1,5 @@
-import { STYLE } from '@icon-canvas/checks'
-import { DEFAULT_STYLE, SPEC, type Style } from '@icon-canvas/core'
+import { STYLE } from '@autosvg/checks'
+import { DEFAULT_STYLE, SPEC, type Style } from '@autosvg/core'
 
 export const SVG_NS = 'http://www.w3.org/2000/svg'
 export const SIZE = SPEC.size
@@ -32,7 +32,7 @@ export function parseMarkup(markup: string): Node[] {
 
 export const stripNs = (s: string): string => s.replace(/ xmlns="[^"]*"/g, '')
 
-/** Wrap shapes in the canonical icon root (see SPEC.md). */
+/** Wrap shapes in the canonical vector root (see SPEC.md). */
 export function canonical(inner: string, style: Readonly<Style> = STYLE): string {
   const attrs = {
     xmlns: SVG_NS,
@@ -49,7 +49,7 @@ export function canonical(inner: string, style: Readonly<Style> = STYLE): string
   return `<svg ${a}>\n${inner}\n</svg>`
 }
 
-/** An icon in the default look, so a comparison ignores the preview style. */
+/** A vector in the default look, so a comparison ignores the preview style. */
 export const normal = (svg: string): string =>
   svg.replace(/<svg\b[^>]*>/, (tag) =>
     tag

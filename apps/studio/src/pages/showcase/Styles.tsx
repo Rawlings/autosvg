@@ -1,4 +1,4 @@
-// The general-purpose treatments of one icon. Each is a tile; Industries.tsx files every one under the kind of business that would
+// The general-purpose treatments of one vector. Each is a tile; Industries.tsx files every one under the kind of business that would
 // reach for it. Nothing here is another file: it is the same SVG, a few numbers (--icon-stroke, --icon-dash) and some CSS.
 import { useRef } from 'react'
 import { Glyph } from '../../components/Glyph.tsx'

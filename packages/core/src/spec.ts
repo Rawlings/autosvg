@@ -1,6 +1,6 @@
 /**
- * Icon system tokens. Single source of truth: the canvas, the linter and the
- * icon files all derive from these values. Human-readable rules: SPEC.md
+ * Vector system tokens. Single source of truth: the canvas, the linter and the
+ * vector files all derive from these values. Human-readable rules: SPEC.md
  */
 
 export type Cap = 'butt' | 'round' | 'square'
@@ -12,9 +12,9 @@ export interface Style {
   stroke: number
   cap: Cap
   join: Join
-  /** corner radius multiplier (icons with a recipe) */
+  /** corner radius multiplier (vectors with a recipe) */
   radius: number
-  /** 0 = circles, 1 = squircles (icons with a recipe) */
+  /** 0 = circles, 1 = squircles (vectors with a recipe) */
   curve: number
 }
 
@@ -31,7 +31,7 @@ export const SPEC = {
   minGap: 1.5, // clear space between parallel strokes (visible white): at least one stroke width
   maxCentreOffset: 0.75, // the drawn extent (ink bounding box) may sit this far from the canvas centre
   allowedElements: ['path', 'circle', 'rect', 'line', 'polyline', 'polygon', 'ellipse', 'g'] as readonly string[],
-  // Pure line icons: all styling is inherited from the root <svg>. Shapes carry geometry only.
+  // Pure line vectors: all styling is inherited from the root <svg>. Shapes carry geometry only.
   forbiddenAttrs: [
     'id',
     'class',

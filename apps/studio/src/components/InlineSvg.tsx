@@ -1,4 +1,4 @@
-import { sized } from '@icon-canvas/engine'
+import { sized } from '@autosvg/engine'
 
 /**
  * A drawing as an inline <svg> at a pixel size. The markup always comes from the engine (canonical() of what is on the

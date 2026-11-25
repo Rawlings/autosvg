@@ -1,4 +1,4 @@
-import type { CheckRow } from '@icon-canvas/engine'
+import type { CheckRow } from '@autosvg/engine'
 
 const MARK = { pass: 'Pass', warn: 'Warning', fail: 'Fail' } as const
 

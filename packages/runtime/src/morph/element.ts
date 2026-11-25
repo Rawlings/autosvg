@@ -10,8 +10,8 @@ const supportsD = (): boolean => typeof CSS !== 'undefined' && CSS.supports('d: 
 const ends = new WeakMap<SVGPathElement, { from: string; to: string }>()
 
 /**
- * <icon-morph from="sun" to="moon" state="to"></icon-morph>: any icon turning into any other, shape to shape.
- * --icon-morph (0 shows the first icon, 1 the second) is what moves it; `state="to"` is one way to set it.
+ * <icon-morph from="sun" to="moon" state="to"></icon-morph>: any vector turning into any other, shape to shape.
+ * --icon-morph (0 shows the first vector, 1 the second) is what moves it; `state="to"` is one way to set it.
  */
 class IconMorph extends HTMLElement {
   static observedAttributes = ['from', 'to', 'state']
@@ -27,7 +27,7 @@ class IconMorph extends HTMLElement {
     else this.render()
   }
 
-  /** Without CSS `d` (Safari today) the icon shows the one it is on, instantly. */
+  /** Without CSS `d` (Safari today) the vector shows the one it is on, instantly. */
   sync(): void {
     if (supportsD()) return
     for (const path of this.querySelectorAll('path')) {
@@ -57,7 +57,7 @@ class IconMorph extends HTMLElement {
       }
       const svg = document.createElementNS(SVG_NS, 'svg')
       svg.setAttribute('viewBox', '0 0 24 24')
-      svg.setAttribute('class', 'icon')
+      svg.setAttribute('class', 'vector')
       svg.setAttribute('fill', 'none')
       svg.setAttribute('stroke', 'currentColor')
       for (const s of plan.strokes) {
@@ -81,7 +81,7 @@ class IconMorph extends HTMLElement {
       this.sync()
     } catch (e) {
       this.textContent = ''
-      // biome-ignore lint/suspicious/noConsole: a wrong icon name should be visible to the developer
+      // biome-ignore lint/suspicious/noConsole: a wrong vector name should be visible to the developer
       console.warn(e instanceof Error ? e.message : e)
     }
   }

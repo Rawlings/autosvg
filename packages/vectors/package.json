@@ -1,8 +1,8 @@
 {
-  "name": "@icon-canvas/icons",
+  "name": "@autosvg/vectors",
   "version": "0.0.1",
   "private": true,
-  "description": "The icon files: one 24px line drawing per file in svg/, the source of truth for the set.",
+  "description": "The vector files: one 24px line drawing per file in svg/, the source of truth for the set.",
   "license": "MIT",
   "type": "module",
   "exports": {

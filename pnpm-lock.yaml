@@ -208,21 +208,21 @@ importers:
 
   apps/studio:
     dependencies:
-      '@icon-canvas/checks':
+      '@autosvg/checks':
         specifier: workspace:*
         version: link:../../packages/checks
-      '@icon-canvas/core':
+      '@autosvg/core':
         specifier: workspace:*
         version: link:../../packages/core
-      '@icon-canvas/engine':
+      '@autosvg/engine':
         specifier: workspace:*
         version: link:../../packages/engine
-      '@icon-canvas/icons':
-        specifier: workspace:*
-        version: link:../../packages/icons
-      '@icon-canvas/runtime':
+      '@autosvg/runtime':
         specifier: workspace:*
         version: link:../../packages/runtime
+      '@autosvg/vectors':
+        specifier: workspace:*
+        version: link:../../packages/vectors
       react:
         specifier: 'catalog:'
         version: 19.3.1
@@ -251,15 +251,15 @@ importers:
 
   packages/checks:
     dependencies:
-      '@icon-canvas/core':
+      '@autosvg/core':
         specifier: workspace:*
         version: link:../core
-      '@icon-canvas/icons':
-        specifier: workspace:*
-        version: link:../icons
-      '@icon-canvas/runtime':
+      '@autosvg/runtime':
         specifier: workspace:*
         version: link:../runtime
+      '@autosvg/vectors':
+        specifier: workspace:*
+        version: link:../vectors
       paper:
         specifier: 'catalog:'
         version: 0.17.0
@@ -279,18 +279,18 @@ importers:
 
   packages/engine:
     dependencies:
-      '@icon-canvas/checks':
+      '@autosvg/checks':
         specifier: workspace:*
         version: link:../checks
-      '@icon-canvas/core':
+      '@autosvg/core':
         specifier: workspace:*
         version: link:../core
-      '@icon-canvas/icons':
-        specifier: workspace:*
-        version: link:../icons
-      '@icon-canvas/runtime':
+      '@autosvg/runtime':
         specifier: workspace:*
         version: link:../runtime
+      '@autosvg/vectors':
+        specifier: workspace:*
+        version: link:../vectors
     devDependencies:
       typescript:
         specifier: 'catalog:'
@@ -299,7 +299,23 @@ importers:
         specifier: 'catalog:'
         version: 8.3.8(@types/node@26.6.6)(esbuild@0.28.2)
 
-  packages/icons:
+  packages/runtime:
+    dependencies:
+      '@autosvg/core':
+        specifier: workspace:*
+        version: link:../core
+      '@autosvg/vectors':
+        specifier: workspace:*
+        version: link:../vectors
+    devDependencies:
+      typescript:
+        specifier: 'catalog:'
+        version: 7.0.2
+      vite:
+        specifier: 'catalog:'
+        version: 8.3.8(@types/node@26.6.6)(esbuild@0.28.2)
+
+  packages/vectors:
     devDependencies:
       '@types/node':
         specifier: 'catalog:'
@@ -311,36 +327,20 @@ importers:
         specifier: 'catalog:'
         version: 8.3.8(@types/node@26.6.6)(esbuild@0.28.2)
 
-  packages/runtime:
-    dependencies:
-      '@icon-canvas/core':
-        specifier: workspace:*
-        version: link:../core
-      '@icon-canvas/icons':
-        specifier: workspace:*
-        version: link:../icons
-    devDependencies:
-      typescript:
-        specifier: 'catalog:'
-        version: 7.0.2
-      vite:
-        specifier: 'catalog:'
-        version: 8.3.8(@types/node@26.6.6)(esbuild@0.28.2)
-
   tools:
     dependencies:
-      '@icon-canvas/checks':
+      '@autosvg/checks':
         specifier: workspace:*
         version: link:../packages/checks
-      '@icon-canvas/core':
+      '@autosvg/core':
         specifier: workspace:*
         version: link:../packages/core
-      '@icon-canvas/icons':
-        specifier: workspace:*
-        version: link:../packages/icons
-      '@icon-canvas/runtime':
+      '@autosvg/runtime':
         specifier: workspace:*
         version: link:../packages/runtime
+      '@autosvg/vectors':
+        specifier: workspace:*
+        version: link:../packages/vectors
     devDependencies:
       '@types/node':
         specifier: 'catalog:'

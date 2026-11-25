@@ -1,14 +1,14 @@
-// <icon-glyph>: draws any icon in the set from the settings held in CSS custom properties.
+// <icon-glyph>: draws any vector in the set from the settings held in CSS custom properties.
 //
 // Two layers, and why:
 //  - Stroke weight, caps, joins, dash and colour are plain CSS (see css/icons.css). No JavaScript.
 //  - Geometry (corner radius, curve character) cannot be changed by CSS: a path's shape can't take
 //    var(). So <icon-glyph> reads the variables and redraws from the stored recipes.
 //
-// CSS variables (set them on any element; every icon inside follows):
+// CSS variables (set them on any element; every vector inside follows):
 //   --icon-stroke  --icon-cap  --icon-join  --icon-dash  --icon-color  --icon-size     (CSS only)
 //   --icon-radius  --icon-curve                                                         (runtime)
-import { type Cap, DEFAULT_STYLE, type Join, POSES, type Style } from '@icon-canvas/core'
+import { type Cap, DEFAULT_STYLE, type Join, POSES, type Style } from '@autosvg/core'
 import { renderIcon, resolve } from './render.ts'
 
 const CAPS: readonly Cap[] = ['butt', 'round', 'square']
@@ -49,7 +49,7 @@ class IconGlyph extends HTMLElement {
     else this.render()
   }
   /**
-   * Put the icon in its state. The state is a number, --icon-state, so the change can transition (see icons.css).
+   * Put the vector in its state. The state is a number, --icon-state, so the change can transition (see icons.css).
    * `state="off"` names it; a name such as `mic-off` means the same. A missing attribute leaves the variable alone, so
    * CSS can drive --icon-state itself.
    */
@@ -70,7 +70,7 @@ class IconGlyph extends HTMLElement {
   render(): void {
     const name = this.getAttribute('name')
     if (!name) return
-    // decorative unless it is given a label: the control that holds an icon should carry the name
+    // decorative unless it is given a label: the control that holds a vector should carry the name
     if (this.hasAttribute('aria-label')) this.setAttribute('role', 'img')
     else this.setAttribute('aria-hidden', 'true')
     this.syncState(name)
@@ -86,7 +86,7 @@ class IconGlyph extends HTMLElement {
       this.innerHTML = renderIcon(resolve(name)?.base ?? name, p)
     } catch (e) {
       this.textContent = ''
-      // biome-ignore lint/suspicious/noConsole: a wrong icon name should be visible to the developer
+      // biome-ignore lint/suspicious/noConsole: a wrong vector name should be visible to the developer
       console.warn(e instanceof Error ? e.message : e)
     }
   }
@@ -100,7 +100,7 @@ interface RenderedIcon extends HTMLElement {
 let scheduled = false
 
 /** Redraw every glyph whose geometry variables changed. Cheap when nothing changed. Call it each frame during a CSS transition. */
-export function refreshIcons(): void {
+export function refreshVectors(): void {
   scheduled = false
   for (const el of document.querySelectorAll<RenderedIcon>('icon-glyph, icon-morph')) el.render()
 }
@@ -112,7 +112,7 @@ export function defineIconGlyph(): void {
   new MutationObserver(() => {
     if (scheduled) return
     scheduled = true
-    requestAnimationFrame(refreshIcons)
+    requestAnimationFrame(refreshVectors)
   }).observe(document.documentElement, { attributes: true, subtree: true, attributeFilter: ['style', 'class'] })
 }
 

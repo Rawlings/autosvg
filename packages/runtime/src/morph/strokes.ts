@@ -1,9 +1,9 @@
-import type { Point } from '@icon-canvas/core'
-import { at as nth, type Style, stripPose, stripStateShapes } from '@icon-canvas/core'
+import type { Point } from '@autosvg/core'
+import { at as nth, type Style, stripPose, stripStateShapes } from '@autosvg/core'
 import { renderIcon, resolve } from '../render.ts'
 import { arcCurves, type Cubic, cubic, cubicLine, length, mid } from './curves.ts'
 
-/** One stroke of an icon as cubic curves, with what the pairing needs to know about it. */
+/** One stroke of a vector as cubic curves, with what the pairing needs to know about it. */
 export interface Stroke {
   curves: Cubic[]
   closed: boolean
@@ -22,7 +22,7 @@ interface RawStroke {
   closed: boolean
 }
 
-// Everything is turned into cubic curves with no library: the shapes an icon is made of are
+// Everything is turned into cubic curves with no library: the shapes a vector is made of are
 // few (path, circle, ellipse, rect, line, polyline, polygon), and a path is move, line, curve, arc and close.
 
 /** Path data as strokes: one per subpath. */
@@ -176,10 +176,10 @@ function describe(curves: Cubic[], closed: boolean): Stroke {
   return { curves, closed, len, cx: cx / (len || 1), cy: cy / (len || 1) }
 }
 
-/** The strokes of an icon at rest (or in the state its name says), as cubic curves in the 24 grid. */
+/** The strokes of a vector at rest (or in the state its name says), as cubic curves in the 24 grid. */
 export function strokesOf(name: string, params?: Partial<Style>): Stroke[] {
   const found = resolve(name)
-  if (!found) throw new Error(`Unknown icon "${name}"`)
+  if (!found) throw new Error(`Unknown vector "${name}"`)
   let svg = renderIcon(name, params, { inline: true })
   if (!found.state) svg = stripStateShapes(svg) // a state-only accessory is not part of the normal look
   svg = stripPose(svg)

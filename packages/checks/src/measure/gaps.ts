@@ -10,7 +10,7 @@ const MIN_RUN = 3 // units: a filled channel at least this long counts (shorter 
 
 /** Two strokes running closer than the minimum clear space. */
 export interface NarrowGap {
-  /** where, in icon units */
+  /** where, in vector units */
   at: [number, number]
   /** the visible white between the strokes */
   clear: number

@@ -1,17 +1,17 @@
-// Icon construction kit: pure line icons, 24px grid, 1.5px stroke, round caps and joins.
-// Every icon is assembled from the same parts and radii so the family stays consistent.
+// Vector construction kit: pure line vectors, 24px grid, 1.5px stroke, round caps and joins.
+// Every vector is assembled from the same parts and radii so the family stays consistent.
 //
-// SUPERSEDED by seed-poses.ts: the icon files are the source of truth now. Kept for reference; leave it alone.
+// SUPERSEDED by seed-poses.ts: the vector files are the source of truth now. Kept for reference; leave it alone.
 //
-//   node src/legacy/build-icons.ts        -> seeds MISSING icons into packages/icons/svg/ (never overwrites)
-//   node src/legacy/build-icons.ts --force -> regenerates all from this kit (DISCARDS canvas edits: never run it)
+//   node src/legacy/build-vectors.ts        -> seeds MISSING vectors into packages/vectors/svg/ (never overwrites)
+//   node src/legacy/build-vectors.ts --force -> regenerates all from this kit (DISCARDS canvas edits: never run it)
 //
 import { existsSync, mkdirSync, readdirSync, rmSync, writeFileSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
-import { centreOn, circleChain, type Point, roundedPolygon, symmetric } from '@icon-canvas/core/geo'
-import { iconDir } from '../paths.ts'
+import { centreOn, circleChain, type Point, roundedPolygon, symmetric } from '@autosvg/core/geo'
+import { vectorDir } from '../paths.ts'
 
-const out = fileURLToPath(iconDir)
+const out = fileURLToPath(vectorDir)
 
 // ---- kit -------------------------------------------------------------------
 const R = { l: 3, m: 2, s: 1.5 } // corner radii: containers / parts / details
@@ -60,8 +60,8 @@ const rays = (() => {
   return d
 })()
 
-// ---- icons -----------------------------------------------------------------
-const icons: Record<string, string[]> = {
+// ---- vectors -----------------------------------------------------------------
+const vectors: Record<string, string[]> = {
   // --- essentials ---
   home: [
     path('M3 10.5L12 3l9 7.5'),
@@ -305,17 +305,19 @@ const wrap = (parts: readonly string[]): string =>
     .map((p) => `  ${p}`)
     .join('\n')}\n</svg>\n`
 
-// The icon FILES are the source of truth now: icons are edited and saved in the canvas.
-// This kit only seeds icons that don't exist yet, and never overwrites an edited file.
+// The vector FILES are the source of truth now: vectors are edited and saved in the canvas.
+// This kit only seeds vectors that don't exist yet, and never overwrites an edited file.
 // Pass --force to regenerate everything from the kit (this discards canvas edits).
 const force = process.argv.includes('--force')
 mkdirSync(out, { recursive: true })
 if (force) for (const f of readdirSync(out)) if (f.endsWith('.svg')) rmSync(`${out}${f}`)
 let wrote = 0
-for (const [name, parts] of Object.entries(icons)) {
+for (const [name, parts] of Object.entries(vectors)) {
   const file = `${out}${name}.svg`
   if (!force && existsSync(file)) continue
   writeFileSync(file, wrap(parts))
   wrote++
 }
-console.log(`seeded ${wrote} new icons (${Object.keys(icons).length - wrote} existing files left untouched) in ${out}`)
+console.log(
+  `seeded ${wrote} new vectors (${Object.keys(vectors).length - wrote} existing files left untouched) in ${out}`,
+)

@@ -1,4 +1,4 @@
-// Pure geometry helpers for building icon paths. No DOM, so the Node build script and the
+// Pure geometry helpers for building vector paths. No DOM, so the Node build script and the
 // browser share them. They replace hand-computing arc flags and control points.
 
 import { at, type Circle, last, type Point } from './util.ts'
@@ -62,7 +62,7 @@ export function centreOn(...groups: Point[][]): Point[][] {
   return groups.map((g) => g.map(([x, y]): Point => [x + dx, y + dy]))
 }
 
-/** Reflect points across the vertical axis x = axis (default: icon centre). */
+/** Reflect points across the vertical axis x = axis (default: vector centre). */
 export const mirrorX = (pts: readonly Point[], axis = 12): Point[] => pts.map(([x, y]): Point => [2 * axis - x, y])
 
 /**

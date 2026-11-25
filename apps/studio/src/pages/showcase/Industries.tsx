@@ -26,7 +26,7 @@ import {
   Wallpaper,
 } from './Styles.tsx'
 
-/** A tile whose whole picture is the icon as a mask over something painted. */
+/** A tile whose whole picture is the vector as a mask over something painted. */
 function Masked({
   name,
   title,
@@ -76,7 +76,7 @@ function Pixel({ name }: { name: string }) {
     <Fx
       name={name}
       title="Pixel art"
-      how="the icon rasterised to 20 × 20 · rects · shade and outline"
+      how="the vector rasterised to 20 × 20 · rects · shade and outline"
       tone="fx-pixel-stage"
     >
       <svg viewBox="-1 -1 22 22" className="fx-pixel" shapeRendering="crispEdges" aria-hidden="true">
@@ -151,7 +151,7 @@ function Ascii({ name }: { name: string }) {
     <Fx
       name={name}
       title="ASCII terminal"
-      how="the icon rasterised · a ramp of characters · a blinking cursor"
+      how="the vector rasterised · a ramp of characters · a blinking cursor"
       tone="fx-ascii-stage"
     >
       <pre className="fx-ascii" aria-hidden="true">
@@ -225,7 +225,7 @@ function Torch({ name }: { name: string }) {
         ref={stage}
         className="fx-stage fx-torch"
         role="img"
-        aria-label={`${name}, a reflective icon lit by a torch`}
+        aria-label={`${name}, a reflective vector lit by a torch`}
         onPointerMove={(e) => {
           const el = stage.current
           if (!el) return
@@ -258,7 +258,7 @@ function Torch({ name }: { name: string }) {
 }
 
 /**
- * The same icon, dressed for fourteen kinds of business. Each group is what a brand in that field tends to reach for: metal and
+ * The same vector, dressed for fourteen kinds of business. Each group is what a brand in that field tends to reach for: metal and
  * foil for money, pixels and lamps for games, chalk and stamps for food, hazard stripes for building sites. None is another file.
  */
 export function Industries({ name }: { name: string }) {
@@ -298,7 +298,7 @@ export function Industries({ name }: { name: string }) {
           <div className="fx-card">
             <span className="fx-chip" />
             <span className="fx-card-no">•••• 4242</span>
-            <span className="fx-card-icon">
+            <span className="fx-card-vector">
               <Glyph name={name} size={64} />
             </span>
           </div>
@@ -430,7 +430,7 @@ export function Industries({ name }: { name: string }) {
         <Masked
           name={name}
           title="Heat map"
-          how="mask over a gradient rising through the icon"
+          how="mask over a gradient rising through the vector"
           tone="fx-heat-stage"
           ink="fx-heat"
           thicker={2}

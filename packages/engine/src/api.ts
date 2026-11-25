@@ -8,15 +8,15 @@ import {
   lintSVG,
   minGap,
   morphAudit,
-  nearestIcons,
+  nearestVectors,
   perfAudit,
   STYLE,
-} from '@icon-canvas/checks'
-import * as pp from '@icon-canvas/checks/paper'
-import { DEFAULT_STYLE, POSES, RECIPES, SPEC, type Style } from '@icon-canvas/core'
-import * as geo from '@icon-canvas/core/geo'
-import { getIcon, ICONS, registerIcon } from '@icon-canvas/icons'
-import { morphPlan, renderIcon, stateNames } from '@icon-canvas/runtime'
+} from '@autosvg/checks'
+import * as pp from '@autosvg/checks/paper'
+import { DEFAULT_STYLE, POSES, RECIPES, SPEC, type Style } from '@autosvg/core'
+import * as geo from '@autosvg/core/geo'
+import { morphPlan, renderIcon, stateNames } from '@autosvg/runtime'
+import { getVector, registerVector, VECTORS } from '@autosvg/vectors'
 import { canonical, normal, SIZE } from './markup.ts'
 import { coverageFor, looseText, measureSVG } from './measure.ts'
 import {
@@ -32,12 +32,12 @@ import {
   setTile,
 } from './state.ts'
 
-/** The drawing on the canvas as a standalone icon, in the style currently being previewed. */
+/** The drawing on the canvas as a standalone vector, in the style currently being previewed. */
 export const getSVG = (): string => canonical(markup())
 
-/** `what` is an icon name, a whole <svg>, or inner shapes: this is the <svg> to measure. */
+/** `what` is a vector name, a whole <svg>, or inner shapes: this is the <svg> to measure. */
 function svgOf(what: string): string {
-  const named = getIcon(what)
+  const named = getVector(what)
   if (named) return renderIcon(named.name, STYLE, { inline: true })
   return what.trim().startsWith('<svg') ? what : canonical(what)
 }
@@ -54,7 +54,7 @@ const CSS_VARS: Record<keyof Style, string> = {
   curve: '--icon-curve',
 }
 
-/** Publish the style as inline custom properties on <html>: the set's real interface. Every icon follows. */
+/** Publish the style as inline custom properties on <html>: the set's real interface. Every vector follows. */
 function writeCssVars(): void {
   for (const key of Object.keys(CSS_VARS) as (keyof Style)[]) {
     document.documentElement.style.setProperty(CSS_VARS[key], String(STYLE[key]))
@@ -76,7 +76,7 @@ export interface VerifyReport {
 // ---------- public API (for humans, devtools, and agents) ----------
 
 /**
- * window.iconCanvas: the headless engine behind the studio. An agent (or a human in devtools) draws, measures and compares
+ * window.autosvg: the headless engine behind the studio. An agent (or a human in devtools) draws, measures and compares
  * with it; the React app is only a view of the same state.
  */
 export const api = {
@@ -86,11 +86,11 @@ export const api = {
   defaults: DEFAULT_STYLE,
   /** Findings the set audit accepts on purpose, with the reason. */
   deliberate: DELIBERATE,
-  /** Every icon file's name. */
-  get icons(): string[] {
-    return ICONS.map((i) => i.name)
+  /** Every vector file's name. */
+  get vectors(): string[] {
+    return VECTORS.map((i) => i.name)
   },
-  /** Names that are an icon in one of its states (mic-off, eye-off, lock-open, unlock ...): no files, the same icon drawn with --icon-state set. */
+  /** Names that are a vector in one of its states (mic-off, eye-off, lock-open, unlock ...): no files, the same vector drawn with --icon-state set. */
   aliases: stateNames(),
 
   /** Replace the artwork. Accepts inner shapes or a complete <svg>. */
@@ -114,12 +114,12 @@ export const api = {
     clearArtwork()
   },
 
-  /** Load an icon from the set by name into the editor. */
+  /** Load a vector from the set by name into the editor. */
   load(name: string): string {
-    const icon = getIcon(name)
-    if (!icon) throw new Error(`No icon "${name}". Available: ${api.icons.join(', ')}`)
+    const vector = getVector(name)
+    if (!vector) throw new Error(`No vector "${name}". Available: ${api.vectors.join(', ')}`)
     setName(name)
-    replaceArtwork(icon.svg)
+    replaceArtwork(vector.svg)
     return getSVG()
   },
 
@@ -159,7 +159,7 @@ export const api = {
     if (m.offset > SPEC.maxCentreOffset) {
       issues.push(`extent off-centre by ${m.offset.toFixed(2)}`)
       hints.push(
-        `translate by (${(SIZE / 2 - m.bx).toFixed(2)}, ${(SIZE / 2 - m.by).toFixed(2)}), or run iconCanvas.pp.centre(markup)`,
+        `translate by (${(SIZE / 2 - m.bx).toFixed(2)}, ${(SIZE / 2 - m.by).toFixed(2)}), or run autosvg.pp.centre(markup)`,
       )
     }
     for (const k of m.shape.kinks) {
@@ -177,7 +177,7 @@ export const api = {
       )
     }
     // Notes are not failures: "almost symmetric" also describes deliberately asymmetric shapes
-    // (cloud, chat bubble). Only act on a note if the icon was meant to be symmetric.
+    // (cloud, chat bubble). Only act on a note if the vector was meant to be symmetric.
     const notes = m.shape.symmetry.nearMiss.map(
       (nm) =>
         `path ${nm.path} is almost mirror-symmetric (mean error ${nm.mean}, worst ${nm.max}); if it should be symmetric, build one half and mirror it with symmetric()`,
@@ -192,7 +192,7 @@ export const api = {
     }
   },
 
-  /** Measure an icon by name, a full <svg>, or inner shapes: ink, optical centre, extent, narrow gaps. */
+  /** Measure a vector by name, a full <svg>, or inner shapes: ink, optical centre, extent, narrow gaps. */
   async inspect(what: string) {
     const svg = svgOf(what)
     const m = await measureSVG(svg)
@@ -213,11 +213,11 @@ export const api = {
     }
   },
 
-  /** Measure the whole set. Returns the median plus every icon that is an outlier or has a warning. */
+  /** Measure the whole set. Returns the median plus every vector that is an outlier or has a warning. */
   async audit() {
     const rows = []
-    for (const icon of ICONS) {
-      rows.push({ name: icon.name, ...(await measureSVG(renderIcon(icon.name, STYLE, { inline: true }))) })
+    for (const vector of VECTORS) {
+      rows.push({ name: vector.name, ...(await measureSVG(renderIcon(vector.name, STYLE, { inline: true }))) })
     }
     const medInk = median(rows.map((r) => r.coverage))
     const medExtent = median(rows.map((r) => Math.max(r.w, r.h)))
@@ -252,21 +252,21 @@ export const api = {
   },
 
   /**
-   * Agent-only: write the canvas to its icon file (packages/icons/svg/<name>.svg) through the dev server.
-   * There is deliberately no Save button in the page. A new name creates a new icon.
+   * Agent-only: write the canvas to its vector file (packages/vectors/svg/<name>.svg) through the dev server.
+   * There is deliberately no Save button in the page. A new name creates a new vector.
    */
   async save(name: string = getName()): Promise<{ saved: string }> {
-    if (!name) throw new Error('Name the icon: iconCanvas.save("my-icon")')
+    if (!name) throw new Error('Name the vector: autosvg.save("my-vector")')
     // The style controls only preview; files always get the set's own look.
     const svg = normal(getSVG())
-    const res = await fetch('/__save-icon', {
+    const res = await fetch('/__save-vector', {
       method: 'POST',
       headers: { 'content-type': 'application/json' },
       body: JSON.stringify({ name, svg }),
     })
     const out: { ok: boolean; error?: string } = await res.json()
     if (!out.ok) throw new Error(out.error)
-    registerIcon({ name, svg })
+    registerVector({ name, svg })
     nameArtwork(name)
     return { saved: name }
   },
@@ -274,7 +274,7 @@ export const api = {
   /**
    * Preview style: { stroke, cap, join, radius, curve }. Published as CSS custom properties (--icon-*) on
    * the gallery, which is how the set is meant to be consumed. The canvas and every check follow it.
-   * It only visualises the difference; no file changes. radius and curve apply to icons with a recipe.
+   * It only visualises the difference; no file changes. radius and curve apply to vectors with a recipe.
    */
   setStyle(next: Partial<Style> = {}): Style {
     const clamp = (v: number, lo: number, hi: number): number => Math.min(hi, Math.max(lo, +v))
@@ -298,11 +298,11 @@ export const api = {
 
   getStyle: (): Style => ({ ...STYLE }),
 
-  /** An icon as the runtime draws it, with explicit stroke attributes (so it stands alone). */
+  /** A vector as the runtime draws it, with explicit stroke attributes (so it stands alone). */
   render: (name: string, params: Partial<Style> = STYLE): string => renderIcon(name, params, { inline: true }),
 
   /**
-   * Which icons have rounded corners or circles but ignore the radius / curve settings? Those need a
+   * Which vectors have rounded corners or circles but ignore the radius / curve settings? Those need a
    * recipe in packages/core/src/recipes.ts. `missing` must be empty.
    */
   async coverage(names?: readonly string[]) {
@@ -310,42 +310,49 @@ export const api = {
     const exempt: Record<string, string> = {}
     let responsive = 0
     let noFeatures = 0
-    for (const icon of names ? ICONS.filter((i) => names.includes(i.name)) : ICONS) {
-      const c = await coverageFor(icon.name)
+    for (const vector of names ? VECTORS.filter((i) => names.includes(i.name)) : VECTORS) {
+      const c = await coverageFor(vector.name)
       if (!c) continue
-      if (c.exempt) exempt[icon.name] = c.exempt
+      if (c.exempt) exempt[vector.name] = c.exempt
       else if (!c.corners && !c.circles) noFeatures++
-      else if (c.reasons.length) missing[icon.name] = c.reasons.join('; ')
+      else if (c.reasons.length) missing[vector.name] = c.reasons.join('; ')
       else responsive++
     }
-    return { icons: ICONS.length, responsive, noFeatures, exempt, missingCount: Object.keys(missing).length, missing }
+    return {
+      vectors: VECTORS.length,
+      responsive,
+      noFeatures,
+      exempt,
+      missingCount: Object.keys(missing).length,
+      missing,
+    }
   },
 
   /**
-   * Do the recipes still reproduce their saved icons at default settings? Lists recipes whose
-   * rendering differs from the saved file (stale recipe or edited icon).
+   * Do the recipes still reproduce their saved vectors at default settings? Lists recipes whose
+   * rendering differs from the saved file (stale recipe or edited vector).
    */
   async recipeStatus(names?: readonly string[]) {
     const stale: Record<string, string> = {}
     for (const name of Object.keys(RECIPES).filter((n) => !names || names.includes(n))) {
-      const icon = getIcon(name)
-      if (!icon) {
-        stale[name] = 'no saved icon'
+      const vector = getVector(name)
+      if (!vector) {
+        stale[name] = 'no saved vector'
         continue
       }
-      const d = await inkDiff(renderIcon(name, DEFAULT_STYLE, { inline: true }), normal(icon.svg))
+      const d = await inkDiff(renderIcon(name, DEFAULT_STYLE, { inline: true }), normal(vector.svg))
       if (d > 0.02) stale[name] = `differs from the saved file by ${(d * 100).toFixed(1)}%`
     }
     return { recipes: Object.keys(RECIPES).length, stale }
   },
 
-  /** Gallery icon size in px (16 to 64). */
+  /** Gallery vector size in px (16 to 64). */
   setTileSize(px: number): number {
     return setTile(+px)
   },
 
   /**
-   * Which icons break at each weight? For every weight, lists icons that fail a rule or have strokes
+   * Which vectors break at each weight? For every weight, lists vectors that fail a rule or have strokes
    * closer than one stroke width. Restores the current style afterwards.
    */
   async sweep(weights: readonly number[] = [1, 1.25, 1.5, 1.75, 2, 2.5]) {
@@ -355,13 +362,13 @@ export const api = {
       for (const w of weights) {
         STYLE.stroke = w
         const broken: Record<string, string> = {}
-        for (const icon of ICONS) {
-          const svg = renderIcon(icon.name, STYLE, { inline: true })
+        for (const vector of VECTORS) {
+          const svg = renderIcon(vector.name, STYLE, { inline: true })
           const lintFail = lintSVG(svg).find((r) => r.status === 'fail')
           const m = await analyse(svg)
           const gap = m.gaps[0]
-          if (lintFail) broken[icon.name] = lintFail.label
-          else if (gap) broken[icon.name] = `gap ${gap.clear}px`
+          if (lintFail) broken[vector.name] = lintFail.label
+          else if (gap) broken[vector.name] = `gap ${gap.clear}px`
         }
         out[w] = { count: Object.keys(broken).length, broken }
       }
@@ -374,26 +381,26 @@ export const api = {
   /** Geometry helpers (roundedPolygon, circleChain, symmetric, centreOn, arcOn, ...), usable right in the canvas. */
   geo,
 
-  /** Pose lint: structure, file in sync, every channel alive, ink in bounds at the overshoot. Returns the issues per icon. */
+  /** Pose lint: structure, file in sync, every channel alive, ink in bounds at the overshoot. Returns the issues per vector. */
   poseLint: (names?: readonly string[]) => lintPoses(names),
-  /** Performance audit: style cost of posing (set and single icon), recipe drawing cost, pose weight, against budgets. */
+  /** Performance audit: style cost of posing (set and single vector), recipe drawing cost, pose weight, against budgets. */
   perfAudit: (names?: readonly string[]) => perfAudit(names),
-  /** Accessibility audit of how icons are used in a page (or a container): hidden or labelled, named controls, target size, reduced motion. */
+  /** Accessibility audit of how vectors are used in a page (or a container): hidden or labelled, named controls, target size, reduced motion. */
   a11yAudit: (root?: ParentNode) => a11yAudit(root),
   poses: POSES,
-  /** The plan for turning one icon into another: a path pair per stroke, how much of the ink fades, how far it travels, and `rough` when a plain swap suits the pair better. */
-  /** The icons that look most like each given icon (default: all of them), with how different they are. A near copy is a duplicate. */
-  nearest: (names?: readonly string[], k?: number) => nearestIcons(names ?? ICONS.map((i) => i.name), k),
+  /** The plan for turning one vector into another: a path pair per stroke, how much of the ink fades, how far it travels, and `rough` when a plain swap suits the pair better. */
+  /** The vectors that look most like each given vector (default: all of them), with how different they are. A near copy is a duplicate. */
+  nearest: (names?: readonly string[], k?: number) => nearestVectors(names ?? VECTORS.map((i) => i.name), k),
   morphPlan: (from: string, to: string, params?: Partial<Style>) => morphPlan(from, to, { ...STYLE, ...params }),
-  /** Morph audit: every icon into the next (or the given pairs): same commands at both ends, on the canvas, cheap to plan. */
+  /** Morph audit: every vector into the next (or the given pairs): same commands at both ends, on the canvas, cheap to plan. */
   morphAudit: (pairs?: readonly (readonly [string, string])[]) =>
     morphAudit(
       pairs,
-      ICONS.map((i) => i.name),
+      VECTORS.map((i) => i.name),
       STYLE,
     ),
 
   getSVG,
 }
 
-export type IconCanvasApi = typeof api
+export type AutosvgApi = typeof api

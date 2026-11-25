@@ -1,6 +1,6 @@
-// Pose data for every icon (table.ts) and the functions that write it into the SVG as data- attributes.
+// Pose data for every vector (table.ts) and the functions that write it into the SVG as data- attributes.
 //
-// How a pose works (see poses.css, a FIXED-size stylesheet no matter how many icons exist):
+// How a pose works (see poses.css, a FIXED-size stylesheet no matter how many vectors exist):
 //   - a part that moves carries up to four beats, each a few data- numbers: which channel drives it, where in the
 //     channel's travel it plays, what curve (ramp, pulse, wave) and how much it rotates, moves, scales, fades or draws
 //   - the root says what each channel means:  data-pose-1="ring"
@@ -88,16 +88,16 @@ const DEFAULT_BEAT: Record<TimingKey, number> = { k: 0, t: 0, w: 1, n: 2 }
 /** The opening tag of an element: `<path d="...">`. */
 const openingTag = (el: string): string => /^<[^>]*>/.exec(el)?.[0] ?? ''
 
-/** Shapes that exist only in an icon's off state carry data-st; they are regenerated from the table, never trusted from a file. */
+/** Shapes that exist only in a vector's off state carry data-st; they are regenerated from the table, never trusted from a file. */
 const isState = (el: string): boolean => /\sdata-st="/.test(openingTag(el))
 
-/** A group that carries the icon-level beats (the rotation of an arrow turning to point another way) wraps the shapes in the file. */
+/** A group that carries the vector-level beats (the rotation of an arrow turning to point another way) wraps the shapes in the file. */
 const unwrap = (els: readonly string[]): string[] =>
   els.flatMap((el) =>
     /^<g\s[^>]*\bdata-gr=/.test(el) ? splitTop(el.replace(/^<g\b[^>]*>/, '').replace(/<\/g>\s*$/, '')) : [el],
   )
 
-/** The shapes of an icon's own drawing, without any off-state strokes. */
+/** The shapes of a vector's own drawing, without any off-state strokes. */
 export const baseShapes = (markup: string): string[] => unwrap(splitTop(markup).filter((el) => !isState(el)))
 
 /** The beats that land on one shape, from every part of the pose that targets it (plus going away in the off state). */
@@ -160,7 +160,7 @@ function stateShape(e: StateAccessory, radius = 1): string {
     pivot ??= [e.circle[0], e.circle[1]]
   } else if (e.rect) {
     const [x, y, rw, rh, rxSpec = 0] = e.rect
-    // a corner radius is a number, or [base, max]: it then follows the --icon-radius setting like the rest of the icon
+    // a corner radius is a number, or [base, max]: it then follows the --icon-radius setting like the rest of the vector
     const rx = typeof rxSpec === 'number' ? rxSpec : FMT(Math.min(rxSpec[0] * radius, rxSpec[1]))
     tag = 'rect'
     geometry = ` x="${x}" y="${y}" width="${rw}" height="${rh}"${rx ? ` rx="${rx}"` : ''}`
@@ -177,7 +177,7 @@ function stateShape(e: StateAccessory, radius = 1): string {
   return `${attrs}${geometry} />`
 }
 
-/** Markup with this icon's pose (and off-state strokes) written into it. Idempotent. */
+/** Markup with this vector's pose (and off-state strokes) written into it. Idempotent. */
 export function withPose(name: string, markup: string, radius = 1): string {
   const spec = POSES[name]
   let els = baseShapes(markup)
@@ -187,7 +187,7 @@ export function withPose(name: string, markup: string, radius = 1): string {
     const a = spec ? attrsFor(spec, i) : ''
     return a ? clean.replace(/^<([\w:-]+)/, `<$1${a}`) : clean
   })
-  // beats on the whole icon (turning an arrow to point another way) go on a group, so the parts inside keep moving in its frame
+  // beats on the whole vector (turning an arrow to point another way) go on a group, so the parts inside keep moving in its frame
   let body = shapes
   if (spec?.group) {
     const inside = spec.group.at ?? shapes.map((_, i) => i) // all the shapes, unless it wraps only some
@@ -202,7 +202,7 @@ export function withPose(name: string, markup: string, radius = 1): string {
   return body.join('\n')
 }
 
-/** What the root says about the icon: its motion's name and its states, e.g. data-motion="ring" data-states="off". */
+/** What the root says about the vector: its motion's name and its states, e.g. data-motion="ring" data-states="off". */
 export function poseRootAttrs(name: string): string {
   const spec = POSES[name]
   if (!spec) return ''
@@ -213,18 +213,18 @@ export function poseRootAttrs(name: string): string {
   )
 }
 
-/** Channels an icon has beats for, e.g. [1, 2] or [1, 3, 4]. */
+/** Channels a vector has beats for, e.g. [1, 2] or [1, 3, 4]. */
 export function channelsOf(name: string): Channel[] {
   const spec = POSES[name]
   if (!spec) return []
   const set = new Set<Channel>()
   for (const part of spec.parts) for (const b of part.beats) set.add(b.c)
-  for (const b of spec.group?.beats ?? []) set.add(b.c) // beats on the whole icon count too
+  for (const b of spec.group?.beats ?? []) set.add(b.c) // beats on the whole vector count too
   if (spec.add?.length) set.add(STATE)
   return [...set].sort((a, b) => a - b)
 }
 
-/** Bytes of pose data an icon carries in its SVG. */
+/** Bytes of pose data a vector carries in its SVG. */
 export function poseBytes(name: string, markup: string): number {
   return (withPose(name, markup).match(POSE_ATTR) || []).join('').length + poseRootAttrs(name).length
 }
@@ -265,7 +265,7 @@ function stateAttrs(tag: string, sum: Record<AmountKey, number>): string {
 }
 
 /**
- * The icon in one of its states, as a plain static drawing with no pose data: what a consumer that cannot see CSS
+ * The vector in one of its states, as a plain static drawing with no pose data: what a consumer that cannot see CSS
  * (an <img>, a mask, a copy-paste) needs for `mic-off` or `lock-open`. Only the state channel (2) is applied, and its
  * beats are ramps, so each element's end values are computed here: transforms become a transform attribute, fades become
  * opacity, accessories that belong to the state are shown and the others dropped.
@@ -294,9 +294,9 @@ export function bakeState(markup: string, stop: number): string {
     .join('\n')
 }
 
-/** The state names of an icon, in order: stop 1 is the first. */
+/** The state names of a vector, in order: stop 1 is the first. */
 export const statesOf = (name: string): readonly string[] => POSES[name]?.states ?? []
 
-/** The drawing without its state-only elements: what the icon is when no state brings anything in. */
+/** The drawing without its state-only elements: what the vector is when no state brings anything in. */
 export const stripStateShapes = (svg: string): string =>
   svg.replace(/<(path|circle|rect|line|polyline|polygon|ellipse)\b[^>]*\sdata-st=[^>]*?(?:\/>|><\/\1>)\s*/g, '') // a file writes `<path />`, the canvas's own markup `<path></path>`

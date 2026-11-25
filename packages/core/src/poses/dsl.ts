@@ -1,11 +1,11 @@
-// The vocabulary for writing poses (see pose-table.js). A pose is a set of beats on the shapes of an icon.
+// The vocabulary for writing poses (see pose-table.js). A pose is a set of beats on the shapes of a vector.
 //
 //   on(at, [ox, oy]?, ...beats)    which shapes (an index, a list, or ALL), an optional pivot, and their beats
 //   ramp(c, {..}) pulse(c, {..}) wave(c, {..})   one beat, driven by pose channel c
 //
 // A beat's numbers are the value at the top of its curve:
 //   t, w     where in the channel's 0 to 1 travel it plays (start, length)    n   swings of a wave
-//   r        rotate, degrees          x, y   move, icon units       s    scale (both)     h, v   scale x / y only
+//   r        rotate, degrees          x, y   move, vector units       s    scale (both)     h, v   scale x / y only
 //   q        skew x, degrees          a      opacity change         g    draw the stroke: -1 hides it (pathLength is added)
 // ramp holds its end value; pulse goes there and back; wave swings and settles to rest.
 
@@ -98,12 +98,12 @@ export interface PoseSpec {
 }
 
 /**
- * The four channels an icon can respond to, each a CSS number a consumer sets on the icon or any ancestor:
+ * The four channels a vector can respond to, each a CSS number a consumer sets on the vector or any ancestor:
  *   1  --icon-motion   a momentary gesture, 0 to 1 (a bell rings, an arrow lunges). It plays and settles back to rest.
- *   2  --icon-state    which state the icon is in, 0 for its normal look and 1, 2, ... for its named states (off, open,
+ *   2  --icon-state    which state the vector is in, 0 for its normal look and 1, 2, ... for its named states (off, open,
  *                      weak). A state persists; entering and leaving it is the number moving, and the beats in between
  *                      are the transition. Stops are whole numbers, but any value in between is a valid frame.
- *   3  --icon-look-x   -1 to 1, for icons that look around (the eyes)
+ *   3  --icon-look-x   -1 to 1, for vectors that look around (the eyes)
  *   4  --icon-look-y
  */
 export const CHANNEL_VAR = {
@@ -134,24 +134,24 @@ export function on(at: Target, ...rest: [Point, ...Beat[]] | Beat[]): Part {
 export const P = (n: number, labels: readonly string[], ...parts: Part[]): PoseSpec => ({ n, labels, parts })
 
 /**
- * An icon whose file draws several strokes as one path (an arrow's shaft and head): split those paths at
+ * A vector whose file draws several strokes as one path (an arrow's shaft and head): split those paths at
  * every M so the parts can move apart. `from` is the shape count before, `at` the shapes to split.
  */
 export const S = (from: number, at: readonly number[], spec: PoseSpec): PoseSpec => ({ ...spec, split: { from, at } })
 
 /**
- * Mark an icon whose main gesture is deliberately one plain move (a gear turning, a cube tumbling). The pose lint
+ * Mark a vector whose main gesture is deliberately one plain move (a gear turning, a cube tumbling). The pose lint
  * otherwise rejects a main gesture that is a single beat or one move with one timing: that is the "cheap nudge".
  */
 export const simple = (spec: PoseSpec): PoseSpec => ({ ...spec, simple: true })
 
 /**
- * Give an icon named states. `names` are the stops after the normal look: ['off'] means --icon-state 1 is "off";
+ * Give a vector named states. `names` are the stops after the normal look: ['off'] means --icon-state 1 is "off";
  * ['weak', 'off'] means 1 is weak and 2 is off. What changes in a state is written as ordinary beats on channel 2
  * (ramps only: a state holds). `add` are strokes that exist only in a state (a slash through a microphone): invisible in
  * the file (opacity="0"), brought in at their state (see stateShape in poses.js for the options: in, out, kind, circle, rect).
  * `aliases` maps extra names to states: { unlock: 'open' } makes the name `unlock` mean `lock` in its open state.
- * Every state also gets the name `<icon>-<state>`, so `mic-off` is `mic` with its off state, and there is no second file.
+ * Every state also gets the name `<vector>-<state>`, so `mic-off` is `mic` with its off state, and there is no second file.
  */
 export const withStates = (
   spec: PoseSpec,
@@ -166,7 +166,7 @@ export const withStates = (
 })
 
 /**
- * Beats on the whole icon, carried by a group around its shapes: turning an arrow to point another way, rotating a chevron.
+ * Beats on the whole vector, carried by a group around its shapes: turning an arrow to point another way, rotating a chevron.
  * The shapes inside keep their own beats and move in the group's frame, so an arrow that points down still lunges down.
  */
 export const grouped = (spec: PoseSpec, o: Point | undefined, ...beats: Beat[]): PoseSpec => ({
@@ -198,7 +198,7 @@ export const redraw = (c: Channel, t: number, w: number, erase = 0.12): Beat[] =
 
 // ---- archetypes: the gestures that recur, in one line each ----
 // Each returns a part with two beats that differ in timing and in what they move (so the pose lint does not call it thin), and
-// none moves less than 0.8 icon units or 3 degrees: smaller than that is invisible at 24 px (see lessons.md).
+// none moves less than 0.8 vector units or 3 degrees: smaller than that is invisible at 24 px (see lessons.md).
 
 /** An amount of at least `floor` in size, keeping its sign. */
 const atLeast = (value: number, floor: number): number => (value < 0 ? -1 : 1) * Math.max(Math.abs(value), floor)

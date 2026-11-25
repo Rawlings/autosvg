@@ -1,7 +1,7 @@
-import type { Status } from '@icon-canvas/checks'
-import { DEFAULT_STYLE, POSES, RECIPES } from '@icon-canvas/core'
-import { api, ICONS, lintSVG, overall, renderIcon } from '@icon-canvas/engine'
-import { resolve, stateNames } from '@icon-canvas/runtime'
+import type { Status } from '@autosvg/checks'
+import { DEFAULT_STYLE, POSES, RECIPES } from '@autosvg/core'
+import { api, lintSVG, overall, renderIcon, VECTORS } from '@autosvg/engine'
+import { resolve, stateNames } from '@autosvg/runtime'
 import { useDeferredValue, useEffect, useMemo, useRef, useState } from 'react'
 import { useCopy, useEngine } from '../app/hooks.ts'
 import { Link, useRouter } from '../app/router.tsx'
@@ -10,7 +10,7 @@ import { SEARCH_TERMS } from '../data/search-terms.ts'
 import { cssVars } from '../lib/css.ts'
 import { Player } from './motion/Player.tsx'
 
-// the families of states, found from the pose table: what an icon's states have in common
+// the families of states, found from the pose table: what a vector's states have in common
 const FAMILY = {
   states: (n: string) => !!POSES[n]?.states?.length,
   off: (n: string) => !!POSES[n]?.states?.includes('off'),
@@ -35,20 +35,21 @@ export default function Library() {
   const [q, setQ] = useState('')
   const [filter, setFilter] = useState<Filter>('all')
   const search = useRef<HTMLInputElement>(null)
-  const selected = params.get('icon')
+  const selected = params.get('vector')
 
-  // the status of each icon, judged as the current style settings draw it
+  // the status of each vector, judged as the current style settings draw it
   const style = useDeferredValue(snap.style)
   const status = useMemo(
-    () => Object.fromEntries(ICONS.map((i) => [i.name, overall(lintSVG(renderIcon(i.name, style, { inline: true })))])),
+    () =>
+      Object.fromEntries(VECTORS.map((i) => [i.name, overall(lintSVG(renderIcon(i.name, style, { inline: true })))])),
     [style],
   )
   const attention = Object.values(status).filter((s) => s !== 'pass').length
-  const withStates = ICONS.filter((i) => POSES[i.name]?.states?.length).length
+  const withStates = VECTORS.filter((i) => POSES[i.name]?.states?.length).length
 
   const shown = useMemo(() => {
     const term = q.trim().toLowerCase()
-    // a name that is an icon in one of its states (arrow-left, mic-off, unlock) finds that icon
+    // a name that is a vector in one of its states (arrow-left, mic-off, unlock) finds that vector
     const viaState = new Set(
       term
         ? stateNames()
@@ -63,10 +64,10 @@ export default function Library() {
       if (filter === 'attention') return status[name] !== 'pass'
       return FAMILY[filter](name)
     }
-    return ICONS.filter((i) => matches(i.name) && inFilter(i.name))
+    return VECTORS.filter((i) => matches(i.name) && inFilter(i.name))
   }, [q, filter, status])
 
-  const select = (name: string | null) => navigate(name ? `/?icon=${name}` : '/', { replace: true })
+  const select = (name: string | null) => navigate(name ? `/?vector=${name}` : '/', { replace: true })
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -88,10 +89,10 @@ export default function Library() {
     <div className="page library">
       <div className="page-head">
         <div>
-          <h1>Icons</h1>
+          <h1>Vectors</h1>
           <p className="lede">
-            {ICONS.length} line icons on a 24 grid, {withStates} of them with states, which makes {stateNames().length}{' '}
-            more names (mic-off, user-plus, arrow-left, cloud-done).{' '}
+            {VECTORS.length} line vectors on a 24 grid, {withStates} of them with states, which makes{' '}
+            {stateNames().length} more names (mic-off, user-plus, arrow-left, cloud-done).{' '}
             {attention
               ? `${attention} need${attention === 1 ? 's' : ''} attention at this style.`
               : 'All pass at this style.'}
@@ -117,8 +118,8 @@ export default function Library() {
             type="search"
             value={q}
             onChange={(e) => setQ(e.target.value)}
-            placeholder="Search icons"
-            aria-label="Search icons"
+            placeholder="Search vectors"
+            aria-label="Search vectors"
           />
           {/* biome-ignore lint/a11y/noAriaHiddenOnFocusable: a <kbd> is not focusable; this is a decorative key hint */}
           <kbd aria-hidden="true">/</kbd>
@@ -126,7 +127,7 @@ export default function Library() {
       </div>
 
       <div className="library-body">
-        <section aria-label="Icon grid">
+        <section aria-label="Vector grid">
           <div className="toolbar">
             <div className="seg" role="group" aria-label="Filter">
               {FILTERS.map(([key, label]) => (
@@ -144,7 +145,7 @@ export default function Library() {
                 step="4"
                 value={snap.tile}
                 onChange={(e) => api.setTileSize(+e.target.value)}
-                aria-label="Icon size"
+                aria-label="Vector size"
               />
             </label>
           </div>
@@ -159,7 +160,7 @@ export default function Library() {
                     aria-pressed={selected === i.name}
                     data-status={status[i.name]}
                     onClick={() => select(selected === i.name ? null : i.name)}
-                    onDoubleClick={() => navigate(`/showcase?icon=${i.name}`)}
+                    onDoubleClick={() => navigate(`/showcase?vector=${i.name}`)}
                     title={status[i.name] === 'pass' ? i.name : `${i.name}: ${status[i.name]}`}
                   >
                     <Glyph name={i.name} size={snap.tile} />
@@ -169,12 +170,12 @@ export default function Library() {
               ))}
             </ul>
           ) : (
-            <p className="empty">No icons match “{q}”.</p>
+            <p className="empty">No vectors match “{q}”.</p>
           )}
         </section>
 
         <aside className="rail" aria-label="Details">
-          {selected && ICONS.some((i) => i.name === selected) && (
+          {selected && VECTORS.some((i) => i.name === selected) && (
             <Detail key={selected} name={selected} status={status[selected] ?? 'pass'} onClose={() => select(null)} />
           )}
         </aside>
@@ -185,11 +186,11 @@ export default function Library() {
 
 function Detail({ name, status, onClose }: { name: string; status: Status; onClose: () => void }) {
   const [copied, copy] = useCopy()
-  const [stop, setStop] = useState(0) // the state the player has the icon in; 0 is its normal look
+  const [stop, setStop] = useState(0) // the state the player has the vector in; 0 is its normal look
   const states = POSES[name]?.states ?? []
   const state = states[stop - 1] ?? ''
   const pose = POSES[name]
-  const file = ICONS.find((i) => i.name === name)
+  const file = VECTORS.find((i) => i.name === name)
   return (
     <section className="detail">
       <div className="detail-head">
@@ -220,7 +221,7 @@ function Detail({ name, status, onClose }: { name: string; status: Status; onClo
         </div>
       </dl>
       <div className="actions">
-        <Link to={`/showcase?icon=${name}`} className="btn primary">
+        <Link to={`/showcase?vector=${name}`} className="btn primary">
           See it in 3D
         </Link>
         <Link to={`/studio/${name}`} className="btn">

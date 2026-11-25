@@ -1,4 +1,4 @@
-import { SPEC, stripStateShapes } from '@icon-canvas/core'
+import { SPEC, stripStateShapes } from '@autosvg/core'
 import { STYLE, safe } from './style.ts'
 
 const SVG_NS = 'http://www.w3.org/2000/svg'
@@ -39,7 +39,7 @@ const fmt = (n: number): number => Number(n.toFixed(2))
 
 export type Status = 'pass' | 'warn' | 'fail'
 
-/** The outcome of one rule for one icon. */
+/** The outcome of one rule for one vector. */
 export interface LintResult {
   id: string
   label: string
@@ -48,11 +48,11 @@ export interface LintResult {
 }
 
 /**
- * Lint a standalone icon SVG string against SPEC.
+ * Lint a standalone vector SVG string against SPEC.
  * Returns [{ id, label, status: 'pass' | 'warn' | 'fail', detail }].
  */
 export function lintSVG(source: string): LintResult[] {
-  const markup = stripStateShapes(source) // the rules describe the icon at rest; state-only elements are checked by the pose lint
+  const markup = stripStateShapes(source) // the rules describe the vector at rest; state-only elements are checked by the pose lint
   const results: LintResult[] = []
   const add = (id: string, label: string, status: Status, detail = ''): void => {
     results.push({ id, label, status, detail })

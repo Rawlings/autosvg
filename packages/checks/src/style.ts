@@ -1,4 +1,4 @@
-import { DEFAULT_STYLE, SPEC, type Style } from '@icon-canvas/core'
+import { DEFAULT_STYLE, SPEC, type Style } from '@autosvg/core'
 
 /**
  * The look currently being previewed (the Style panel). Everything displayed and every check follows it,

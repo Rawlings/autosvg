@@ -1,7 +1,7 @@
 // Evaluates a geometry expression with Paper.js tools in scope. Shared by `pnpm geom` and the MCP server.
-import * as pp from '@icon-canvas/checks/paper'
-import * as geo from '@icon-canvas/core/geo'
-import * as kit from '@icon-canvas/core/kit'
+import * as pp from '@autosvg/checks/paper'
+import * as geo from '@autosvg/core/geo'
+import * as kit from '@autosvg/core/kit'
 
 /** The result printed for pasting: markup becomes one `path('…'),` per line, anything else as text. */
 export function evalGeom(expression: string): string {

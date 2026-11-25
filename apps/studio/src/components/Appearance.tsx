@@ -1,5 +1,5 @@
-import type { Cap, Join, Style } from '@icon-canvas/core'
-import { api } from '@icon-canvas/engine'
+import type { Cap, Join, Style } from '@autosvg/core'
+import { api } from '@autosvg/engine'
 
 interface SliderProps {
   label: string
@@ -49,7 +49,7 @@ function Choice<T extends string>({ label, value, options, onChange }: ChoicePro
 const CAPS: readonly Cap[] = ['round', 'square', 'butt']
 const JOINS: readonly Join[] = ['round', 'miter']
 
-/** The style levers (the stroke, corners, caps and joins). Only the Look menu shows them; they only preview, the icon files never change. */
+/** The style levers (the stroke, corners, caps and joins). Only the Look menu shows them; they only preview, the vector files never change. */
 export function Appearance({ style }: { style: Style }) {
   const set = (patch: Partial<Style>) => api.setStyle(patch)
   return (

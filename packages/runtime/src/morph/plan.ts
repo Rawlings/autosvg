@@ -1,4 +1,4 @@
-import { at as nth, type Style } from '@icon-canvas/core'
+import { at as nth, type Style } from '@autosvg/core'
 import { type Cubic, mid, r2, reverseCurve, subdivide } from './curves.ts'
 import { type Stroke, strokesOf } from './strokes.ts'
 
@@ -11,11 +11,11 @@ const costOf = (a: Stroke, b: Stroke): number =>
 const fadeCost = (s: Stroke): number => 4 + 0.5 * s.len
 
 interface Pairing {
-  /** indexes into the first and second icon's strokes */
+  /** indexes into the first and second vector's strokes */
   pairs: { i: number; j: number; cost: number; limit: number }[]
-  /** strokes of the first icon with no partner (they fade out) */
+  /** strokes of the first vector with no partner (they fade out) */
   outs: number[]
-  /** strokes of the second icon with no partner (they fade in) */
+  /** strokes of the second vector with no partner (they fade in) */
   ins: number[]
 }
 
@@ -101,15 +101,15 @@ export interface MorphPlan {
   strokes: MorphStroke[]
   /** how much of all the ink fades instead of moving, 0 to 1 */
   share: number
-  /** how far the moving ink travels on average, in icon units */
+  /** how far the moving ink travels on average, in vector units */
   travel: number
-  /** the two icons have little in common: the plain swap suits them better */
+  /** the two vectors have little in common: the plain swap suits them better */
   rough: boolean
 }
 
 /**
- * The plan for turning icon `from` into icon `to`: one entry per stroke, with the path it starts as, the path it ends as
- * and whether it fades in or out. `rough` is true when the two icons have little in common (most of the ink has to fade
+ * The plan for turning vector `from` into vector `to`: one entry per stroke, with the path it starts as, the path it ends as
+ * and whether it fades in or out. `rough` is true when the two vectors have little in common (most of the ink has to fade
  * rather than move), in which case the plain swap (swap.css) is the better transition.
  */
 export function morphPlan(from: string, to: string, params: Partial<Style> = {}): MorphPlan {
@@ -138,6 +138,6 @@ export function morphPlan(from: string, to: string, params: Partial<Style> = {})
   const total = (arr: readonly Stroke[]): number => arr.reduce((n, s) => n + s.len, 0)
   const fading = outs.reduce((n, i) => n + nth(A, i).len, 0) + ins.reduce((n, j) => n + nth(B, j).len, 0)
   const share = fading / (total(A) + total(B) || 1) // how much of all the ink fades instead of moving
-  const travel = movedLen ? moved / movedLen : 0 // how far the moving ink travels, on average (icon units)
+  const travel = movedLen ? moved / movedLen : 0 // how far the moving ink travels, on average (vector units)
   return { strokes, share: r2(share), travel: r2(travel), rough: share > 0.5 }
 }

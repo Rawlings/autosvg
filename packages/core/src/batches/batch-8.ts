@@ -1,4 +1,4 @@
-// Batch 8: the first icons drawn with `pnpm verify-icons` (a door, a ladder, a pot, a window).
+// Batch 8: the first vectors drawn with `pnpm verify-vectors` (a door, a ladder, a pot, a window).
 import { on, P, type PoseSpec, pulse, wave } from '../poses/dsl.ts'
 import { dot, path, R, type Recipe, rect } from '../recipe-kit.ts'
 

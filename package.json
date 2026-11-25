@@ -1,8 +1,8 @@
 {
-  "name": "icon-canvas",
+  "name": "autosvg",
   "private": true,
   "version": "0.0.1",
-  "description": "A pure line icon set (24px grid, 1.5px stroke) where each icon is a small state machine driven by CSS variables.",
+  "description": "A pure line vector set (24px grid, 1.5px stroke) where each vector is a small state machine driven by CSS variables.",
   "license": "MIT",
   "author": "Jonathan Rawlings",
   "type": "module",
@@ -12,21 +12,21 @@
     "pnpm": ">=12"
   },
   "scripts": {
-    "dev": "pnpm --filter @icon-canvas/studio dev",
-    "build": "pnpm --filter @icon-canvas/studio build",
-    "preview": "pnpm --filter @icon-canvas/studio preview",
-    "seed": "pnpm --filter @icon-canvas/tools seed",
-    "seed:check": "pnpm --filter @icon-canvas/tools seed:check",
-    "css": "pnpm --filter @icon-canvas/tools css",
-    "export": "pnpm --filter @icon-canvas/tools export",
+    "dev": "pnpm --filter @autosvg/studio dev",
+    "build": "pnpm --filter @autosvg/studio build",
+    "preview": "pnpm --filter @autosvg/studio preview",
+    "seed": "pnpm --filter @autosvg/tools seed",
+    "seed:check": "pnpm --filter @autosvg/tools seed:check",
+    "css": "pnpm --filter @autosvg/tools css",
+    "export": "pnpm --filter @autosvg/tools export",
     "typecheck": "pnpm -r --parallel typecheck",
     "lint": "biome check .",
     "format": "biome check --write .",
     "check": "pnpm lint && pnpm typecheck && pnpm seed:check",
-    "verify-icons": "pnpm --filter @icon-canvas/tools verify-icons",
-    "quick": "pnpm --filter @icon-canvas/tools quick",
-    "geom": "pnpm --filter @icon-canvas/tools geom",
-    "shot": "pnpm --filter @icon-canvas/tools shot"
+    "verify-vectors": "pnpm --filter @autosvg/tools verify-vectors",
+    "quick": "pnpm --filter @autosvg/tools quick",
+    "geom": "pnpm --filter @autosvg/tools geom",
+    "shot": "pnpm --filter @autosvg/tools shot"
   },
   "devDependencies": {
     "@biomejs/biome": "catalog:",

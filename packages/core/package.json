@@ -1,5 +1,5 @@
 {
-  "name": "@icon-canvas/core",
+  "name": "@autosvg/core",
   "version": "0.0.1",
   "private": true,
   "description": "The rules and the drawing: spec tokens, geometry helpers, parametric recipes and the pose table. No DOM.",

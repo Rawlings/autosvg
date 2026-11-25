@@ -1,22 +1,22 @@
-import { DEFAULT_STYLE } from '@icon-canvas/core'
-import { ICONS } from '@icon-canvas/icons'
-import { renderIcon } from '@icon-canvas/runtime'
+import { DEFAULT_STYLE } from '@autosvg/core'
+import { renderIcon } from '@autosvg/runtime'
+import { VECTORS } from '@autosvg/vectors'
 import { PX, rasterise } from './measure/raster.ts'
 
-/** An existing icon that looks like another one, and by how much they differ (0 = identical, 1 = nothing in common). */
+/** An existing vector that looks like another one, and by how much they differ (0 = identical, 1 = nothing in common). */
 export interface Neighbour {
   name: string
   diff: number
 }
 
-/** An icon's ink, as a mask, and the same ink grown by `GROW` pixels: how far a stroke may sit from its twin and still be "the same". */
+/** A vector's ink, as a mask, and the same ink grown by `GROW` pixels: how far a stroke may sit from its twin and still be "the same". */
 interface Mask {
   ink: Uint8Array
   grown: Uint8Array
   count: number
 }
 
-/** Pixels (4 per icon unit): 2 is half a unit. Larger and every thin outline matches every other. */
+/** Pixels (4 per vector unit): 2 is half a unit. Larger and every thin outline matches every other. */
 const GROW = 2
 
 const masks = new Map<string, Mask>()
@@ -80,12 +80,12 @@ function difference(a: Mask, b: Mask): number {
   return 1 - (aNearB / a.count + bNearA / b.count) / 2
 }
 
-/** For each name, the `k` other icons of the set that look most like it. An icon that is almost another one is a second copy. */
-export async function nearestIcons(names: readonly string[], k = 3): Promise<Record<string, Neighbour[]>> {
+/** For each name, the `k` other vectors of the set that look most like it. A vector that is almost another one is a second copy. */
+export async function nearestVectors(names: readonly string[], k = 3): Promise<Record<string, Neighbour[]>> {
   const all = new Map<string, Mask>()
-  const icons = ICONS.map((i) => i.name)
-  for (let i = 0; i < icons.length; i += 32) {
-    const chunk = icons.slice(i, i + 32)
+  const vectors = VECTORS.map((i) => i.name)
+  for (let i = 0; i < vectors.length; i += 32) {
+    const chunk = vectors.slice(i, i + 32)
     const drawn = await Promise.all(chunk.map(maskOf))
     for (const [j, name] of chunk.entries()) {
       const mask = drawn[j]
@@ -96,7 +96,7 @@ export async function nearestIcons(names: readonly string[], k = 3): Promise<Rec
   for (const name of names) {
     const mine = all.get(name)
     if (!mine) continue
-    out[name] = icons
+    out[name] = vectors
       .filter((other) => other !== name)
       .flatMap((other) => {
         const theirs = all.get(other)

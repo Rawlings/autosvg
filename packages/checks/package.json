@@ -1,8 +1,8 @@
 {
-  "name": "@icon-canvas/checks",
+  "name": "@autosvg/checks",
   "version": "0.0.1",
   "private": true,
-  "description": "Everything that judges an icon: rule lint, raster measurement, shape analysis, coverage, pose lint, performance and accessibility audits.",
+  "description": "Everything that judges a vector: rule lint, raster measurement, shape analysis, coverage, pose lint, performance and accessibility audits.",
   "license": "MIT",
   "type": "module",
   "exports": {
@@ -17,9 +17,9 @@
     "typecheck": "tsc -p ."
   },
   "dependencies": {
-    "@icon-canvas/core": "workspace:*",
-    "@icon-canvas/icons": "workspace:*",
-    "@icon-canvas/runtime": "workspace:*",
+    "@autosvg/core": "workspace:*",
+    "@autosvg/vectors": "workspace:*",
+    "@autosvg/runtime": "workspace:*",
     "paper": "catalog:"
   },
   "devDependencies": {

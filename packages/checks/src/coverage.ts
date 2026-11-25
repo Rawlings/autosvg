@@ -1,14 +1,14 @@
-// Static analysis: which style settings should this icon respond to?
+// Static analysis: which style settings should this vector respond to?
 //
 //   radius  applies to rounded corners: a rect with rx, or a small circular arc that joins a straight line
 //   curve   applies to circles (not the tiny dots)
 //
-// The coverage check compares this with what the icon actually does when the settings change, so an
-// icon that has corners or circles but no recipe is caught instead of silently ignoring them.
-import { at as nth, type Point } from '@icon-canvas/core'
+// The coverage check compares this with what the vector actually does when the settings change, so an
+// vector that has corners or circles but no recipe is caught instead of silently ignoring them.
+import { at as nth, type Point } from '@autosvg/core'
 
 /**
- * Icons whose arcs are not corners and whose circles are not circles to reshape. Exempt on purpose and
+ * Vectors whose arcs are not corners and whose circles are not circles to reshape. Exempt on purpose and
  * listed in the coverage result, so the exception is visible and has a reason.
  */
 export const EXEMPT: Readonly<Record<string, string>> = {
@@ -84,7 +84,7 @@ export function parsePath(d: string): Segment[] {
   return segs
 }
 
-/** What an icon has that radius and curve should act on. */
+/** What a vector has that radius and curve should act on. */
 export function features(svg: string): { circles: number; corners: number } {
   const doc = new DOMParser().parseFromString(svg, 'image/svg+xml')
   // circles under radius 2 are details (a dot, an eyelet), too small for a squircle to differ; keep in step with core/src/recipes.ts

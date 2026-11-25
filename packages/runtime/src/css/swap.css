@@ -1,11 +1,11 @@
 /*
-  Icon swap: change one icon into another smoothly, with CSS only.
+  Vector swap: change one vector into another smoothly, with CSS only.
 
     <span class="icon-swap" data-state="on"> <icon-glyph name="sun"> <icon-glyph name="moon"> </span>
 
-  The first icon turns out (scales down, turns, blurs, fades) while the second turns in. The whole thing is driven by one
-  number, --icon-swap (0 shows the first icon, 1 the second): set data-state="on", or set --icon-swap on the element or any
-  ancestor and let a CSS transition or animation move it. Both icons are decorative: put the label and the state
+  The first vector turns out (scales down, turns, blurs, fades) while the second turns in. The whole thing is driven by one
+  number, --icon-swap (0 shows the first vector, 1 the second): set data-state="on", or set --icon-swap on the element or any
+  ancestor and let a CSS transition or animation move it. Both vectors are decorative: put the label and the state
   (aria-pressed, aria-label) on the button that holds them.
 
   Tuning (all optional): --icon-swap-duration (320ms), --icon-swap-easing, --icon-swap-turn (30deg), --icon-swap-blur (1.5px).

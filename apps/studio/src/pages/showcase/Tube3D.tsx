@@ -1,14 +1,15 @@
-import { ICONS } from '@icon-canvas/engine'
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { VECTORS } from '@autosvg/engine'
+import { type RefObject, useCallback, useEffect, useRef, useState } from 'react'
 import { useEngine } from '../../app/hooks.ts'
 import { useLook } from '../../app/look.ts'
 import { Glyph } from '../../components/Glyph.tsx'
 import { lookOf } from '../../lib/materials.ts'
 import { type Look, TubeGL } from '../../lib/tube-gl.ts'
-import { buildTubes } from '../../lib/tube3d.ts'
+import { buildTubes, liveTubes } from '../../lib/tube3d.ts'
 import { Knob } from './depth.tsx'
+import { PoseBar } from './PoseBar.tsx'
 
-/** A few well-drawn icons to jump between; the carried icon is added in front when it is not one of them. */
+/** A few well-drawn vectors to jump between; the carried vector is added in front when it is not one of them. */
 const FEATURED = ['bell', 'lock', 'heart', 'bolt', 'rocket', 'key', 'camera', 'cloud']
 
 const MORPH_MS = 900
@@ -18,7 +19,7 @@ const FRICTION = 3.2
 const PITCH_LIMIT = 0.7
 
 const ease = (t: number) => t * t * (3 - 2 * t)
-const NAMES = ICONS.map((i) => i.name)
+const NAMES = VECTORS.map((i) => i.name)
 
 /** The numbers a picture is made of, kept in a ref so that dragging never re-renders React. */
 interface Scene {
@@ -36,9 +37,11 @@ interface Scene {
 }
 
 interface Props {
-  /** The icon to show. When it changes the shape morphs into the new one. */
-  icon: string
-  onIcon: (name: string) => void
+  /** The vector to show. When it changes the shape morphs into the new one. */
+  vector: string
+  onVector: (name: string) => void
+  /** The element that carries `--icon-state` and `--icon-motion` for the whole page. */
+  target: RefObject<HTMLElement | null>
 }
 
 const Chevron = ({ d }: { d: string }) => (
@@ -58,17 +61,17 @@ const Chevron = ({ d }: { d: string }) => (
 )
 
 /**
- * The carried icon as a real object: each stroke becomes a lit tube, drawn with WebGL from the same plain SVG paths the
- * rest of the set uses. Drag to turn it; any change of icon (a button, `[` and `]`, or arriving from the Library) morphs
+ * The carried vector as a real object: each stroke becomes a lit tube, drawn with WebGL from the same plain SVG paths the
+ * rest of the set uses. Drag to turn it; any change of vector (a button, `[` and `]`, or arriving from the Library) morphs
  * the shape in the vertex shader. The colour comes from the shared look. A showcase: the library ships none of it.
  */
-export function Tube3D({ icon, onIcon }: Props) {
+export function Tube3D({ vector, onVector, target }: Props) {
   const look = useLook()
   const { style } = useEngine()
   const canvas = useRef<HTMLCanvasElement>(null)
   const gl = useRef<TubeGL | undefined>(undefined)
   const scene = useRef<Scene>({
-    to: icon,
+    to: vector,
     t: 1,
     morphStart: undefined,
     yaw: -0.5,
@@ -84,6 +87,9 @@ export function Tube3D({ icon, onIcon }: Props) {
   const visible = useRef(true)
   const last = useRef<number | undefined>(undefined)
   const reduced = useRef(false)
+  const probe = useRef<HTMLDivElement>(null)
+  const posePlaying = useRef(false)
+  const live = useRef(false)
   const [turn, setTurn] = useState(-29)
   const [supported, setSupported] = useState(true)
 
@@ -105,6 +111,25 @@ export function Tube3D({ icon, onIcon }: Props) {
       s.spin *= Math.exp(-FRICTION * dt)
       moving = true
     }
+    // the pose: the vector as drawn right now with the motion and state the page has set on it (see PoseBar)
+    const svg = probe.current?.querySelector('svg')
+    let posed = false
+    if (svg && probe.current && s.t >= 1) {
+      const css = getComputedStyle(probe.current)
+      posed =
+        Math.abs(Number.parseFloat(css.getPropertyValue('--icon-motion'))) > 0.001 ||
+        Number.parseFloat(css.getPropertyValue('--icon-state')) > 0.001
+    }
+    if (posed && svg) {
+      const data = liveTubes(svg)
+      if (data) renderer.setTubes(data)
+      live.current = true
+      moving = true
+    } else if (live.current) {
+      renderer.setTubes(buildTubes(s.to, s.to, { radius: s.radius, curve: s.curve }))
+      live.current = false
+    }
+    if (posePlaying.current) moving = true
     // a slow sway when nothing is happening, so the form reads as solid; never under reduced motion
     const sway = reduced.current ? 0 : Math.sin(time / 1700) * 0.28
     renderer.draw({ t: ease(s.t), yaw: s.yaw + sway, pitch: s.pitch, stroke: s.stroke, look: s.look })
@@ -114,6 +139,14 @@ export function Tube3D({ icon, onIcon }: Props) {
   const wake = useCallback(() => {
     if (frame.current === 0) frame.current = requestAnimationFrame(draw)
   }, [draw])
+
+  const onPose = useCallback(
+    (playing: boolean) => {
+      posePlaying.current = playing
+      wake()
+    },
+    [wake],
+  )
 
   useEffect(() => {
     const element = canvas.current
@@ -158,7 +191,7 @@ export function Tube3D({ icon, onIcon }: Props) {
     wake()
   }, [look.color, wake])
 
-  // the shared style: stroke thickens the tubes, corner radius and curve reshape the icon itself
+  // the shared style: stroke thickens the tubes, corner radius and curve reshape the vector itself
   useEffect(() => {
     const s = scene.current
     s.stroke = style.stroke
@@ -173,14 +206,15 @@ export function Tube3D({ icon, onIcon }: Props) {
     wake()
   }, [style.stroke, style.radius, style.curve, wake])
 
-  // the carried icon changed (from here, from the header, from the address): morph to it
+  // the carried vector changed (from here, from the header, from the address): morph to it
   useEffect(() => {
     const s = scene.current
     const renderer = gl.current
-    if (!renderer || s.to === icon) return
+    if (!renderer || s.to === vector) return
     // a change during a morph lands the first one at once, then the new one starts from there
-    renderer.setTubes(buildTubes(s.to, icon, { radius: s.radius, curve: s.curve }))
-    s.to = icon
+    renderer.setTubes(buildTubes(s.to, vector, { radius: s.radius, curve: s.curve }))
+    live.current = false
+    s.to = vector
     if (reduced.current) {
       s.t = 1
       s.morphStart = undefined
@@ -189,13 +223,13 @@ export function Tube3D({ icon, onIcon }: Props) {
       s.morphStart = performance.now()
     }
     wake()
-  }, [icon, wake])
+  }, [vector, wake])
 
   // step through the whole set with [ and ], as in the Studio
-  const index = NAMES.indexOf(icon)
+  const index = NAMES.indexOf(vector)
   const step = useCallback(
-    (by: number) => onIcon(NAMES[(index + by + NAMES.length) % NAMES.length] ?? icon),
-    [index, icon, onIcon],
+    (by: number) => onVector(NAMES[(index + by + NAMES.length) % NAMES.length] ?? vector),
+    [index, vector, onVector],
   )
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -235,7 +269,7 @@ export function Tube3D({ icon, onIcon }: Props) {
     wake()
   }
 
-  const strip = FEATURED.includes(icon) ? FEATURED : [icon, ...FEATURED]
+  const strip = FEATURED.includes(vector) ? FEATURED : [vector, ...FEATURED]
 
   return (
     <div className="sc-3d">
@@ -245,7 +279,7 @@ export function Tube3D({ icon, onIcon }: Props) {
             ref={canvas}
             className="sc-3d-canvas"
             role="img"
-            aria-label={`The ${icon} icon as a lit three-dimensional tube. Drag to turn it.`}
+            aria-label={`The ${vector} vector as a lit three-dimensional tube. Drag to turn it.`}
             onPointerDown={down}
             onPointerMove={move}
             onPointerUp={up}
@@ -254,26 +288,29 @@ export function Tube3D({ icon, onIcon }: Props) {
         ) : (
           <p className="sc-3d-fallback">This needs WebGL2.</p>
         )}
+        <div className="sc-3d-probe" ref={probe} aria-hidden="true">
+          <Glyph name={vector} size={96} />
+        </div>
         <div className="sc-3d-bar">
           <button
             type="button"
-            className="btn icon-btn"
-            aria-label="Previous icon"
+            className="btn vector-btn"
+            aria-label="Previous vector"
             title="Previous ( [ )"
             onClick={() => step(-1)}
           >
             <Chevron d="m14.5 6-6 6 6 6" />
           </button>
           <p className="sc-3d-name" aria-live="polite">
-            <strong>{icon}</strong>
+            <strong>{vector}</strong>
             <span>
               {index + 1} / {NAMES.length}
             </span>
           </p>
           <button
             type="button"
-            className="btn icon-btn"
-            aria-label="Next icon"
+            className="btn vector-btn"
+            aria-label="Next vector"
             title="Next ( ] )"
             onClick={() => step(1)}
           >
@@ -282,20 +319,21 @@ export function Tube3D({ icon, onIcon }: Props) {
         </div>
       </div>
       <div className="sc-3d-controls">
-        <div className="sc-3d-icons" role="group" aria-label="Icon">
+        <div className="sc-3d-vectors" role="group" aria-label="Vector">
           {strip.map((name) => (
             <button
               key={name}
               type="button"
-              className="sc-3d-icon"
+              className="sc-3d-vector"
               aria-label={name}
-              aria-pressed={icon === name}
-              onClick={() => onIcon(name)}
+              aria-pressed={vector === name}
+              onClick={() => onVector(name)}
             >
               <Glyph name={name} size={24} />
             </button>
           ))}
         </div>
+        <PoseBar vector={vector} target={target} onPose={onPose} />
         <div className="sc-3d-knobs">
           <Knob
             label="Turn"

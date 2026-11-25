@@ -7,11 +7,11 @@ import {
   type Measurement,
   minGap,
   type Status,
-} from '@icon-canvas/checks'
-import { type ShapeReport, analyse as shapeAnalyse } from '@icon-canvas/checks/paper'
-import { RECIPES, SPEC, type Style, stripStateShapes } from '@icon-canvas/core'
-import { getIcon } from '@icon-canvas/icons'
-import { renderIcon } from '@icon-canvas/runtime'
+} from '@autosvg/checks'
+import { type ShapeReport, analyse as shapeAnalyse } from '@autosvg/checks/paper'
+import { RECIPES, SPEC, type Style, stripStateShapes } from '@autosvg/core'
+import { renderIcon } from '@autosvg/runtime'
+import { getVector } from '@autosvg/vectors'
 import { SIZE } from './markup.ts'
 import { getName } from './state.ts'
 
@@ -42,7 +42,7 @@ export async function measureSVG(svg: string): Promise<Measured> {
   return { ...m, shape, offset: Math.max(Math.abs(m.bx - SIZE / 2), Math.abs(m.by - SIZE / 2)) }
 }
 
-/** How an icon follows the radius and curve settings. */
+/** How a vector follows the radius and curve settings. */
 export interface Coverage {
   circles: number
   corners: number
@@ -55,17 +55,17 @@ export interface Coverage {
 const coverageCache = new Map<string, Coverage>()
 
 /**
- * Does the saved icon respond to the radius and curve settings wherever it has rounded corners or
- * circles? Compares the default drawing with extreme settings; an icon with the features but no
+ * Does the saved vector respond to the radius and curve settings wherever it has rounded corners or
+ * circles? Compares the default drawing with extreme settings; a vector with the features but no
  * visible change has no (or a broken) recipe.
  */
 export async function coverageFor(name: string): Promise<Coverage | null> {
-  const icon = getIcon(name)
-  if (!icon) return null
-  const key = `${name}|${icon.svg}|${Object.hasOwn(RECIPES, name)}`
+  const vector = getVector(name)
+  if (!vector) return null
+  const key = `${name}|${vector.svg}|${Object.hasOwn(RECIPES, name)}`
   const cached = coverageCache.get(key)
   if (cached) return cached
-  const f = features(stripStateShapes(icon.svg)) // state-only elements follow the radius but are not what the icon is at rest
+  const f = features(stripStateShapes(vector.svg)) // state-only elements follow the radius but are not what the vector is at rest
   const exempt = EXEMPT[name]
   if (exempt) return { ...f, reasons: [], exempt }
   const draw = (p: Partial<Style>): string => renderIcon(name, p, { inline: true })

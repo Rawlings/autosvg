@@ -7,7 +7,7 @@ const SIZES = [16, 20, 24, 32, 48, 64] as const
 const words = (name: string) => name.replace(/-/g, ' ')
 
 /**
- * The carried icon in real places, drawn with the shared look: the stroke, radius, curve, caps and joins set in the Look menu
+ * The carried vector in real places, drawn with the shared look: the stroke, radius, curve, caps and joins set in the Look menu
  * reach every one of these through the --icon-* variables, with no code here that knows about them.
  */
 export function InPlace({ name }: { name: string }) {
@@ -30,7 +30,7 @@ export function InPlace({ name }: { name: string }) {
       </Card>
       <Card
         title="In buttons"
-        note="Filled, outlined, icon only. Hover or focus one to play the icon's own gesture."
+        note="Filled, outlined, vector only. Hover or focus one to play the vector's own gesture."
         driver=".sc-hover:hover { --icon-motion: 1 }"
       >
         <div className="sc-c-buttons">
@@ -49,18 +49,18 @@ export function InPlace({ name }: { name: string }) {
       </Card>
       <Card
         title="In a tab bar"
-        note="Between two neighbours, so you can judge its weight and size beside other icons."
+        note="Between two neighbours, so you can judge its weight and size beside other vectors."
         driver="aria-current=page · --icon-motion"
       >
         <div className="sc-c-tabs" role="group" aria-label="Tab bar example">
           {[
-            { key: 'before', icon: 'home', text: 'home', on: false },
-            { key: 'carried', icon: name, text: label, on: true },
-            { key: 'search', icon: 'search', text: 'search', on: false },
-            { key: 'user', icon: 'user', text: 'user', on: false },
+            { key: 'before', vector: 'home', text: 'home', on: false },
+            { key: 'carried', vector: name, text: label, on: true },
+            { key: 'search', vector: 'search', text: 'search', on: false },
+            { key: 'user', vector: 'user', text: 'user', on: false },
           ].map((tab) => (
             <button key={tab.key} type="button" className="sc-c-tab sc-hover" aria-pressed={tab.on}>
-              <Glyph name={tab.icon} size={24} />
+              <Glyph name={tab.vector} size={24} />
               <span>{tab.text}</span>
             </button>
           ))}

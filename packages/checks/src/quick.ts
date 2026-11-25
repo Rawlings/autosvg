@@ -1,7 +1,7 @@
 // A quick check of a recipe's markup from its numbers alone: no DOM, no canvas, no Chrome, a fraction of a second.
 // It finds what the browser checks would find (bounds, centring, grid, narrow gaps, loose ends, kinks), so a recipe can be
-// fixed before it is ever drawn. The browser checks (`pnpm verify-icons`) stay the final word.
-import { SPEC } from '@icon-canvas/core'
+// fixed before it is ever drawn. The browser checks (`pnpm verify-vectors`) stay the final word.
+import { SPEC } from '@autosvg/core'
 import { DELIBERATE } from './deliberate.ts'
 import { analysePaths, simplePaths, withShapes } from './paper-tools.ts'
 
@@ -100,7 +100,7 @@ function gapFindings(paths: readonly { label: string; path: paper.Path }[]): Qui
   return [...found.values()].map(({ length: _length, ...finding }) => finding)
 }
 
-/** Check the markup of an icon (its shapes, drawn at the default look). `name` lets the deliberate exceptions apply. */
+/** Check the markup of a vector (its shapes, drawn at the default look). `name` lets the deliberate exceptions apply. */
 export function quickCheck(markup: string, name = ''): QuickFinding[] {
   const out: QuickFinding[] = [...gridFindings(markup)]
   withShapes(markup, (shapes) => {

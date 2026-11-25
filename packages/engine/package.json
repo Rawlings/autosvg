@@ -1,8 +1,8 @@
 {
-  "name": "@icon-canvas/engine",
+  "name": "@autosvg/engine",
   "version": "0.0.1",
   "private": true,
-  "description": "The headless model behind the studio and window.iconCanvas: the drawing, the previewed style, and the API an agent uses to draw, measure and compare.",
+  "description": "The headless model behind the studio and window.autosvg: the drawing, the previewed style, and the API an agent uses to draw, measure and compare.",
   "license": "MIT",
   "type": "module",
   "exports": {
@@ -15,10 +15,10 @@
     "typecheck": "tsc -p ."
   },
   "dependencies": {
-    "@icon-canvas/checks": "workspace:*",
-    "@icon-canvas/core": "workspace:*",
-    "@icon-canvas/icons": "workspace:*",
-    "@icon-canvas/runtime": "workspace:*"
+    "@autosvg/checks": "workspace:*",
+    "@autosvg/core": "workspace:*",
+    "@autosvg/vectors": "workspace:*",
+    "@autosvg/runtime": "workspace:*"
   },
   "devDependencies": {
     "typescript": "catalog:",

@@ -1,5 +1,5 @@
 // The pieces recipes are written with: shape helpers that return markup, and the radius and curve settings they follow.
-// A recipe is a function of the geometry settings; at the defaults (r = 1, c = 0) it must reproduce its saved icon file.
+// A recipe is a function of the geometry settings; at the defaults (r = 1, c = 0) it must reproduce its saved vector file.
 import { roundedPolygon, roundedPolyline, superellipse } from './geo.ts'
 import type { Point } from './util.ts'
 
@@ -9,7 +9,7 @@ export interface RecipeParams {
   c: number
 }
 
-/** A recipe returns the shapes of an icon, one markup string each. */
+/** A recipe returns the shapes of a vector, one markup string each. */
 export type Recipe = (p: RecipeParams) => string[]
 
 export const n = (v: number): number => +v.toFixed(2)

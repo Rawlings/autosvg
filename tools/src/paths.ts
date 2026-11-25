@@ -3,8 +3,8 @@
 /** The repository root, as a directory URL. */
 export const root = new URL('../../', import.meta.url)
 
-/** The icon files, `packages/icons/svg/`, as a directory URL. */
-export const iconDir = new URL('packages/icons/svg/', root)
+/** The vector files, `packages/vectors/svg/`, as a directory URL. */
+export const vectorDir = new URL('packages/vectors/svg/', root)
 
 /** The runtime's stylesheets, `packages/runtime/src/css/`, as a directory URL. */
 export const cssDir = new URL('packages/runtime/src/css/', root)

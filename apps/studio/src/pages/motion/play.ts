@@ -1,4 +1,4 @@
-import { CHANNEL_VAR } from '@icon-canvas/core'
+import { CHANNEL_VAR } from '@autosvg/core'
 
 /** The channels a consumer can play: the momentary gesture and the two look directions (the state is a position, not a play). */
 export type PlayChannel = 1 | 3 | 4

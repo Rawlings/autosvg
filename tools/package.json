@@ -1,8 +1,8 @@
 {
-  "name": "@icon-canvas/tools",
+  "name": "@autosvg/tools",
   "version": "0.0.1",
   "private": true,
-  "description": "Scripts that write files: seed the icon files from recipes and the pose table, generate poses.css, export static SVGs.",
+  "description": "Scripts that write files: seed the vector files from recipes and the pose table, generate poses.css, export static SVGs.",
   "license": "MIT",
   "type": "module",
   "scripts": {
@@ -11,17 +11,17 @@
     "css": "node src/gen-poses-css.ts",
     "export": "node src/export-svgs.ts",
     "typecheck": "tsc -p .",
-    "verify-icons": "node src/verify-icons.ts",
+    "verify-vectors": "node src/verify-vectors.ts",
     "quick": "node src/quick.ts",
     "geom": "node src/geom.ts",
     "batches": "node src/batches.ts",
     "shot": "node src/shot.ts"
   },
   "dependencies": {
-    "@icon-canvas/checks": "workspace:*",
-    "@icon-canvas/core": "workspace:*",
-    "@icon-canvas/icons": "workspace:*",
-    "@icon-canvas/runtime": "workspace:*"
+    "@autosvg/checks": "workspace:*",
+    "@autosvg/core": "workspace:*",
+    "@autosvg/vectors": "workspace:*",
+    "@autosvg/runtime": "workspace:*"
   },
   "devDependencies": {
     "@types/node": "catalog:",

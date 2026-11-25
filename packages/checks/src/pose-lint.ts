@@ -1,12 +1,12 @@
-// Pose lint: checks every icon's pose data and what it does when drawn.
+// Pose lint: checks every vector's pose data and what it does when drawn.
 //
 //   structure   only known data- attributes, numeric, beats are contiguous, drawing shapes carry pathLength, labels agree
 //   in sync     the saved file carries exactly the pose the table says
-//   at rest     with every channel at 0 the icon is identical to its plain drawing
-//   states      off-state strokes are invisible in the file (opacity="0"), so the plain icon is unchanged
-//   independent motion moves an icon as much in every state (groups must not leak their numbers into their shapes)
+//   at rest     with every channel at 0 the vector is identical to its plain drawing
+//   states      off-state strokes are invisible in the file (opacity="0"), so the plain vector is unchanged
+//   independent motion moves a vector as much in every state (groups must not leak their numbers into their shapes)
 //   smooth      a state changes a little at a time: no more than a third of the ink may appear from nowhere or vanish between neighbouring frames
-//   alive       every channel the icon uses visibly changes it somewhere in its travel
+//   alive       every channel the vector uses visibly changes it somewhere in its travel
 //   bounds      at any value of a channel (springs overshoot to 1.25) the drawn ink stays inside the canvas
 //   xml         the SVG is valid XML (a bare attribute such as data-x with no value breaks it when drawn as an image)
 //   pivots      a part that scales does so about a point on or near itself (a wrong pivot flings it across the canvas)
@@ -25,14 +25,14 @@ import {
   STATE,
   splitTop,
   withPose,
-} from '@icon-canvas/core'
-import { ICONS } from '@icon-canvas/icons'
-import { renderIcon } from '@icon-canvas/runtime'
+} from '@autosvg/core'
+import { renderIcon } from '@autosvg/runtime'
+import { VECTORS } from '@autosvg/vectors'
 import { analyse, inkDiff, maxJump, posedSvg } from './measure/index.ts'
 
 const MARGIN = 0.5 // drawn ink must stay this far inside the 24 canvas
 const ALIVE = 0.004 // fraction of drawn pixels that must change at some point in a channel's travel
-const REST = 0.0015 // at rest the posed icon may differ from the plain one by at most this
+const REST = 0.0015 // at rest the posed vector may differ from the plain one by at most this
 const GESTURE = [0.15, 0.3, 0.5, 0.7, 1, 1.25] // values tried on a 0 to 1 channel (1.25 is a spring's overshoot)
 const LOOK = [-1.25, -1, -0.5, 0.5, 1, 1.25] // and on a -1 to 1 channel
 const STEP = 0.1 // how finely a state is walked when looking for snaps
@@ -55,14 +55,14 @@ const sig = (markup: string): string[] =>
 const KEY = /^data-(?:ox|oy|b|o|z|st|gr|[cktwn][1-4]|[rxyshvaqg][1-4])$/
 const isLook = (k: Channel): boolean => k === 3 || k === 4 // channels 3 and 4 run from -1 to 1; the rest from 0 to 1
 
-/** Structure problems in one icon's rendered SVG. */
+/** Structure problems in one vector's rendered SVG. */
 function structure(svg: string): string[] {
   const out: string[] = []
   const used = new Set<number>()
   const rootTag = svg.slice(0, svg.indexOf('>'))
   const stops = (/\sdata-states="([^"]*)"/.exec(rootTag)?.[1] ?? '').split(' ').filter(Boolean).length // named states: 1, 2, ... stops
   const body = svg.replace(/^<svg\b[^>]*>/, '').replace(/<\/svg>\s*$/, '')
-  // every element, including the group that carries icon-level beats and the shapes inside it
+  // every element, including the group that carries vector-level beats and the shapes inside it
   for (const [i, m] of [...body.matchAll(/<(?:path|circle|rect|line|polyline|polygon|ellipse|g)\b[^>]*>/g)].entries()) {
     const tag = m[0]
     const attrs = [...tag.matchAll(/\s(data-[\w-]+)="([^"]*)"/g)].map((a) => ({ key: a[1] ?? '', value: a[2] ?? '' }))
@@ -120,7 +120,7 @@ function xmlProblem(svg: string): string {
   return doc.querySelector('parsererror')?.textContent?.trim().split('\n')[0] ?? ''
 }
 
-/** The bounding box of each top-level shape of an icon, measured in a hidden host. */
+/** The bounding box of each top-level shape of a vector, measured in a hidden host. */
 function shapeBoxes(host: HTMLElement, svg: string): (DOMRect | null)[] {
   host.innerHTML = svg
   return [
@@ -138,8 +138,8 @@ function shapeBoxes(host: HTMLElement, svg: string): (DOMRect | null)[] {
 
 /**
  * Scale beats about a pivot that is not on the shape fling it away as it grows: the classic wrong-pivot mistake.
- * A pivot is fine if it sits on (or within 1.5 of) the shape along the axes that scale, or if other shapes of the icon
- * scale about the very same point (the whole icon flips or breathes together).
+ * A pivot is fine if it sits on (or within 1.5 of) the shape along the axes that scale, or if other shapes of the vector
+ * scale about the very same point (the whole vector flips or breathes together).
  */
 function pivotProblems(host: HTMLElement, svg: string): string[] {
   const out: string[] = []
@@ -177,7 +177,7 @@ interface Thin {
 
 /**
  * Thin choreography: a gesture that is a single beat, or one move with one timing, is the "cheap nudge". On the
- * main gesture (channel 1) it is a failure unless the icon is declared `simple`; on the second it is only a note.
+ * main gesture (channel 1) it is a failure unless the vector is declared `simple`; on the second it is only a note.
  */
 function thin(spec: PoseSpec): Thin {
   const result: Thin = { issues: [], notes: [] }
@@ -192,32 +192,32 @@ function thin(spec: PoseSpec): Thin {
     if (!why) continue
     if (!spec.simple)
       result.issues.push(
-        `motion (${label}) is ${why}: add anticipation, lag or a second part, or declare the icon simple()`,
+        `motion (${label}) is ${why}: add anticipation, lag or a second part, or declare the vector simple()`,
       )
   }
   return result
 }
 
 /**
- * Lint poses for the given icons (default: all). Returns { total, posed, pass, issues, notes, channels, avgBytes, beats }.
- * `issues` maps an icon name to a list of problems; icons that pass are not listed.
+ * Lint poses for the given vectors (default: all). Returns { total, posed, pass, issues, notes, channels, avgBytes, beats }.
+ * `issues` maps a vector name to a list of problems; vectors that pass are not listed.
  */
 /** The result of linting poses. */
 export interface PoseLintReport {
   total: number
   posed: number
   pass: number
-  /** problems per icon; icons that pass are not listed */
+  /** problems per vector; vectors that pass are not listed */
   issues: Record<string, string[]>
   notes: Record<string, string[]>
-  /** how many icons use each channel */
+  /** how many vectors use each channel */
   channels: Record<number, number>
   avgBytes: number
   beats: number
 }
 
 export async function lintPoses(
-  names: readonly string[] = ICONS.map((i) => i.name),
+  names: readonly string[] = VECTORS.map((i) => i.name),
   { onProgress }: { onProgress?: (done: number, total: number) => void } = {},
 ): Promise<PoseLintReport> {
   const issues: Record<string, string[]> = {}
@@ -255,7 +255,7 @@ export async function lintPoses(
       beatTotal += spec.parts.reduce((s, p) => s + p.beats.length * (p.at === 'all' ? 1 : [p.at].flat().length), 0)
 
       // the saved file must carry exactly the pose the table describes
-      const file = ICONS.find((i) => i.name === name)
+      const file = VECTORS.find((i) => i.name === name)
       if (!file) problems.push('no saved file')
       else {
         const inner = innerOf(file.svg)
@@ -267,15 +267,15 @@ export async function lintPoses(
         }
       }
 
-      // at rest the icon is its plain drawing: same ink with the pose attributes removed
+      // at rest the vector is its plain drawing: same ink with the pose attributes removed
       const plain = svg.replace(POSE_ATTR, '')
       const rest = await inkDiff(ink(svg, {}), plain)
       if (rest > REST)
         problems.push(
-          `at rest it differs from the plain icon by ${(rest * 100).toFixed(2)}% (a drawing beat leaves a seam?)`,
+          `at rest it differs from the plain vector by ${(rest * 100).toFixed(2)}% (a drawing beat leaves a seam?)`,
         )
 
-      // motion and state are independent: an icon turned or mirrored as a whole moves just as much in every state (a custom
+      // motion and state are independent: a vector turned or mirrored as a whole moves just as much in every state (a custom
       // property leaking from the group into its shapes once made the mirrored refresh collapse to a line)
       if (spec.group && !spec.group.at && channels.includes(1)) {
         const base = await inkDiff(ink(svg, { 1: 0.5 }), ink(svg, {}))
@@ -283,7 +283,7 @@ export async function lintPoses(
           const moved = await inkDiff(ink(svg, { 1: 0.5, 2: k }), ink(svg, { 2: k }))
           if (base > ALIVE && (moved < 0.5 * base || moved > 2 * base)) {
             problems.push(
-              `its motion changes the icon by ${(base * 100).toFixed(1)}% normally but ${(moved * 100).toFixed(1)}% in state ${k}: motion and state must stay independent`,
+              `its motion changes the vector by ${(base * 100).toFixed(1)}% normally but ${(moved * 100).toFixed(1)}% in state ${k}: motion and state must stay independent`,
             )
             break
           }
@@ -296,7 +296,7 @@ export async function lintPoses(
         for (const v of TRAVEL) moved = Math.max(moved, await inkDiff(svg, ink(svg, { [k]: v * (k === 2 ? N : 1) })))
         if (moved < ALIVE)
           problems.push(
-            `channel ${k} (${spec.labels[k - 1] || '?'}) barely changes the icon (${(moved * 100).toFixed(2)}%)`,
+            `channel ${k} (${spec.labels[k - 1] || '?'}) barely changes the vector (${(moved * 100).toFixed(2)}%)`,
           )
 
         // smooth: a state moves a little at a time. Ink that appears or vanishes between neighbouring frames, rather than moves, is a
@@ -317,7 +317,7 @@ export async function lintPoses(
             )
         }
 
-        // bounds: at any value, including a spring's overshoot, the ink stays on the canvas (unless the icon exits on purpose)
+        // bounds: at any value, including a spring's overshoot, the ink stays on the canvas (unless the vector exits on purpose)
         if (spec.exits) continue
         for (const v of isLook(k) ? LOOK : GESTURE.map((g) => g * (k === 2 ? N : 1))) {
           const m = await analyse(ink(svg, { [k]: v }))

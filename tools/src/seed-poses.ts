@@ -1,18 +1,18 @@
-// Writes every icon file with its pose data baked in, and creates files for new recipe icons.
+// Writes every vector file with its pose data baked in, and creates files for new recipe vectors.
 //
 //   pnpm seed          write the files
 //   pnpm seed:check    only report (exit 1 if anything is wrong or out of date)
 //
-// Sources: an icon with a recipe is drawn from its recipe at default settings; an icon without one keeps the
+// Sources: a vector with a recipe is drawn from its recipe at default settings; a vector without one keeps the
 // geometry of its saved file. Either way the pose data comes from the table in packages/core/src/poses/table.ts, and the result
 // is checked against the table's expected shape count so a wrong part index cannot slip through.
 import { existsSync, readdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
-import { quickCheck } from '@icon-canvas/checks/quick'
-import { baseShapes, POSES, poseRootAttrs, RECIPES, splitTop, withPose } from '@icon-canvas/core'
-import { iconDir } from './paths.ts'
+import { quickCheck } from '@autosvg/checks/quick'
+import { baseShapes, POSES, poseRootAttrs, RECIPES, splitTop, withPose } from '@autosvg/core'
+import { vectorDir } from './paths.ts'
 
-const dir = iconDir
+const dir = vectorDir
 const check = process.argv.includes('--check')
 /** `--json` prints one JSON object instead of text: what the MCP server reads. */
 const asJson = process.argv.includes('--json')
@@ -35,7 +35,7 @@ const files = readdirSync(dir)
 const names = [...new Set([...files, ...Object.keys(RECIPES)])].sort()
 
 const problems: string[] = []
-/** Icons whose file was just written: they get the quick geometry check straight away. */
+/** Vectors whose file was just written: they get the quick geometry check straight away. */
 const changed: { name: string; base: string }[] = []
 let written = 0
 let created = 0
@@ -50,10 +50,10 @@ for (const name of names) {
     problems.push(`${name}: no pose in the pose table`)
     continue
   }
-  const count = baseShapes(base).length // an icon's own shapes, without any off-state strokes
+  const count = baseShapes(base).length // a vector's own shapes, without any off-state strokes
   if (count !== spec.n && count !== spec.split?.from) {
     problems.push(
-      `${name}: pose table expects ${spec.split ? `${spec.split.from} (before the split) or ` : ''}${spec.n} shapes but the icon has ${count}`,
+      `${name}: pose table expects ${spec.split ? `${spec.split.from} (before the split) or ` : ''}${spec.n} shapes but the vector has ${count}`,
     )
     continue
   }
@@ -91,13 +91,13 @@ for (const { name, base } of changed) {
   }
 }
 
-for (const name of Object.keys(POSES)) if (!names.includes(name)) problems.push(`${name}: pose entry has no icon`)
+for (const name of Object.keys(POSES)) if (!names.includes(name)) problems.push(`${name}: pose entry has no vector`)
 
-say(`${names.length} icons: ${created} created, ${written} rewritten, ${unchanged} already current`)
+say(`${names.length} vectors: ${created} created, ${written} rewritten, ${unchanged} already current`)
 if (asJson) {
   console.log(
     JSON.stringify({
-      icons: names.length,
+      vectors: names.length,
       created,
       written,
       unchanged,

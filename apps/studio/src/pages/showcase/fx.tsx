@@ -1,4 +1,4 @@
-import { renderIcon } from '@icon-canvas/engine'
+import { renderIcon } from '@autosvg/engine'
 import { type HTMLAttributes, type ReactNode, useEffect, useMemo, useState } from 'react'
 import { useEngine } from '../../app/hooks.ts'
 
@@ -11,7 +11,7 @@ export interface FxProps extends HTMLAttributes<HTMLDivElement> {
   children: ReactNode
 }
 
-/** One treatment: a stage with the icon in it, and a line saying how it is done. The stage is one picture for assistive technology. */
+/** One treatment: a stage with the vector in it, and a line saying how it is done. The stage is one picture for assistive technology. */
 export function Fx({ name, title, how, tone = '', children, ...rest }: FxProps) {
   return (
     <figure className="fx">
@@ -39,7 +39,7 @@ export function Group({ title, blurb, children }: { title: string; blurb: string
 
 export const range = (n: number) => Array.from({ length: n }, (_, i) => i)
 
-/** The icon as a CSS mask, at the stroke, radius and curve of the Look (and a thicker stroke when the effect wants one). */
+/** The vector as a CSS mask, at the stroke, radius and curve of the Look (and a thicker stroke when the effect wants one). */
 export function useMask(name: string, thicker = 1): string {
   const { style } = useEngine()
   return useMemo(() => {
@@ -49,7 +49,7 @@ export function useMask(name: string, thicker = 1): string {
 }
 
 /**
- * The icon drawn into a small grid of `n` by `n` cells, as the coverage (0 to 1) of each cell. For the treatments that rebuild the
+ * The vector drawn into a small grid of `n` by `n` cells, as the coverage (0 to 1) of each cell. For the treatments that rebuild the
  * picture from cells: pixels, lamps, characters, stars. It is the same SVG, rasterised.
  */
 export function useRaster(name: string, n: number, thicker = 1.5): Float32Array | undefined {

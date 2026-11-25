@@ -1,9 +1,9 @@
-import { SPEC } from '@icon-canvas/core'
+import { SPEC } from '@autosvg/core'
 import { minGap } from '../style.ts'
 import { type NarrowGap, narrowGaps } from './gaps.ts'
 import { K, PX, rasterise } from './raster.ts'
 
-/** What one raster of an icon says about it. Units are the 24 grid. */
+/** What one raster of a vector says about it. Units are the 24 grid. */
 export interface Measurement {
   /** share of the canvas covered by ink */
   coverage: number
@@ -20,7 +20,7 @@ export interface Measurement {
 }
 
 /**
- * Everything we measure about an icon from one raster:
+ * Everything we measure about a vector from one raster:
  * ink coverage, optical centre (centre of mass), true extent, and narrow gaps. Units are the 24 grid.
  */
 export async function analyse(svg: string): Promise<Measurement> {

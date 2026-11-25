@@ -1,13 +1,13 @@
-import { STYLE } from '@icon-canvas/checks'
-import type { Style } from '@icon-canvas/core'
+import { STYLE } from '@autosvg/checks'
+import type { Style } from '@autosvg/core'
 import { parseMarkup, SVG_NS, stripNs } from './markup.ts'
 
 // The drawing on the canvas is a detached <g>. The UI renders it, the API edits it, and `subscribe`
 // tells React when anything changed. Nothing here touches the page's layout.
 
 const artwork = document.createElementNS(SVG_NS, 'g')
-let currentName = '' // the icon being edited in the canvas
-let tile = 32 // gallery icon size
+let currentName = '' // the vector being edited in the canvas
+let tile = 32 // gallery vector size
 
 /** Everything the UI needs to draw itself; a new object whenever something changed. */
 export interface Snapshot {

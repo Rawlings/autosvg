@@ -1,14 +1,14 @@
-import { CHANNEL_VAR, type Channel, SPEC } from '@icon-canvas/core'
-import posesCss from '@icon-canvas/runtime/css/poses.css?raw'
+import { CHANNEL_VAR, type Channel, SPEC } from '@autosvg/core'
+import posesCss from '@autosvg/runtime/css/poses.css?raw'
 
-/** Raster size in pixels (4px per icon unit). */
+/** Raster size in pixels (4px per vector unit). */
 export const PX = 96
-/** Icon units per pixel. */
+/** Vector units per pixel. */
 export const K = SPEC.size / PX
 
 /**
  * The SVG with the pose stylesheet embedded and the given pose channels set, so a raster of it shows the posed
- * icon (an SVG drawn as an image cannot see the page's stylesheet). vars: { 1: 0.5, 3: -1 }.
+ * vector (an SVG drawn as an image cannot see the page's stylesheet). vars: { 1: 0.5, 3: -1 }.
  */
 export function posedSvg(svg: string, vars: Partial<Record<Channel, number>> = {}): string {
   const decl = Object.entries(vars)
@@ -42,7 +42,7 @@ export async function rasterise(svg: string, px: number): Promise<Uint8ClampedAr
   }
 }
 
-/** How different two icons look: pixels that differ divided by pixels either draws (0 = identical). */
+/** How different two vectors look: pixels that differ divided by pixels either draws (0 = identical). */
 export async function inkDiff(a: string, b: string): Promise<number> {
   const [da, db] = await Promise.all([rasterise(a, PX), rasterise(b, PX)])
   let diff = 0

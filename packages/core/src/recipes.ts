@@ -1,10 +1,10 @@
-// Parametric recipes: how to draw an icon as a function of the geometry settings.
+// Parametric recipes: how to draw a vector as a function of the geometry settings.
 //
 //   p.r  corner radius multiplier  (1 = as designed, 0 = sharp, 2 = very soft)
 //   p.c  curve character           (0 = true circles, 1 = squircles)
 //
-// At the defaults (r = 1, c = 0) every recipe must reproduce its saved icon file exactly:
-// iconCanvas.recipeStatus() checks that. Icons without a recipe keep their saved geometry and still
+// At the defaults (r = 1, c = 0) every recipe must reproduce its saved vector file exactly:
+// autosvg.recipeStatus() checks that. Vectors without a recipe keep their saved geometry and still
 // follow the stroke, width and skew variables.
 //
 // Junctions are computed, never typed: where a line meets a rounded corner or a curve, its end point
@@ -425,7 +425,7 @@ export const RECIPES: Record<string, Recipe> = {
   ],
 
   // ======================================================================================================
-  // 50 more icons. Every one is a recipe, so radius and curve work on it by construction, and junctions
+  // 50 more vectors. Every one is a recipe, so radius and curve work on it by construction, and junctions
   // (where a line meets a corner or a circle) are computed from the settings.
   // ======================================================================================================
 

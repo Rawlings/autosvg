@@ -35,7 +35,7 @@ export default function Quality() {
         <div>
           <h1>Quality</h1>
           <p className="lede">
-            Checks that run against the real icons in this page.
+            Checks that run against the real vectors in this page.
             {done.length ? ` ${done.length - failing} of ${done.length} run clean.` : ''}
           </p>
         </div>

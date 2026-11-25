@@ -31,5 +31,5 @@ npm-debug.log*
 .claude/settings.local.json
 .claude/worktrees/
 
-# Sheets drawn by `pnpm verify-icons`
+# Sheets drawn by `pnpm verify-vectors`
 .cache/

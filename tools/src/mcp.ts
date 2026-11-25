@@ -1,25 +1,25 @@
-// An MCP server for drawing icons: it keeps the studio's dev server and a headless Chrome warm, and does the whole write, seed,
+// An MCP server for drawing vectors: it keeps the studio's dev server and a headless Chrome warm, and does the whole write, seed,
 // check, look cycle in one call. Plain stdio JSON-RPC, no dependencies.
 //
-//   icons_apply   write a batch file, seed it, run every check, and return the report with the sheet and motion images
-//   icons_verify  check (and draw) icons that already exist
-//   icons_geom    Paper.js geometry in Node: rotate, union, subtract
-//   icons_find    existing icon names that contain some words (the concept check)
-//   icons_remove  delete icon files that were dropped
+//   vectors_apply   write a batch file, seed it, run every check, and return the report with the sheet and motion images
+//   vectors_verify  check (and draw) vectors that already exist
+//   vectors_geom    Paper.js geometry in Node: rotate, union, subtract
+//   vectors_find    existing vector names that contain some words (the concept check)
+//   vectors_remove  delete vector files that were dropped
 import { execFile } from 'node:child_process'
 import { existsSync, readdirSync, rmSync, writeFileSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
 import { batchFile, batchNumbers, writeBatchIndex } from './lib/batches.ts'
 import { Bench, formatReport, missing, type Report } from './lib/bench.ts'
 import { evalGeom } from './lib/geom.ts'
-import { iconDir, root } from './paths.ts'
+import { root, vectorDir } from './paths.ts'
 
 type Json = Record<string, unknown>
 type Content = { type: 'text'; text: string } | { type: 'image'; data: string; mimeType: 'image/png' }
 
 const toolsDir = fileURLToPath(new URL('tools/', root))
 const log = (text: string): void => {
-  process.stderr.write(`[icons-mcp] ${text}\n`)
+  process.stderr.write(`[vectors-mcp] ${text}\n`)
 }
 
 // ---------- the warm bench ----------
@@ -42,7 +42,7 @@ const run = (command: string, args: string[]): Promise<{ stdout: string; stderr:
 const seconds = (since: number): string => `${((Date.now() - since) / 1000).toFixed(1)} s`
 
 interface SeedResult {
-  icons: number
+  vectors: number
   created: number
   written: number
   changed: string[]
@@ -59,7 +59,7 @@ async function seed(): Promise<SeedResult | string> {
   }
 }
 
-/** Check these icons in the warm page and attach the images that were asked for. */
+/** Check these vectors in the warm page and attach the images that were asked for. */
 async function inspect(
   names: string[],
   sheet: boolean,
@@ -108,9 +108,9 @@ const strings = (value: unknown): string[] => (Array.isArray(value) ? value.map(
 const flag = (value: unknown, fallback: boolean): boolean => (typeof value === 'boolean' ? value : fallback)
 
 const TOOLS: Record<string, Tool> = {
-  icons_apply: {
+  vectors_apply: {
     description:
-      'Write a batch file of icons (recipes and poses), seed the icon files, run the quick geometry check, verify every new or changed icon in the warm browser, and return the report with a sheet image (large, 16/24/48 px, nearest existing icons) and a motion filmstrip. One call per iteration. `source` is the whole TypeScript file (copy the shape of packages/core/src/batches/batch-12.ts); `batch` is its number (default: the next one). Without `source` it just re-seeds and re-checks.',
+      'Write a batch file of vectors (recipes and poses), seed the vector files, run the quick geometry check, verify every new or changed vector in the warm browser, and return the report with a sheet image (large, 16/24/48 px, nearest existing vectors) and a motion filmstrip. One call per iteration. `source` is the whole TypeScript file (copy the shape of packages/core/src/batches/batch-12.ts); `batch` is its number (default: the next one). Without `source` it just re-seeds and re-checks.',
     schema: {
       type: 'object',
       properties: {
@@ -119,7 +119,7 @@ const TOOLS: Record<string, Tool> = {
         names: {
           type: 'array',
           items: { type: 'string' },
-          description: 'Icons to check; default: those the seed wrote',
+          description: 'Vectors to check; default: those the seed wrote',
         },
         sheet: { type: 'boolean', description: 'Return the sheet image (default true)' },
         motion: { type: 'boolean', description: 'Return the motion filmstrip (default true)' },
@@ -155,9 +155,9 @@ const TOOLS: Record<string, Tool> = {
       return content
     },
   },
-  icons_verify: {
+  vectors_verify: {
     description:
-      'Check icons that already exist (verify, pose lint, perf, coverage, look-alikes) and optionally draw them.',
+      'Check vectors that already exist (verify, pose lint, perf, coverage, look-alikes) and optionally draw them.',
     schema: {
       type: 'object',
       properties: {
@@ -184,15 +184,15 @@ const TOOLS: Record<string, Tool> = {
       return content
     },
   },
-  icons_geom: {
+  vectors_geom: {
     description:
       'Work out geometry with Paper.js: `pp` (boolean, unite, simplify, centre, transform), `geo` (geometry helpers) and `kit` (path, rect, ellipse, round, dot). Returns paste-ready path data. Example: pp.transform(kit.rect(4,10,16,4,2),{rotate:[-45]})',
     schema: { type: 'object', properties: { expression: { type: 'string' } }, required: ['expression'] },
     call: (args) => Promise.resolve([{ type: 'text', text: evalGeom(String(args['expression'])) }]),
   },
-  icons_find: {
+  vectors_find: {
     description:
-      'List existing icon names containing any of these words (case-insensitive): the check that a concept is new.',
+      'List existing vector names containing any of these words (case-insensitive): the check that a concept is new.',
     schema: {
       type: 'object',
       properties: { words: { type: 'array', items: { type: 'string' } } },
@@ -200,17 +200,17 @@ const TOOLS: Record<string, Tool> = {
     },
     call(args) {
       const words = strings(args['words']).map((w) => w.toLowerCase())
-      const names = readdirSync(iconDir)
+      const names = readdirSync(vectorDir)
         .filter((f) => f.endsWith('.svg'))
         .map((f) => f.slice(0, -4))
         .filter((n) => words.some((w) => n.includes(w)))
       return Promise.resolve([
-        { type: 'text', text: names.length ? names.join(', ') : `no icon contains: ${words.join(', ')}` },
+        { type: 'text', text: names.length ? names.join(', ') : `no vector contains: ${words.join(', ')}` },
       ])
     },
   },
-  icons_remove: {
-    description: 'Delete the files of icons that were dropped (remove their entries from the batch file yourself).',
+  vectors_remove: {
+    description: 'Delete the files of vectors that were dropped (remove their entries from the batch file yourself).',
     schema: {
       type: 'object',
       properties: { names: { type: 'array', items: { type: 'string' } } },
@@ -218,7 +218,7 @@ const TOOLS: Record<string, Tool> = {
     },
     call(args) {
       const removed = strings(args['names']).filter((n) => {
-        const file = fileURLToPath(new URL(`${n}.svg`, iconDir))
+        const file = fileURLToPath(new URL(`${n}.svg`, vectorDir))
         if (!/^[a-z0-9-]+$/.test(n) || !existsSync(file)) return false
         rmSync(file)
         return true
@@ -245,7 +245,7 @@ async function handle(message: { id?: number | string; method?: string; params?:
       result: {
         protocolVersion: typeof params['protocolVersion'] === 'string' ? params['protocolVersion'] : '2024-11-05',
         capabilities: { tools: {} },
-        serverInfo: { name: 'icon-canvas', version: '0.1.0' },
+        serverInfo: { name: 'autosvg', version: '0.1.0' },
       },
     })
     void bench().then(

@@ -3,7 +3,7 @@
   "vcs": { "enabled": true, "clientKind": "git", "useIgnoreFile": true },
   "files": {
     "ignoreUnknown": true,
-    // The icon files, the generated stylesheet, the lockfile and the prose docs are not formatted by a tool.
+    // The vector files, the generated stylesheet, the lockfile and the prose docs are not formatted by a tool.
     "includes": ["**", "!**/svg", "!**/css/poses.css", "!pnpm-lock.yaml", "!**/*.md", "!**/batches/index.ts"]
   },
   "formatter": {
@@ -63,7 +63,7 @@
     { "includes": ["tools/**"], "linter": { "rules": { "suspicious": { "noConsole": "off" } } } },
     // The studio puts ARIA roles on divs and buttons on purpose: role="group" for a segmented control (a <fieldset> brings its own
     // border, padding and min-width into a toolbar), and in the Showcase role="switch" or "radio" on a button, where aria-checked is what
-    // moves the icon.
+    // moves the vector.
     {
       "includes": ["apps/studio/**"],
       "linter": { "rules": { "a11y": { "useSemanticElements": "off" } } }

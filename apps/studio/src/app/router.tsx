@@ -25,7 +25,7 @@ function initial(): string {
   if (location.pathname === '/' && /^[a-z0-9-]+$/.test(hash)) {
     history.replaceState(null, '', `/studio/${hash}`)
   }
-  // the Motion page became part of the Library's detail: old links land there, with the icon
+  // the Motion page became part of the Library's detail: old links land there, with the vector
   if (location.pathname === '/motion') history.replaceState(null, '', `/${location.search}`)
   return location.pathname + location.search
 }
@@ -48,7 +48,7 @@ export function Router({ children }: { children: ReactNode }) {
       if (!replace) scrollTo(0, 0)
     }
     // a change of page is a view transition: whatever carries the same `view-transition-name` on both pages
-    // (the carried icon's stage) travels between them instead of cutting
+    // (the carried vector's stage) travels between them instead of cutting
     const samePage = to.split('?')[0] === location.pathname
     const still = matchMedia('(prefers-reduced-motion: reduce)').matches
     if (replace || samePage || still || !document.startViewTransition) go()

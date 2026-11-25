@@ -7,10 +7,10 @@ import {
   overall,
   type Snapshot,
   subscribe,
-} from '@icon-canvas/engine'
+} from '@autosvg/engine'
 import { useEffect, useMemo, useState, useSyncExternalStore } from 'react'
 
-/** The engine's current state: drawing, current icon name, preview style, tile size. */
+/** The engine's current state: drawing, current vector name, preview style, tile size. */
 export const useEngine = (): Snapshot => useSyncExternalStore(subscribe, getSnapshot)
 
 interface Measured {

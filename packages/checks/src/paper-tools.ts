@@ -1,9 +1,9 @@
-// Paper.js-backed tools for icon work: path booleans, simplification, centring, rotation, and shape-quality
+// Paper.js-backed tools for vector work: path booleans, simplification, centring, rotation, and shape-quality
 // analysis (tangent kinks, symmetry). No DOM and no canvas, so they run in Node as well as in the browser.
 //
 // Everything takes and returns SVG *markup strings* (inner shapes or a full <svg>), so results
-// drop straight into iconCanvas.setSVG() / the build kit.
-import { SPEC } from '@icon-canvas/core'
+// drop straight into autosvg.setSVG() / the build kit.
+import { SPEC } from '@autosvg/core'
 import paper from './paper-runtime.ts'
 
 const OPS = ['unite', 'subtract', 'intersect', 'exclude', 'divide'] as const
@@ -121,7 +121,7 @@ export function withShapes<T>(markup: string, fn: (shapes: LoadedShape[]) => T):
 /** Compound paths opened up into their simple paths. */
 export const simplePaths = (item: paper.PathItem): paper.Path[] => flat([item])
 
-/** Path data to two decimals, which is what an icon file holds. */
+/** Path data to two decimals, which is what a vector file holds. */
 const dOf = (item: paper.PathItem): string => item.pathData.replace(/-?\d*\.\d+/g, (v) => String(+(+v).toFixed(2)))
 const markupOf = (paths: readonly paper.PathItem[]): string => paths.map((p) => `<path d="${dOf(p)}" />`).join('\n')
 const merge = (paths: readonly paper.PathItem[]): paper.PathItem => paths.reduce((a, b) => a.unite(b))
@@ -140,7 +140,7 @@ export function unite(list: readonly string[]): string {
   return run(() => `<path d="${dOf(merge(list.flatMap(load)))}" />`)
 }
 
-/** Fit fewer curve segments to the paths (tolerance in icon units). */
+/** Fit fewer curve segments to the paths (tolerance in vector units). */
 export function simplify(markup: string, tolerance = 0.1): string {
   return run(() => {
     const paths = load(markup)
@@ -171,7 +171,7 @@ export interface Transform {
   translate?: [number, number]
 }
 
-/** Rotate, scale or move markup: how a diagonal icon is drawn from an upright one. Returns path markup. */
+/** Rotate, scale or move markup: how a diagonal vector is drawn from an upright one. Returns path markup. */
 export function transform(markup: string, t: Transform): string {
   return run(() => {
     const paths = load(markup)

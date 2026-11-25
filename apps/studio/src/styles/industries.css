@@ -178,7 +178,7 @@
   margin-top: 22px;
 }
 
-/* a tile whose picture is the icon as a mask over something painted */
+/* a tile whose picture is the vector as a mask over something painted */
 .fx-foil,
 .fx-holofoil,
 .fx-barber,
@@ -268,14 +268,14 @@
   font: 12px var(--mono);
   letter-spacing: 0.12em;
 }
-.fx-card-icon {
+.fx-card-vector {
   position: absolute;
   top: 10px;
   right: 12px;
   color: var(--k-aab6cb);
   filter: drop-shadow(0 1px 0 rgb(255 255 255 / 0.45)) drop-shadow(0 -1px 0 rgb(0 0 0 / 0.7));
 }
-.fx-card-icon icon-glyph {
+.fx-card-vector icon-glyph {
   --icon-stroke: calc(var(--s) * 1.3);
 }
 .fx-holofoil-stage {

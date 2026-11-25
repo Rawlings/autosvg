@@ -1,5 +1,5 @@
-import type { Point } from '@icon-canvas/core'
-import { at as nth } from '@icon-canvas/core'
+import type { Point } from '@autosvg/core'
+import { at as nth } from '@autosvg/core'
 
 /** A cubic Bézier: start, two control points, end, as [x0, y0, x1, y1, x2, y2, x3, y3]. */
 export type Cubic = readonly [number, number, number, number, number, number, number, number]

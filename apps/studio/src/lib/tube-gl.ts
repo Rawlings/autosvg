@@ -1,5 +1,5 @@
 // A small WebGL2 renderer for the tube data of `tube3d.ts`: instanced cylinders and spheres, lit like a real object
-// (key light, sky reflection, fresnel), a soft shadow on a floor, and the icon-to-icon morph done in the vertex shader.
+// (key light, sky reflection, fresnel), a soft shadow on a floor, and the vector-to-vector morph done in the vertex shader.
 // Nothing here is kept between frames except the buffers: `draw` is a pure function of the numbers it is given.
 import { CYLINDER_FLOATS, SPHERE_FLOATS, type TubeData } from './tube3d.ts'
 
@@ -11,9 +11,9 @@ export interface Look {
   metal: number
 }
 
-/** Everything a picture of the icon depends on. */
+/** Everything a picture of the vector depends on. */
 export interface Frame {
-  /** The morph, 0 for the first icon and 1 for the second. */
+  /** The morph, 0 for the first vector and 1 for the second. */
   t: number
   /** Turn about the vertical axis and tilt about the horizontal one, in radians. */
   yaw: number
@@ -396,9 +396,20 @@ export class TubeGL {
     return { vao, indices: base.count, count }
   }
 
-  /** Replace the geometry (for a new icon or a new pair of icons). */
+  /** Replace the geometry (for a new vector, a new pair of vectors, or a pose that moves every frame). */
   setTubes(data: TubeData): void {
     const gl = this.#gl
+    const [cylinderStore, sphereStore] = this.#instances
+    if (this.#cylinders && this.#spheres && cylinderStore && sphereStore) {
+      // the same buffers and vertex arrays, refilled: cheap enough to do every frame
+      gl.bindBuffer(gl.ARRAY_BUFFER, cylinderStore)
+      gl.bufferData(gl.ARRAY_BUFFER, data.cylinders, gl.DYNAMIC_DRAW)
+      gl.bindBuffer(gl.ARRAY_BUFFER, sphereStore)
+      gl.bufferData(gl.ARRAY_BUFFER, data.spheres, gl.DYNAMIC_DRAW)
+      this.#cylinders.main.count = this.#cylinders.shadow.count = data.cylinders.length / CYLINDER_FLOATS
+      this.#spheres.main.count = this.#spheres.shadow.count = data.spheres.length / SPHERE_FLOATS
+      return
+    }
     for (const old of this.#instances) gl.deleteBuffer(old)
     this.#instances = []
     const cylinderBuffer = buffer(gl, gl.ARRAY_BUFFER, data.cylinders)

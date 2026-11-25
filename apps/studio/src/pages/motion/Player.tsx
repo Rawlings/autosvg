@@ -1,11 +1,11 @@
-import { CHANNEL_VAR, channelsOf, DEFAULT_STYLE, POSES } from '@icon-canvas/core'
-import { renderIcon } from '@icon-canvas/engine'
+import { CHANNEL_VAR, channelsOf, DEFAULT_STYLE, POSES } from '@autosvg/core'
+import { renderIcon } from '@autosvg/engine'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Glyph } from '../../components/Glyph.tsx'
 import { cssVars } from '../../lib/css.ts'
 import { LOOK_NAME, type PlayChannel, playOn } from './play.ts'
 
-/** One icon: its motion, its states, its frames, and the data in its SVG. */
+/** One vector: its motion, its states, its frames, and the data in its SVG. */
 export function Player({ name, onStop }: { name: string; onStop?: (stop: number) => void }) {
   const spec = POSES[name]
   const own = channelsOf(name)
@@ -13,7 +13,7 @@ export function Player({ name, onStop }: { name: string; onStop?: (stop: number)
   const hasState = own.includes(2)
   const look = own.filter((k): k is 3 | 4 => k === 3 || k === 4)
   const [values, setValues] = useState<Record<PlayChannel, number>>({ 1: 0, 3: 0, 4: 0 })
-  const [stop, setStop] = useState(0) // the state the icon is in, 0 for normal
+  const [stop, setStop] = useState(0) // the state the vector is in, 0 for normal
   const [scrub, setScrub] = useState(false) // dragging the state slider: follow the hand, no transition
   const [repeat, setRepeat] = useState(false)
   const [playing, setPlayingState] = useState<PlayChannel[] | null>(null)

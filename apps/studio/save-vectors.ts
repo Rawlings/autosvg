@@ -3,9 +3,9 @@ import type { IncomingMessage, ServerResponse } from 'node:http'
 import { fileURLToPath } from 'node:url'
 import type { Plugin } from 'vite'
 
-const iconsDir = new URL('../../packages/icons/svg/', import.meta.url)
+const vectorsDir = new URL('../../packages/vectors/svg/', import.meta.url)
 
-/** What the canvas sends: the icon's name and its drawing. */
+/** What the canvas sends: the vector's name and its drawing. */
 interface SaveRequest {
   name: string
   svg: string
@@ -50,7 +50,7 @@ function handle(req: IncomingMessage, res: ServerResponse): void {
   req.on('end', () => {
     try {
       const { name, svg } = parseRequest(body)
-      writeFileSync(fileURLToPath(new URL(`${name}.svg`, iconsDir)), `${svg.trim()}\n`)
+      writeFileSync(fileURLToPath(new URL(`${name}.svg`, vectorsDir)), `${svg.trim()}\n`)
       reply(res, 200, { ok: true, name })
     } catch (e) {
       reply(res, 400, { ok: false, error: e instanceof Error ? e.message : String(e) })
@@ -59,14 +59,14 @@ function handle(req: IncomingMessage, res: ServerResponse): void {
 }
 
 /**
- * Dev-server only: lets the canvas save an icon straight to packages/icons/svg/<name>.svg.
+ * Dev-server only: lets the canvas save a vector straight to packages/vectors/svg/<name>.svg.
  * Local use: same-origin requests only, kebab-case names only, SVG only.
  */
-export function saveIcons(): Plugin {
+export function saveVectors(): Plugin {
   return {
-    name: 'save-icons',
+    name: 'save-vectors',
     configureServer(server) {
-      server.middlewares.use('/__save-icon', handle)
+      server.middlewares.use('/__save-vector', handle)
     },
   }
 }

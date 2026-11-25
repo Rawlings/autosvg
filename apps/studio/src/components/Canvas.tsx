@@ -1,5 +1,5 @@
-import { safe } from '@icon-canvas/checks'
-import { SPEC, type Style } from '@icon-canvas/core'
+import { safe } from '@autosvg/checks'
+import { SPEC, type Style } from '@autosvg/core'
 import { useState } from 'react'
 
 const SIZE = SPEC.size
@@ -7,7 +7,7 @@ const ticks = Array.from({ length: SIZE + 1 }, (_, i) => i)
 
 /**
  * The 24×24 drawing surface: grid, keylines and the artwork. The artwork is the engine's detached
- * drawing, rendered as markup; the engine (window.iconCanvas) is what edits it.
+ * drawing, rendered as markup; the engine (window.autosvg) is what edits it.
  */
 interface CanvasProps {
   /** the shapes to draw */
@@ -27,7 +27,7 @@ export function Canvas({ markup, style, grid, guides }: CanvasProps) {
         className="canvas"
         viewBox={`0 0 ${SIZE} ${SIZE}`}
         role="img"
-        aria-label="Icon canvas"
+        aria-label="Drawing canvas"
         onPointerMove={(e) => {
           const svg = e.currentTarget
           const ctm = svg.getScreenCTM()

@@ -1,5 +1,5 @@
 {
-  "name": "@icon-canvas/studio",
+  "name": "@autosvg/studio",
   "version": "0.0.1",
   "private": true,
   "description": "The app: Library, Studio, Motion, Showcase and Quality pages over the engine.",
@@ -12,11 +12,11 @@
     "typecheck": "tsc -p ."
   },
   "dependencies": {
-    "@icon-canvas/checks": "workspace:*",
-    "@icon-canvas/core": "workspace:*",
-    "@icon-canvas/engine": "workspace:*",
-    "@icon-canvas/icons": "workspace:*",
-    "@icon-canvas/runtime": "workspace:*",
+    "@autosvg/checks": "workspace:*",
+    "@autosvg/core": "workspace:*",
+    "@autosvg/engine": "workspace:*",
+    "@autosvg/vectors": "workspace:*",
+    "@autosvg/runtime": "workspace:*",
     "react": "catalog:",
     "react-dom": "catalog:"
   },

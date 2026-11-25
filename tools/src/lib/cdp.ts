@@ -106,7 +106,7 @@ export interface Browser {
 export async function launchChrome(): Promise<Browser> {
   const binary = process.env['CHROME_PATH'] ?? CHROME_PATHS.find((path) => existsSync(path))
   if (!binary) throw new Error('Chrome not found: set CHROME_PATH')
-  const profile = mkdtempSync(join(tmpdir(), 'icon-chrome-'))
+  const profile = mkdtempSync(join(tmpdir(), 'vector-chrome-'))
   const child: ChildProcess = spawn(
     binary,
     ['--headless=new', '--remote-debugging-port=0', `--user-data-dir=${profile}`, '--hide-scrollbars', 'about:blank'],

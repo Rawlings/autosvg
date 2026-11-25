@@ -12,7 +12,7 @@ Each entry says what was seen. No evidence, no lesson (see AGENTS.md).
 5. **Geometry stays in 2.75 to 21.25**; centre the ink within 0.75 of 12; the larger side should be about 16 or more or the set audit calls it small.
 6. **Ends that join a rounded shape must land on its straight part at every radius setting**, or use `superPoint` / the same radius expression. Check the radius cap of `R(base, p, max)`.
 7. **Look at the sheet next to the neighbours.** An icon that is only a lens plus a stem is the existing `leaf`.
-8. **Before drafting, decide the concept and check it is new:** `ls packages/icons/svg | grep -i <word>` and think of a synonym. The look-alike report only catches near-identical drawings.
+8. **Before drafting, decide the concept and check it is new:** `ls packages/vectors/svg | grep -i <word>` and think of a synonym. The look-alike report only catches near-identical drawings.
 9. **Poses:** each shape belongs to one part, or to parts with the same pivot (the last pivot wins). Parts that touch must move together. Two beats with different timing or properties, or `simple()`.
 
 ## Entries
@@ -38,11 +38,11 @@ Each entry says what was seen. No evidence, no lesson (see AGENTS.md).
 
 ### Tooling
 - Paper.js now runs without a DOM (`withShapes`, `transform`, `pnpm geom`). The shape analysis it gives is identical to the old browser-only one on all 259 icons (kinks, loose ends, inflections, symmetry).
-- `pnpm verify-icons <names> --sheet --motion` checks and draws in about 5 s and gives one image for a whole batch. Twenty separate screenshots cost far more.
+- `pnpm verify-vectors <names> --sheet --motion` checks and draws in about 5 s and gives one image for a whole batch. Twenty separate screenshots cost far more.
 - Biome reformats between edits, so a Python string patch written against earlier text stops matching. Put a batch in its own file under `packages/core/src/batches/` and format before patching.
 - `cmd && cat > file <<EOF` loses the file when `cmd` fails. Write files with the Write tool.
 - The install hook reads `2>&1` as a package name: a bare `pnpm install` only. Never `pkill -f vite` (it can stop someone else's server); stop a server by its port.
-- Do not draw a contact sheet over the studio (AGENTS.md). `verify-icons` draws in its own headless page.
+- Do not draw a contact sheet over the studio (AGENTS.md). `verify-vectors` draws in its own headless page.
 
 ### Motion needs to be big enough to see
 - Seen in the filmstrip (`--motion`): a pot lid moving 0.5 px and a window shifting 0.4 px were invisible at 56 px even though pose lint passed ("alive" only needs 0.4% of the ink to change). 0.9 px with a 4° tilt, and 0.7 px, read. Aim for at least 0.8 px or 3° on the main gesture.
@@ -57,7 +57,7 @@ Each entry says what was seen. No evidence, no lesson (see AGENTS.md).
 - Eight household objects in 102 s including design (12.8 s each), 8 of 8 kept. Half needed one fix pass, and `seed` named every problem within seconds of writing: kettle off-centre by (1, 0.56) with its bail missing the straight edge, a lantern base only 2 below its body, a lever 2 from a wall, a dot crowded by walls. Vase and lantern are the weakest drawings; washing-machine is 6% from speaker (kept: different object, same plan).
 
 ### The MCP server (`.mcp.json`, `tools/src/mcp.ts`)
-- One `icons_apply` call (write batch, seed, quick check, verify, sheet and motion images) takes 1.7 to 2.6 s warm for 1 to 8 icons; the CLI route was about 5 s per command and 4 commands. Most of the 2.5 s is `nearest` (0.5 s, rasterising the whole set again after each page reload) and pose lint (0.25 s).
+- One `vectors_apply` call (write batch, seed, quick check, verify, sheet and motion images) takes 1.7 to 2.6 s warm for 1 to 8 icons; the CLI route was about 5 s per command and 4 commands. Most of the 2.5 s is `nearest` (0.5 s, rasterising the whole set again after each page reload) and pose lint (0.25 s).
 - It did not get a batch under 10 s per icon: 8 garden tools drafted in 107 s (13 s each, 6 kept). Tool time was roughly 15 s of that; the rest was writing the recipes and fixing what `seed` reported. The ceiling is generation, not tools.
 - The quality gate caught 7 of 8 drafts at seed time (centring shifts, a dome missing the straight edge, a 34° tip read as a kink) within 0.3 s. Two drafts looked wrong anyway (a cluttered wheelbarrow, a birdhouse that read as a price tag) and were dropped: checks do not see this, only the sheet does.
 
@@ -75,9 +75,9 @@ Each entry says what was seen. No evidence, no lesson (see AGENTS.md).
 - Not measured: GPU frame cost, and the reduced-motion path (no sway, instant morph) was written but not exercised.
 
 ### Cross-page look (`apps/studio/src/app/look.ts`, `carried.ts`, `components/LookMenu.tsx`)
-- One store holds what follows you: the carried icon, the engine's style (stroke, radius, curve, cap, join), the 3D material, depth and puff. It is saved in localStorage, read from a link (`?icon=&material=&stroke=...`, then stripped from the address) and applied before the first render. Checked in the browser: a full reload on /motion with no `?icon=` kept `lock` selected, stroke 2.5 and a copper accent; every header link carried the icon (`/studio/lock`, `/motion?icon=lock`); a shared link applied gold, stroke 1, radius 0.
+- One store holds what follows you: the carried icon, the engine's style (stroke, radius, curve, cap, join), the 3D material, depth and puff. It is saved in localStorage, read from a link (`?vector=&material=&stroke=...`, then stripped from the address) and applied before the first render. Checked in the browser: a full reload on /motion with no `?vector=` kept `lock` selected, stroke 2.5 and a copper accent; every header link carried the icon (`/studio/lock`, `/motion?vector=lock`); a shared link applied gold, stroke 1, radius 0.
 - The engine already published the style as `--icon-*` on the page, so every Glyph followed it for free. What did not follow was the 3D: it needed the stroke as tube thickness and radius and curve passed to `morphPlan(from, to, style)`, so the shape itself reshapes.
-- Where you are names the icon: `/studio/<icon>` or `?icon=`. The header syncs the address into the store; pages read `useCarried()`. Do not give a page its own `useState` for the selected icon (Motion had one: it ignored where you came from).
+- Where you are names the icon: `/studio/<vector>` or `?vector=`. The header syncs the address into the store; pages read `useCarried()`. Do not give a page its own `useState` for the selected icon (Motion had one: it ignored where you came from).
 - Page changes use `document.startViewTransition` with `view-transition-name: carried` on the Library's detail stage and the Showcase's 3D stage, so the icon's stage travels between pages. Counted two transitions for two navigations; the animation itself was not watched frame by frame. Same-page and `replace` navigations skip it, and reduced motion turns it off.
 - All 289 icons build tube data without error or NaN (96 cylinders on average, 328 at most, about 0.4 ms each).
 
@@ -108,6 +108,14 @@ Each entry says what was seen. No evidence, no lesson (see AGENTS.md).
 - Looked at with blue (`#2f6df0`) and green (`#2fa66a`): subjects followed, conventions held. Not checked: every colour on every tile (a very dark or grey pick keeps a floor of chroma 0.04 so tiles do not go flat).
 - Stroke can now go to 0.25 (slider 0.25 to 3, step 0.05; engine clamp 0.25). At 0.25 the 3D tube and the small icon buttons become hairlines, which is what was asked for.
 - A look that came in a link was applied but not saved until something else changed, so a reload dropped it. `bootLook` now saves once after applying.
+
+### Motion and state in the Showcase, 2D and 3D (`PoseBar.tsx`, `liveTubes` in `tube3d.ts`)
+- User idea: put the icons' motions and states in the Showcase, including the top 3D demo. Motion and state are only two CSS numbers (`--icon-motion`, `--icon-state`), so the Showcase root carries them: every 2D tile inherits them (registered properties inherit), no tile needed changing. Checked: during Play the neon tile read the same motion value as the root.
+- The 3D tubes cannot read CSS, so a hidden `<icon-glyph>` (inside the same root, `visibility: hidden`, not `display: none`) inherits the same numbers and the renderer reads it every frame: each shape's `getScreenCTM()` (the pose CSS moves parts with transform, rotate, translate and scale, and it is included), its opacity, and how drawn on it is (the pose CSS draws with a dash of `--L` times the stroke, with `pathLength="1"`; drawn fraction is the first dash value divided by 1.02). Points come from `getPointAtLength`; a shape scaled to nothing, or invisible, gets no tube. This handles state-only parts too: bell `off` draws the slash and `unread` adds the dot in 3D (seen), lock `open` swings the shackle (seen). Reading the bell's shapes at motion 0 / 0.15 / 0.3 / 0.55 / 0.8 / 1 gave rotations 0 / 4.2 / -6.6 / -5.8 / 1.9 / 0 degrees: a subtle gesture, hard to see in a still frame next to the idle sway, so test motion with Play or with a state, not one frame.
+- Rendering: the renderer keeps its buffers and refills them (`bufferData` DYNAMIC_DRAW) instead of making new buffers and vertex arrays each frame. At rest it goes back to the morph-built geometry.
+- Side effect found by looking: a page-wide `--icon-state: 1` also switched the strip of other icons and the tab-bar neighbours to their own state 1. Other icons on the page are pinned to rest (`--icon-state: 0` on their glyph). When a number is set high up, ask which icons below are not the subject.
+- A new icon must start at rest instantly: with the 700 ms glide the old state 1 showed on the new icon for a moment (read back as 1 at 300 ms). The reset turns the transition off for that one write.
+- Not measured: frame cost of live mode (about 100 to 330 cylinders rebuilt per frame), and icons whose pose CSS changes the stroke width or moves several parts in a group were not all looked at.
 
 ### Process
 - Designing 20 icons' coordinates in one go took 6 min 40 s of 10 min 45 s, and 6 of 20 needed a fix. Draw one, look at it, then do the rest.

@@ -1,12 +1,12 @@
-// Checks icons in a headless Chrome and, if asked, draws them for you to look at. One command, no screenshots to ask for.
+// Checks vectors in a headless Chrome and, if asked, draws them for you to look at. One command, no screenshots to ask for.
 //
-//   pnpm verify-icons magnet glasses            verify, pose lint and perf audit of these icons, one line each
-//   pnpm verify-icons magnet --sheet            also write sheet.png: every icon large and at 16, 24 and 48 px
-//   pnpm verify-icons magnet --motion           also write motion.png: every icon at motion 0 .. 1 and in each of its states
-//   pnpm verify-icons --all                     every icon in the set
-//   --out <dir>                                 where the PNGs go (default: .cache/icons, not committed)
+//   pnpm verify-vectors magnet glasses            verify, pose lint and perf audit of these vectors, one line each
+//   pnpm verify-vectors magnet --sheet            also write sheet.png: every vector large and at 16, 24 and 48 px
+//   pnpm verify-vectors magnet --motion           also write motion.png: every vector at motion 0 .. 1 and in each of its states
+//   pnpm verify-vectors --all                     every vector in the set
+//   --out <dir>                                 where the PNGs go (default: .cache/vectors, not committed)
 //
-// It starts the studio's dev server and Chrome itself, runs the same checks as window.iconCanvas, and stops both.
+// It starts the studio's dev server and Chrome itself, runs the same checks as window.autosvg, and stops both.
 // The PNGs are drawn on a page of their own in that headless Chrome: nothing is shown over the studio you may have open.
 import { mkdirSync, writeFileSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
@@ -28,7 +28,7 @@ function parseArgs(argv: string[]): Options {
     all: false,
     sheet: false,
     motion: false,
-    out: fileURLToPath(new URL('.cache/icons/', root)),
+    out: fileURLToPath(new URL('.cache/vectors/', root)),
     json: null,
   }
   for (let i = 0; i < argv.length; i++) {
@@ -41,7 +41,7 @@ function parseArgs(argv: string[]): Options {
     else if (arg.startsWith('--')) throw new Error(`unknown option ${arg}`)
     else options.names.push(arg)
   }
-  if (!options.all && options.names.length === 0) throw new Error('name some icons, or pass --all')
+  if (!options.all && options.names.length === 0) throw new Error('name some vectors, or pass --all')
   return options
 }
 

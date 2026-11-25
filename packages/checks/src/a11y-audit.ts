@@ -1,17 +1,17 @@
-// Accessibility audit: how icons are used in a page, checked on the live DOM.
+// Accessibility audit: how vectors are used in a page, checked on the live DOM.
 //
 //   decorative   every <icon-glyph> is hidden from assistive technology, or is a labelled image
-//   names        every control that holds an icon has an accessible name (text, aria-label, aria-labelledby or title)
-//   swap         the icons inside an .icon-swap are hidden (the control carries the name and state)
+//   names        every control that holds a vector has an accessible name (text, aria-label, aria-labelledby or title)
+//   swap         the vectors inside an .icon-swap are hidden (the control carries the name and state)
 //   state        a switch, checkbox or radio says whether it is on (aria-checked); a radiogroup is named and has exactly one stop in the tab order
 //   size         every control is at least 24 by 24 CSS pixels (WCAG 2.2, target size minimum)
-//   motion       the page's CSS turns icon transitions and animations off under prefers-reduced-motion
+//   motion       the page's CSS turns vector transitions and animations off under prefers-reduced-motion
 //
 // It audits any root: pass a container, or nothing for the whole document.
 const CONTROL =
   'button, a[href], [role="button"], [role="switch"], [role="checkbox"], [role="radio"], [role="tab"], summary, input[type="checkbox"], input[type="radio"]'
 
-/** The accessible name of an element: aria-label, aria-labelledby, its own text without icons, or its title. */
+/** The accessible name of an element: aria-label, aria-labelledby, its own text without vectors, or its title. */
 const nameOf = (el: Element): string => {
   const label = el.getAttribute('aria-label')?.trim()
   if (label) return label
@@ -34,7 +34,7 @@ const nameOf = (el: Element): string => {
 const describe = (el: Element): string =>
   `<${el.localName}${el.className ? `.${String(el.className).split(' ')[0]}` : ''}>`
 
-/** True if the page's stylesheets switch icon motion off for people who ask for reduced motion. */
+/** True if the page's stylesheets switch vector motion off for people who ask for reduced motion. */
 function reducedMotionHandled(): boolean {
   let found = false
   const visit = (rules: CSSRuleList): void => {
@@ -58,7 +58,7 @@ function reducedMotionHandled(): boolean {
 
 /** What the audit counted. */
 export interface A11yStats {
-  icons: number
+  vectors: number
   decorative: number
   labelled: number
   controls: number
@@ -91,7 +91,7 @@ export function a11yAudit(root: ParentNode = document): A11yReport {
   const controls = [...root.querySelectorAll(CONTROL)].filter((c) => c.querySelector('icon-glyph'))
   let tooSmall = 0
   for (const c of controls) {
-    if (!nameOf(c)) flagged.push(`${describe(c)} holds an icon but has no accessible name`)
+    if (!nameOf(c)) flagged.push(`${describe(c)} holds a vector but has no accessible name`)
     const r = c.getBoundingClientRect()
     if (r.width && (r.width < 24 || r.height < 24)) {
       tooSmall++
@@ -116,11 +116,11 @@ export function a11yAudit(root: ParentNode = document): A11yReport {
       flagged.push('an .icon-swap is not aria-hidden: the control around it should carry the name and state')
   }
   const motion = reducedMotionHandled()
-  if (!motion) flagged.push('no prefers-reduced-motion rule turns icon transitions or animations off')
+  if (!motion) flagged.push('no prefers-reduced-motion rule turns vector transitions or animations off')
 
   return {
     ok: flagged.length === 0,
     flagged,
-    stats: { icons: glyphs.length, decorative, labelled, controls: controls.length, tooSmall, reducedMotion: motion },
+    stats: { vectors: glyphs.length, decorative, labelled, controls: controls.length, tooSmall, reducedMotion: motion },
   }
 }

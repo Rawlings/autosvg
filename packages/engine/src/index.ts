@@ -1,24 +1,24 @@
-// Headless icon engine: the model behind the app and the window.iconCanvas API (for devtools and agents).
-import { STYLE } from '@icon-canvas/checks'
-import { DEFAULT_STYLE } from '@icon-canvas/core'
-import { ICONS } from '@icon-canvas/icons'
-import { defineIconGlyph, defineIconMorph, renderIcon } from '@icon-canvas/runtime'
-import { api, getSVG, type IconCanvasApi } from './api.ts'
+// Headless vector engine: the model behind the app and the window.autosvg API (for devtools and agents).
+import { STYLE } from '@autosvg/checks'
+import { DEFAULT_STYLE } from '@autosvg/core'
+import { defineIconGlyph, defineIconMorph, renderIcon } from '@autosvg/runtime'
+import { VECTORS } from '@autosvg/vectors'
+import { type AutosvgApi, api, getSVG } from './api.ts'
 
-defineIconGlyph() // <icon-glyph>: every icon in the app is drawn through its real CSS-variable interface
-defineIconMorph() // <icon-morph>: any icon turning into any other
+defineIconGlyph() // <icon-glyph>: every vector in the app is drawn through its real CSS-variable interface
+defineIconMorph() // <icon-morph>: any vector turning into any other
 
 declare global {
   interface Window {
-    iconCanvas: IconCanvasApi
+    autosvg: AutosvgApi
   }
 }
 
-window.iconCanvas = api
+window.autosvg = api
 
-export { DELIBERATE, lintSVG, overall } from '@icon-canvas/checks'
+export { DELIBERATE, lintSVG, overall } from '@autosvg/checks'
 export { canonical, sized } from './markup.ts'
 export { type CheckRow, measureChecks } from './measure.ts'
 export { getSnapshot, replaceArtwork as setSourceText, type Snapshot, subscribe } from './state.ts'
-export type { IconCanvasApi }
-export { api, DEFAULT_STYLE, getSVG, ICONS, renderIcon, STYLE }
+export type { AutosvgApi }
+export { api, DEFAULT_STYLE, getSVG, renderIcon, STYLE, VECTORS }

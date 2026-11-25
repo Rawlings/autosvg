@@ -1,27 +1,27 @@
-// The look that follows you from page to page: the icon you are carrying, the style numbers (stroke, radius, curve, caps,
+// The look that follows you from page to page: the vector you are carrying, the style numbers (stroke, radius, curve, caps,
 // joins) and a colour. It lives in one place, is kept between visits, and can be put in a link.
 //
 // The style numbers themselves belong to the engine (it publishes them as --icon-* on the page); this file saves and restores them.
-import { DEFAULT_STYLE, type Style } from '@icon-canvas/core'
-import { api, getSnapshot, ICONS, subscribe as subscribeEngine } from '@icon-canvas/engine'
+import { DEFAULT_STYLE, type Style } from '@autosvg/core'
+import { api, getSnapshot, subscribe as subscribeEngine, VECTORS } from '@autosvg/engine'
 import { useSyncExternalStore } from 'react'
 import { DEFAULT_COLOR, isColor } from '../lib/materials.ts'
 
 export interface LookState {
-  /** The icon being carried between pages. */
-  icon: string
-  /** The colour of the 3D view and of the accents that show the carried icon (`#rrggbb`). */
+  /** The vector being carried between pages. */
+  vector: string
+  /** The colour of the 3D view and of the accents that show the carried vector (`#rrggbb`). */
   color: string
 }
 
-const DEFAULT_ICON = 'bell'
-const KEY = 'icon-canvas.look.v1'
+const DEFAULT_VECTOR = 'bell'
+const KEY = 'autosvg.look.v1'
 const STYLE_KEYS = Object.keys(DEFAULT_STYLE) as (keyof Style)[]
 
-let state: LookState = { icon: DEFAULT_ICON, color: DEFAULT_COLOR }
+let state: LookState = { vector: DEFAULT_VECTOR, color: DEFAULT_COLOR }
 const listeners = new Set<() => void>()
 
-const isIcon = (name: string | null | undefined): name is string => !!name && ICONS.some((i) => i.name === name)
+const isVector = (name: string | null | undefined): name is string => !!name && VECTORS.some((i) => i.name === name)
 
 function writeInk(): void {
   document.documentElement.style.setProperty('--look-ink', state.color)
@@ -45,7 +45,7 @@ export function setLook(patch: Partial<LookState>): void {
   for (const listener of listeners) listener()
 }
 
-/** Back to the set's own look: the style numbers and the colour. The carried icon stays. */
+/** Back to the set's own look: the style numbers and the colour. The carried vector stays. */
 export function resetLook(): void {
   api.resetStyle()
   setLook({ color: DEFAULT_COLOR })
@@ -67,10 +67,10 @@ function styleParams(): URLSearchParams {
   return params
 }
 
-/** A link to `path` that opens with this icon and this look. */
+/** A link to `path` that opens with this vector and this look. */
 export function shareLink(path: string): string {
   const params = styleParams()
-  params.set('icon', state.icon)
+  params.set('vector', state.vector)
   if (state.color !== DEFAULT_COLOR) params.set('color', state.color.slice(1))
   return `${location.origin}${path}?${params}`
 }
@@ -101,14 +101,14 @@ export function bootLook(): void {
 
   const fromLink = params.get('color')
   const color = fromLink ? `#${fromLink}` : saved.color
-  const icon = params.get('icon') ?? saved.icon
+  const vector = params.get('vector') ?? saved.vector
   state = {
-    icon: isIcon(icon) ? icon : DEFAULT_ICON,
+    vector: isVector(vector) ? vector : DEFAULT_VECTOR,
     color: isColor(color) ? color.toLowerCase() : DEFAULT_COLOR,
   }
   writeInk()
 
-  // the look parameters have done their job: keep the address short (the icon stays, it is where you are)
+  // the look parameters have done their job: keep the address short (the vector stays, it is where you are)
   if (LOOK_PARAMS.some((k) => params.has(k))) {
     for (const k of LOOK_PARAMS) params.delete(k)
     const rest = params.toString()

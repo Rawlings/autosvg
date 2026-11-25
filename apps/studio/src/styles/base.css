@@ -124,7 +124,7 @@ button:disabled {
 .btn.primary:hover:not(:disabled) {
   opacity: 0.88;
 }
-.icon-btn {
+.vector-btn {
   width: 36px;
   padding: 0;
 }

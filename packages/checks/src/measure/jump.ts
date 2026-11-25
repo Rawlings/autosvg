@@ -10,7 +10,7 @@ interface Frame {
 
 /**
  * The biggest jump between neighbouring frames of an animation, as a share of the ink: how much of one frame's ink (as opacity)
- * is more than `reach` pixels (default 3, three quarters of an icon unit) from any ink of the next, in either direction.
+ * is more than `reach` pixels (default 3, three quarters of a vector unit) from any ink of the next, in either direction.
  * Strokes that slide, turn, grow or fade a little stay near where they were and score 0; a part that appears from nowhere or
  * vanishes scores high. A frame with almost no ink (a mirror passing through nothing) is not a jump. Each frame is rasterised
  * once. Returns { jump, at }: the size and the index of the frame it arrives at.

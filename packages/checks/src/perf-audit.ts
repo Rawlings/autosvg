@@ -1,23 +1,23 @@
-// Performance audit: what the set costs the browser. Everything here is measured in the page, on the real icons,
+// Performance audit: what the set costs the browser. Everything here is measured in the page, on the real vectors,
 // by synchronous style recalculation (which does not depend on whether the tab is visible, unlike frame rates).
 //
 //   style      how long the browser takes to restyle posed shapes when a pose number changes
-//              (all icons at once, and one icon on its own: the realistic hover case)
-//   render     how long <icon-glyph> takes to draw an icon from its recipe when radius or curve change
-//   weight     bytes of pose data per icon, beats per icon, size of the one stylesheet
-import { DEFAULT_STYLE, POSES, poseBytes } from '@icon-canvas/core'
-import { ICONS } from '@icon-canvas/icons'
-import { clearIconCache, renderIcon } from '@icon-canvas/runtime'
-import posesCss from '@icon-canvas/runtime/css/poses.css?raw'
+//              (all vectors at once, and one vector on its own: the realistic hover case)
+//   render     how long <icon-glyph> takes to draw a vector from its recipe when radius or curve change
+//   weight     bytes of pose data per vector, beats per vector, size of the one stylesheet
+import { DEFAULT_STYLE, POSES, poseBytes } from '@autosvg/core'
+import { clearVectorCache, renderIcon } from '@autosvg/runtime'
+import posesCss from '@autosvg/runtime/css/poses.css?raw'
+import { VECTORS } from '@autosvg/vectors'
 
-/** Budgets. An icon or the set over any of these is flagged. Tuned from measurements; tighten them as the code improves. */
+/** Budgets. A vector or the set over any of these is flagged. Tuned from measurements; tighten them as the code improves. */
 export const BUDGET = {
   stylesheetBytes: 16 * 1024, // the one fixed pose stylesheet
-  poseBytesPerIcon: 2000, // pose data carried by one icon (an icon with many states, like the circle's seven marks, is the largest)
-  beatsPerIcon: 18, // beats summed over an icon's shapes
+  poseBytesPerVector: 2000, // pose data carried by one vector (a vector with many states, like the circle's seven marks, is the largest)
+  beatsPerVector: 18, // beats summed over a vector's shapes
   setRecalcUsPerShape: 60, // restyling the whole set: microseconds per posed shape
-  oneIconRecalcMs: 0.5, // restyling one icon on its own
-  renderMs: 2, // drawing one icon from its recipe
+  oneVectorRecalcMs: 0.5, // restyling one vector on its own
+  renderMs: 2, // drawing one vector from its recipe
 }
 
 const median = (xs: readonly number[]): number => [...xs].sort((a, b) => a - b)[Math.floor(xs.length / 2)] ?? 0
@@ -40,11 +40,11 @@ function recalcMs(change: (i: number) => void, probe: Element, n = 21): number {
 }
 
 /**
- * Audit the performance of the set (or some icons). Returns
- *   { ok, flagged[], set{...}, icons[]{ name, shapes, beats, poseBytes, recalcMs, renderMs } , slowest[] }
+ * Audit the performance of the set (or some vectors). Returns
+ *   { ok, flagged[], set{...}, vectors[]{ name, shapes, beats, poseBytes, recalcMs, renderMs } , slowest[] }
  */
-/** Measurements for one icon. */
-export interface IconPerf {
+/** Measurements for one vector. */
+export interface VectorPerf {
   name: string
   shapes: number
   beats: number
@@ -55,7 +55,7 @@ export interface IconPerf {
 
 /** Measurements for the whole set. */
 export interface SetPerf {
-  icons: number
+  vectors: number
   posedShapes: number
   recalcMsAll: number
   recalcUsPerShape: number
@@ -63,7 +63,7 @@ export interface SetPerf {
   poseBytesAvg: number
   poseBytesMax: number
   beatsAvg: number
-  oneIconRecalcMsMax: number
+  oneVectorRecalcMsMax: number
   renderMsMax: number
   renderMsAvg: number
 }
@@ -74,17 +74,17 @@ export interface PerfReport {
   budget: typeof BUDGET
   set: SetPerf
   slowest: string[]
-  icons: IconPerf[]
+  vectors: VectorPerf[]
 }
 
-export async function perfAudit(names: readonly string[] = ICONS.map((i) => i.name)): Promise<PerfReport> {
+export async function perfAudit(names: readonly string[] = VECTORS.map((i) => i.name)): Promise<PerfReport> {
   const box = document.createElement('div')
   box.style.cssText = 'position:absolute;left:-10000px;top:0;width:900px;contain:layout'
-  box.innerHTML = names.map((n) => `<span data-icon="${n}"><icon-glyph name="${n}"></icon-glyph></span>`).join('')
+  box.innerHTML = names.map((n) => `<span data-vector="${n}"><icon-glyph name="${n}"></icon-glyph></span>`).join('')
   document.body.append(box)
   const flagged: string[] = []
   try {
-    const wrappers = [...box.querySelectorAll<HTMLElement>('[data-icon]')]
+    const wrappers = [...box.querySelectorAll<HTMLElement>('[data-vector]')]
     const shapes = box.querySelectorAll('[data-c1]')
     const probe = shapes[0] ?? box
 
@@ -95,10 +95,10 @@ export async function perfAudit(names: readonly string[] = ICONS.map((i) => i.na
     const recalcUsPerShape = shapes.length ? +((recalcMsAll * 1000) / shapes.length).toFixed(1) : 0
     box.style.removeProperty('--icon-motion')
 
-    // one icon at a time: the realistic hover
-    const rows: IconPerf[] = []
+    // one vector at a time: the realistic hover
+    const rows: VectorPerf[] = []
     for (const w of wrappers) {
-      const name = w.dataset['icon'] ?? ''
+      const name = w.dataset['vector'] ?? ''
       const p = w.querySelector('[data-c1]')
       const ms = p ? recalcMs((i) => w.style.setProperty('--icon-motion', i % 2 ? '0.3' : '0.6'), p, 9) : 0
       w.style.removeProperty('--icon-motion')
@@ -119,17 +119,17 @@ export async function perfAudit(names: readonly string[] = ICONS.map((i) => i.na
       })
     }
 
-    // drawing from the recipe: what a radius or curve change costs per icon
-    clearIconCache()
+    // drawing from the recipe: what a radius or curve change costs per vector
+    clearVectorCache()
     for (const r of rows) {
       const a = performance.now()
       renderIcon(r.name, { ...DEFAULT_STYLE, radius: 1.37, curve: 0.43 }, { inline: false })
       r.renderMs = +(performance.now() - a).toFixed(3)
     }
-    clearIconCache()
+    clearVectorCache()
 
     const set: SetPerf = {
-      icons: names.length,
+      vectors: names.length,
       posedShapes: shapes.length,
       recalcMsAll,
       recalcUsPerShape,
@@ -137,7 +137,7 @@ export async function perfAudit(names: readonly string[] = ICONS.map((i) => i.na
       poseBytesAvg: Math.round(rows.reduce((s, r) => s + r.poseBytes, 0) / rows.length),
       poseBytesMax: Math.max(...rows.map((r) => r.poseBytes)),
       beatsAvg: +(rows.reduce((s, r) => s + r.beats, 0) / rows.length).toFixed(1),
-      oneIconRecalcMsMax: Math.max(...rows.map((r) => r.recalcMs)),
+      oneVectorRecalcMsMax: Math.max(...rows.map((r) => r.recalcMs)),
       renderMsMax: Math.max(...rows.map((r) => r.renderMs)),
       renderMsAvg: +(rows.reduce((s, r) => s + r.renderMs, 0) / rows.length).toFixed(3),
     }
@@ -150,11 +150,11 @@ export async function perfAudit(names: readonly string[] = ICONS.map((i) => i.na
       )
     }
     for (const r of rows) {
-      if (r.poseBytes > BUDGET.poseBytesPerIcon)
-        flagged.push(`${r.name}: ${r.poseBytes} bytes of pose data (budget ${BUDGET.poseBytesPerIcon})`)
-      if (r.beats > BUDGET.beatsPerIcon) flagged.push(`${r.name}: ${r.beats} beats (budget ${BUDGET.beatsPerIcon})`)
-      if (r.recalcMs > BUDGET.oneIconRecalcMs)
-        flagged.push(`${r.name}: restyling it alone takes ${r.recalcMs} ms (budget ${BUDGET.oneIconRecalcMs})`)
+      if (r.poseBytes > BUDGET.poseBytesPerVector)
+        flagged.push(`${r.name}: ${r.poseBytes} bytes of pose data (budget ${BUDGET.poseBytesPerVector})`)
+      if (r.beats > BUDGET.beatsPerVector) flagged.push(`${r.name}: ${r.beats} beats (budget ${BUDGET.beatsPerVector})`)
+      if (r.recalcMs > BUDGET.oneVectorRecalcMs)
+        flagged.push(`${r.name}: restyling it alone takes ${r.recalcMs} ms (budget ${BUDGET.oneVectorRecalcMs})`)
       if (r.renderMs > BUDGET.renderMs)
         flagged.push(`${r.name}: drawing it from its recipe takes ${r.renderMs} ms (budget ${BUDGET.renderMs})`)
     }
@@ -162,7 +162,7 @@ export async function perfAudit(names: readonly string[] = ICONS.map((i) => i.na
       .sort((a, b) => b.recalcMs - a.recalcMs)
       .slice(0, 5)
       .map((r) => `${r.name} ${r.recalcMs} ms`)
-    return { ok: flagged.length === 0, flagged, budget: BUDGET, set, slowest, icons: rows }
+    return { ok: flagged.length === 0, flagged, budget: BUDGET, set, slowest, vectors: rows }
   } finally {
     box.remove()
   }

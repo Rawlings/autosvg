@@ -2,20 +2,20 @@
 //
 //   pnpm export [outDir]        (default: export/ in the repository root; a given directory is relative to where you run it)
 //
-// Base icons are written without any pose data; every name that is an icon in a state (mic-off, arrow-left, cloud-done ...)
+// Base vectors are written without any pose data; every name that is a vector in a state (mic-off, arrow-left, cloud-done ...)
 // is written with that state baked in. Also writes sprite.svg (one <symbol> per name, for <use href="sprite.svg#mic-off">) and manifest.json: name -> { base, state }.
 import { mkdirSync, writeFileSync } from 'node:fs'
 import { resolve as resolvePath } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { POSE_ATTR, stripStateShapes } from '@icon-canvas/core'
-import { ICONS } from '@icon-canvas/icons'
-import { type Resolved, renderIcon, resolve, stateNames } from '@icon-canvas/runtime/render'
+import { POSE_ATTR, stripStateShapes } from '@autosvg/core'
+import { type Resolved, renderIcon, resolve, stateNames } from '@autosvg/runtime/render'
+import { VECTORS } from '@autosvg/vectors'
 import { root } from './paths.ts'
 
 const out = process.argv[2] ? resolvePath(process.argv[2]) : fileURLToPath(new URL('export/', root))
 mkdirSync(`${out}/svg`, { recursive: true })
 
-/** A base icon: the plain drawing, with no motion data and no state-only elements. */
+/** A base vector: the plain drawing, with no motion data and no state-only elements. */
 const plain = (svg: string): string =>
   stripStateShapes(svg)
     .replace(POSE_ATTR, '')
@@ -32,7 +32,7 @@ const tidyTransforms = (svg: string): string =>
 
 const manifest: Record<string, Resolved> = {}
 const symbols: string[] = []
-const names = [...ICONS.map((i) => i.name), ...stateNames()]
+const names = [...VECTORS.map((i) => i.name), ...stateNames()]
 
 for (const name of names) {
   const found = resolve(name)
@@ -52,4 +52,6 @@ writeFileSync(
   `<svg xmlns="http://www.w3.org/2000/svg" style="display:none">\n${symbols.join('\n')}\n</svg>\n`,
 )
 writeFileSync(`${out}/manifest.json`, `${JSON.stringify(manifest, null, 2)}\n`)
-console.log(`${names.length} SVG files in ${out}/svg (${ICONS.length} icons, ${names.length - ICONS.length} states)`)
+console.log(
+  `${names.length} SVG files in ${out}/svg (${VECTORS.length} vectors, ${names.length - VECTORS.length} states)`,
+)
