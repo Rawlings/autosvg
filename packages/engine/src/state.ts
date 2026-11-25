@@ -7,7 +7,7 @@ import { parseMarkup, SVG_NS, stripNs } from './markup.ts'
 
 const artwork = document.createElementNS(SVG_NS, 'g')
 let currentName = '' // the vector being edited in the canvas
-let tile = 32 // gallery vector size
+let tile = 48 // gallery vector size
 
 /** Everything the UI needs to draw itself; a new object whenever something changed. */
 export interface Snapshot {

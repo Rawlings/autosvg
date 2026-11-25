@@ -1,6 +1,6 @@
 # Icon system spec: pure line
 
-Outline icons only: **1.5px stroke, round caps and joins, no fills, no backgrounds.**
+Outline icons only: **0.75px stroke, round caps and joins, no fills, no backgrounds.**
 Values live in [`packages/core/src/spec.ts`](packages/core/src/spec.ts). Icons are drawn and saved in the Studio page; geometry helpers
 ([`packages/core/src/geo.ts`](packages/core/src/geo.ts)) and Paper.js tools keep radii, symmetry and joins exact. The canvas checks
 ([`packages/checks/src/lint.ts`](packages/checks/src/lint.ts), [`packages/checks/src/measure/`](packages/checks/src/measure/), [`packages/checks/src/paper-tools.ts`](packages/checks/src/paper-tools.ts)) enforce the rules below live.
@@ -120,7 +120,7 @@ The **Showcase** page puts icons in real components (mute, play and pause, show 
 
 ## Weights and line styles
 
-Default is **1.5px, round caps, round joins**. The Look menu (top right of every page; its stroke, corner, cap and join controls) previews other weights (0.25 to 3), square/butt caps and miter joins across the canvas, previews and gallery; the checks follow the chosen weight (live-area margin and the minimum gap both scale with the stroke). The controls only visualise the difference; they never change a file.
+Default is **0.75px, round caps, round joins**. The Look menu (top right of every page; its stroke, corner, cap and join controls) previews other weights (0.25 to 3), square/butt caps and miter joins across the canvas, previews and gallery; the checks follow the chosen weight (live-area margin and the minimum gap both scale with the stroke). The controls only visualise the difference; they never change a file.
 
 Measured with `autosvg.sweep()` on the original 85 icons; re-run it for the whole set (an icon "breaks" when a rule fails or strokes sit closer than one stroke width):
 
@@ -154,7 +154,7 @@ So the set holds from 1 to 1.5. Heavier weights need per-icon retuning (more spa
 - Corner radii from three tokens: **3** containers, **2** parts, **1.5** details (1 for the smallest).
 - Round joins and caps everywhere; no sharp miters.
 - Dots are tiny circles (`r=0.5`): with the stroke they render as solid dots and the icon stays pure line.
-- Keep ≥ 1.5px of visible white (one stroke width) between parallel strokes so 16px doesn't fill in. Measured, not eyeballed.
+- Keep ≥ one stroke width of visible white (0.75px by default) between parallel strokes so 16px doesn't fill in. Measured, not eyeballed.
 - Strokes that meet must really meet: an open end that stops 0.1 to 1px short of another stroke (or of its own start) is a broken connection. Closed shapes use `z`. Deliberate gaps are at least the minimum clear space.
 - Centre the drawn extent in the canvas (within 0.75px). Directional glyphs (play, cursor) may sit off-centre on purpose.
 - Repeated parts are generated, not drawn (gear teeth, sun rays), so they are identical.

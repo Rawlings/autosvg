@@ -7,7 +7,7 @@
 import { mkdirSync, writeFileSync } from 'node:fs'
 import { resolve as resolvePath } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { POSE_ATTR, stripStateShapes } from '@autosvg/core'
+import { DEFAULT_STYLE, POSE_ATTR, stripStateShapes } from '@autosvg/core'
 import { type Resolved, renderIcon, resolve, stateNames } from '@autosvg/runtime/render'
 import { VECTORS } from '@autosvg/vectors'
 import { root } from './paths.ts'
@@ -42,7 +42,7 @@ for (const name of names) {
   writeFileSync(`${out}/svg/${name}.svg`, `${svg.trim()}\n`)
   const inner = svg.replace(/^<svg\b[^>]*>\s*/, '').replace(/\s*<\/svg>\s*$/, '')
   symbols.push(
-    `<symbol id="${name}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">\n${inner}\n</symbol>`,
+    `<symbol id="${name}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="${DEFAULT_STYLE.stroke}" stroke-linecap="${DEFAULT_STYLE.cap}" stroke-linejoin="${DEFAULT_STYLE.join}">\n${inner}\n</symbol>`,
   )
   manifest[name] = found
 }

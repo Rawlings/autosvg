@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" data-motion="scan">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="0.75" stroke-linecap="round" stroke-linejoin="round" data-motion="scan">
   <circle data-ox="12" data-oy="12" data-c1="1" data-k1="1" data-w1="0.5" data-s1="0.02" cx="12" cy="12" r="9" />
   <circle data-ox="12" data-oy="12" data-c1="1" data-k1="1" data-w1="0.5" data-s1="0.02" cx="12" cy="12" r="4.5" />
   <path data-ox="12" data-oy="12" data-c1="1" data-r1="360" d="M12 12L18.36 5.64" />

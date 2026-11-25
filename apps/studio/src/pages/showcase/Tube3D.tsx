@@ -77,7 +77,7 @@ export function Tube3D({ vector, onVector, target }: Props) {
     yaw: -0.5,
     pitch: 0.08,
     spin: 0,
-    stroke: 1.5,
+    stroke: style.stroke,
     radius: 1,
     curve: 0,
     look: lookOf(look.color),

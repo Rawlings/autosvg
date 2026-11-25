@@ -9,7 +9,7 @@
 import { existsSync, readdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
 import { quickCheck } from '@autosvg/checks/quick'
-import { baseShapes, POSES, poseRootAttrs, RECIPES, splitTop, withPose } from '@autosvg/core'
+import { baseShapes, DEFAULT_STYLE, POSES, poseRootAttrs, RECIPES, splitTop, withPose } from '@autosvg/core'
 import { vectorDir } from './paths.ts'
 
 const dir = vectorDir
@@ -26,8 +26,7 @@ const innerOf = (svg: string): string =>
     .replace(/^[\s\S]*?<svg\b[^>]*>/, '')
     .replace(/<\/svg>\s*$/, '')
     .trim()
-const ROOT =
-  'xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"'
+const ROOT = `xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="${DEFAULT_STYLE.stroke}" stroke-linecap="${DEFAULT_STYLE.cap}" stroke-linejoin="${DEFAULT_STYLE.join}"`
 
 const files = readdirSync(dir)
   .filter((f) => f.endsWith('.svg'))

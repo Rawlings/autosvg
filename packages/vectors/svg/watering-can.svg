@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" data-motion="pour">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="0.75" stroke-linecap="round" stroke-linejoin="round" data-motion="pour">
   <rect data-ox="12" data-oy="18" data-c1="1" data-k1="2" data-r1="6" data-c2="1" data-k2="1" data-w2="0.5" data-y2="0.5" x="5" y="9" width="11" height="9" rx="2.5" />
   <path data-ox="12" data-oy="18" data-c1="1" data-k1="2" data-r1="6" data-c2="1" data-k2="1" data-w2="0.5" data-y2="0.5" d="M16 14l4.5-5.5" />
   <path data-ox="12" data-oy="18" data-c1="1" data-k1="2" data-r1="6" data-c2="1" data-k2="1" data-w2="0.5" data-y2="0.5" d="M8 9L8 7A1.5 1.5 0 0 1 9.5 5.5L11.5 5.5A1.5 1.5 0 0 1 13 7L13 9" />

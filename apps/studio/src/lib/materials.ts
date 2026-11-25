@@ -1,7 +1,7 @@
 // The colour the 3D view and the rest of the app share. One colour picker sets it; the 3D shading makes it a polished metal.
 import type { Look } from './tube-gl.ts'
 
-export const DEFAULT_COLOR = '#d9825f'
+export const DEFAULT_COLOR = '#39ff14'
 
 /** How metallic the 3D tubes are: enough to catch the light, low enough that the picked colour stays the colour. */
 const METAL = 0.8

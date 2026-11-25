@@ -34,24 +34,24 @@ file: with no search it shows the set in this order, and searching for a categor
 | | Charts and maths | 10 | |
 | | Code and data | 13 | |
 | | Time and calendar | 6 | |
-| Devices and media | Computing and devices | 14 | Computing, Phones & Wearables |
-| | Connectivity | 7 | |
-| | Sound and music | 10 | Sound & Vision, Gaming & Entertainment |
-| | Photo and video | 5 | Photography |
+| Devices and media | Computing and devices | 15 | Computing, Phones & Wearables |
+| | Connectivity | 8 | |
+| | Sound and music | 11 | Sound & Vision, Gaming & Entertainment |
+| | Photo and video | 6 | Photography |
 | People and access | People and access | 8 | |
 | | Communication | 4 | |
 | Commerce | Shopping and payments | 14 | the whole site: shop, basket, price, deal |
-| | Fashion and accessories | 7 | Clothing & Accessories |
-| Home and living | Home and furniture | 12 | Home & Interior |
+| | Fashion and accessories | 8 | Clothing & Accessories |
+| Home and living | Home and furniture | 14 | Home & Interior |
 | | Food and kitchen | 19 | Home & Interior (kitchen, food and drink) |
-| | Garden and outdoors | 10 | Garden & Patio, Sports & Outdoor (camping) |
+| | Garden and outdoors | 11 | Garden & Patio, Sports & Outdoor (camping) |
 | Nature and world | Direction and places | 15 | |
-| | Transport | 6 | Motor Transport |
+| | Transport | 8 | Motor Transport |
 | | Weather and sky | 10 | |
 | | Nature and animals | 6 | |
-| Making and play | Tools and DIY | 10 | Do it yourself |
-| | Health and sport | 8 | Health & Beauty, Sports & Outdoor |
-| | Games and toys | 6 | Toys & Hobbies, Kids & Family, Gaming & Entertainment |
+| Making and play | Tools and DIY | 11 | Do it yourself |
+| | Health and sport | 10 | Health & Beauty, Sports & Outdoor |
+| | Games and toys | 7 | Toys & Hobbies, Kids & Family, Gaming & Entertainment |
 | | Science and learning | 4 | |
 
 ## Rules for adding a vector
@@ -66,22 +66,22 @@ file: with no search it shows the set in this order, and searching for a categor
 
 ## Where the next vectors are needed
 
-Taken from the PriceRunner subcategories, against what each category holds today. These are candidates, not a plan:
+Taken from the PriceRunner subcategories, against what each category holds today. Drawn from this list so far: router, sim-card, turntable, tripod, suitcase, sink, radiator, barbecue, puzzle, perfume, lipstick, drill, fuel-pump, bicycle. Tried and dropped (read as another object at 24px): polaroid (a computer), dress (a flask), baby-bottle (a jar). These are candidates, not a plan:
 check the vector is really recognisable at 16px in this style before drawing it.
 
 | Category | Missing today (PriceRunner product types and common objects) |
 | --- | --- |
-| Computing and devices | desktop, graphics card, router, scanner, smartwatch, earbuds, SD card, USB stick, e-reader, 3D printer, drone |
-| Sound and music | turntable, guitar, piano, amplifier, remote, CD |
-| Photo and video | lens, tripod, flash, film roll, instant camera, camcorder |
-| Fashion and accessories | bag, sunglasses, ring, necklace, shoe, boot, dress, jacket, hat, suitcase, tie, sock |
-| Home and furniture | bathtub, shower, toilet, radiator, curtains, mirror, rug, bookshelf, wardrobe, table, fan, heater, iron, vacuum cleaner |
+| Computing and devices | desktop, graphics card, scanner, smartwatch, earbuds, SD card, USB stick, e-reader, 3D printer, drone |
+| Sound and music | guitar, piano, amplifier, remote, CD |
+| Photo and video | lens, flash, film roll, instant camera, camcorder |
+| Fashion and accessories | bag, sunglasses, ring, necklace, shoe, boot, dress, jacket, hat, tie, sock |
+| Home and furniture | bathtub, shower, toilet, curtains, mirror, rug, bookshelf, wardrobe, table, fan, heater, iron, vacuum cleaner |
 | Food and kitchen | blender, coffee maker, mixer, air fryer, microwave, oven, dishwasher, bottle, beer, bread, pizza, carrot |
-| Garden and outdoors | lawn mower, hedge trimmer, wheelbarrow, hose, barbecue, parasol, shed, hammock |
-| Transport | bicycle, scooter, motorbike, bus, plane, truck, tyre, fuel pump, helmet |
-| Tools and DIY | drill, saw, pliers, tape measure, spirit level, paintbrush, pipe, boiler |
-| Games and toys | teddy bear, doll, building blocks, puzzle piece, board game, rubber duck, robot |
-| Health and sport | toothbrush, hairdryer, razor, perfume, lipstick, stethoscope, football, basketball, tennis racket, bicycle, fishing rod, binoculars |
+| Garden and outdoors | lawn mower, hedge trimmer, wheelbarrow, hose, parasol, shed, hammock |
+| Transport | scooter, motorbike, bus, plane, truck, tyre, helmet |
+| Tools and DIY | saw, pliers, tape measure, spirit level, paintbrush, pipe, boiler |
+| Games and toys | teddy bear, doll, building blocks, board game, rubber duck, robot |
+| Health and sport | toothbrush, hairdryer, razor, stethoscope, football, basketball, tennis racket, fishing rod, binoculars |
 
 Two categories will probably be split out once they pass about eight vectors: **Beauty** (from Health and sport:
 hairdryer, razor, perfume, lipstick, toothbrush, comb, nail polish, mirror) and **Kids and baby** (from Games and toys:

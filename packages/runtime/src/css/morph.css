@@ -35,7 +35,7 @@ icon-morph svg {
   height: 100%;
   fill: none;
   stroke: currentColor;
-  stroke-width: var(--icon-stroke, 1.5);
+  stroke-width: var(--icon-stroke, 0.75);
   stroke-linecap: var(--icon-cap, round);
   stroke-linejoin: var(--icon-join, round);
 }

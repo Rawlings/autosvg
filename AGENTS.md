@@ -4,7 +4,7 @@ Guidance for AI agents working in this project. Humans: [README.md](README.md) s
 
 ## What this is
 
-A pnpm workspace (`autosvg`): an agentic suite for producing vectors. Its first body of work is a **pure line icon set**: 24px grid, 1.5px stroke, round caps and joins, no fills, no backgrounds. TypeScript in strict mode, Biome for format and lint. The app (`apps/studio`) is a React app with four pages: **Library** (`/`, the set, search, and for the selected icon its motion and state player, the old Motion page), **Studio** (`/studio/<vector>`, the 24×24 canvas with keylines, checks, sizes, neighbours, SVG source), **Showcase** (`/showcase`, the carried icon in 3D, in real places, and in many styles grouped by industry) and **Quality** (`/quality`, the whole-set checks). The app exposes `window.autosvg` (a headless engine, `packages/engine`) so an agent can draw, measure and compare.
+A pnpm workspace (`autosvg`): an agentic suite for producing vectors. Its first body of work is a **pure line icon set**: 24px grid, 0.75px stroke, round caps and joins, no fills, no backgrounds. TypeScript in strict mode, Biome for format and lint. The app (`apps/studio`) is a React app with four pages: **Library** (`/`, the set, search, and for the selected icon its motion and state player, the old Motion page), **Studio** (`/studio/<vector>`, the 24×24 canvas with keylines, checks, sizes, neighbours, SVG source), **Showcase** (`/showcase`, the carried icon in 3D, in real places, and in many styles grouped by industry) and **Quality** (`/quality`, the whole-set checks). The app exposes `window.autosvg` (a headless engine, `packages/engine`) so an agent can draw, measure and compare.
 
 ```bash
 pnpm dev                # or preview_start "autosvg"; http://localhost:5173

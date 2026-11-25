@@ -16,7 +16,8 @@
     "geom": "node src/geom.ts",
     "batches": "node src/batches.ts",
     "categories:check": "node src/check-categories.ts",
-    "shot": "node src/shot.ts"
+    "shot": "node src/shot.ts",
+    "hero": "node src/hero.ts"
   },
   "dependencies": {
     "@autosvg/checks": "workspace:*",

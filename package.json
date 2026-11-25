@@ -2,7 +2,7 @@
   "name": "autosvg",
   "private": true,
   "version": "0.0.1",
-  "description": "A pure line vector set (24px grid, 1.5px stroke) where each vector is a small state machine driven by CSS variables.",
+  "description": "A pure line vector set (24px grid, 0.75px stroke) where each vector is a small state machine driven by CSS variables.",
   "license": "MIT",
   "author": "Jonathan Rawlings",
   "type": "module",
@@ -27,7 +27,8 @@
     "verify-vectors": "pnpm --filter @autosvg/tools verify-vectors",
     "quick": "pnpm --filter @autosvg/tools quick",
     "geom": "pnpm --filter @autosvg/tools geom",
-    "shot": "pnpm --filter @autosvg/tools shot"
+    "shot": "pnpm --filter @autosvg/tools shot",
+    "hero": "pnpm --filter @autosvg/tools hero"
   },
   "devDependencies": {
     "@biomejs/biome": "catalog:",

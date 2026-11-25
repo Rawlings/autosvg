@@ -17,6 +17,7 @@ export const EXEMPT: Readonly<Record<string, string>> = {
   phone: 'a sculpted handset: its curves are the shape, not corners to round',
   pill: 'a capsule: its ends are half-circles of its width, not corners to round',
   palette: 'organic outline; its dots are not circles to reshape',
+  puzzle: 'the knobs and notches are lobes of the piece, not corners to round',
 }
 
 const ARITY: Record<string, number> = { M: 2, L: 2, H: 1, V: 1, C: 6, S: 4, Q: 4, T: 2, A: 7, Z: 0 }

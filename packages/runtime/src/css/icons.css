@@ -3,7 +3,7 @@
   every vector inside follows. All are optional; the defaults are the set's own look.
 
   Pure CSS (no JavaScript):
-    --icon-stroke   stroke width in vector units, default 1.5
+    --icon-stroke   stroke width in vector units, default 0.75
     --icon-cap      butt | round | square, default round
     --icon-join     miter | round | bevel, default round
     --icon-dash     stroke-dasharray, default none
@@ -27,7 +27,7 @@ svg.vector {
   height: 100%;
   fill: none;
   stroke: currentColor;
-  stroke-width: var(--icon-stroke, 1.5);
+  stroke-width: var(--icon-stroke, 0.75);
   stroke-linecap: var(--icon-cap, round);
   stroke-linejoin: var(--icon-join, round);
   stroke-dasharray: var(--icon-dash, none);

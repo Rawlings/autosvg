@@ -11,25 +11,6 @@ import { SEARCH_TERMS } from '../data/search-terms.ts'
 import { cssVars } from '../lib/css.ts'
 import { Player } from './motion/Player.tsx'
 
-// the families of states, found from the pose table: what a vector's states have in common
-const FAMILY = {
-  states: (n: string) => !!POSES[n]?.states?.length,
-  off: (n: string) => !!POSES[n]?.states?.includes('off'),
-  marks: (n: string) => ['plus', 'check', 'minus'].every((m) => POSES[n]?.states?.includes(m)), // the badge families: plus, check, x, minus
-  turns: (n: string) => !!POSES[n]?.group, // turned or mirrored as a whole: directions, back and forward
-}
-
-type Family = keyof typeof FAMILY
-type Filter = 'all' | Family | 'attention'
-const FILTERS: readonly (readonly [Filter, string])[] = [
-  ['all', 'All'],
-  ['states', 'With states'],
-  ['off', 'Off'],
-  ['marks', 'Marks'],
-  ['turns', 'Turns'],
-  ['attention', 'Needs attention'],
-]
-
 interface Group {
   id: string
   label: string
@@ -40,7 +21,6 @@ export default function Library() {
   const snap = useEngine()
   const { params, navigate } = useRouter()
   const [q, setQ] = useState('')
-  const [filter, setFilter] = useState<Filter>('all')
   const search = useRef<HTMLInputElement>(null)
   const selected = params.get('vector')
 
@@ -70,13 +50,8 @@ export default function Library() {
       viaState.has(name) ||
       !!SEARCH_TERMS[name]?.includes(term) ||
       !!categoryOf(name)?.label.toLowerCase().includes(term)
-    const inFilter = (name: string): boolean => {
-      if (filter === 'all') return true
-      if (filter === 'attention') return status[name] !== 'pass'
-      return FAMILY[filter](name)
-    }
-    return VECTORS.filter((i) => matches(i.name) && inFilter(i.name))
-  }, [q, filter, status])
+    return VECTORS.filter((i) => matches(i.name))
+  }, [q])
 
   // with no search, the grid reads in the set's own order: sections, then categories; a vector nobody filed shows last
   const groups = useMemo(() => {
@@ -143,51 +118,41 @@ export default function Library() {
         <div>
           <h1>Vectors</h1>
           <p className="lede">
-            {VECTORS.length} line vectors on a 24 grid, {withStates} of them with states, which makes{' '}
-            {stateNames().length} more names (mic-off, user-plus, arrow-left, cloud-done).{' '}
-            {attention
-              ? `${attention} need${attention === 1 ? 's' : ''} attention at this style.`
-              : 'All pass at this style.'}
+            {VECTORS.length} vectors, {withStates} with states
+            {attention ? `, ${attention} needing attention` : ''}
           </p>
         </div>
-        <label className="search">
-          <svg
-            viewBox="0 0 24 24"
-            width="18"
-            height="18"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="1.5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            aria-hidden="true"
-          >
-            <circle cx="11" cy="11" r="6.5" />
-            <path d="m20 20-4.2-4.2" />
-          </svg>
-          <input
-            ref={search}
-            type="search"
-            value={q}
-            onChange={(e) => setQ(e.target.value)}
-            placeholder="Search vectors"
-            aria-label="Search vectors"
-          />
-          {/* biome-ignore lint/a11y/noAriaHiddenOnFocusable: a <kbd> is not focusable; this is a decorative key hint */}
-          <kbd aria-hidden="true">/</kbd>
-        </label>
       </div>
 
       <div className="library-body">
         <section aria-label="Vector grid">
           <div className="toolbar">
-            <div className="seg" role="group" aria-label="Filter">
-              {FILTERS.map(([key, label]) => (
-                <button key={key} type="button" aria-pressed={filter === key} onClick={() => setFilter(key)}>
-                  {label}
-                </button>
-              ))}
-            </div>
+            <label className="search">
+              <svg
+                viewBox="0 0 24 24"
+                width="18"
+                height="18"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden="true"
+              >
+                <circle cx="11" cy="11" r="6.5" />
+                <path d="m20 20-4.2-4.2" />
+              </svg>
+              <input
+                ref={search}
+                type="search"
+                value={q}
+                onChange={(e) => setQ(e.target.value)}
+                placeholder="Search vectors"
+                aria-label="Search vectors"
+              />
+              {/* biome-ignore lint/a11y/noAriaHiddenOnFocusable: a <kbd> is not focusable; this is a decorative key hint */}
+              <kbd aria-hidden="true">/</kbd>
+            </label>
             <label className="inline-field">
               <span>Size</span>
               <input

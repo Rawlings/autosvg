@@ -21,7 +21,7 @@ export interface Style {
 export const SPEC = {
   size: 24, // viewBox is 0 0 24 24
   padding: 2, // live area = 20x20, stroke included
-  stroke: 1.5, // one stroke weight for the whole family
+  stroke: 0.75, // one stroke weight for the whole family
   cap: 'round',
   join: 'round',
   grid: 0.5, // primitive coordinates sit on a half-unit grid

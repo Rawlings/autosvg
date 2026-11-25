@@ -119,7 +119,7 @@ export const CATEGORIES = [
     about: 'Computers, phones and what plugs into them.',
     shops: 'Computing, Phones & Wearables',
     members: list(
-      `battery bolt chip hard-drive keyboard laptop monitor mouse plug printer smartphone tablet tv webcam`,
+      `battery bolt chip hard-drive keyboard laptop monitor mouse plug printer sim-card smartphone tablet tv webcam`,
     ),
   },
   {
@@ -127,7 +127,7 @@ export const CATEGORIES = [
     section: 'devices',
     label: 'Connectivity',
     about: 'Signals and links between devices: wireless, broadcast, casting.',
-    members: list(`bluetooth cast radar radio-tower rss signal wifi`),
+    members: list(`bluetooth cast radar radio-tower router rss signal wifi`),
   },
   {
     id: 'sound',
@@ -135,7 +135,7 @@ export const CATEGORIES = [
     label: 'Sound and music',
     about: 'Hearing and making sound: speakers, playback, instruments.',
     shops: 'Sound & Vision, Gaming & Entertainment (musical instruments)',
-    members: list(`disc drum headphones metronome mic music play skip speaker volume`),
+    members: list(`disc drum headphones metronome mic music play skip speaker turntable volume`),
   },
   {
     id: 'photo',
@@ -143,7 +143,7 @@ export const CATEGORIES = [
     label: 'Photo and video',
     about: 'Still and moving pictures, and showing them.',
     shops: 'Photography',
-    members: list(`camera film image presentation video`),
+    members: list(`camera film image presentation tripod video`),
   },
 
   // People and access ---------------------------------------------------------------------------------------------
@@ -178,7 +178,7 @@ export const CATEGORIES = [
     label: 'Fashion and accessories',
     about: 'What is worn or carried.',
     shops: 'Clothing & Accessories',
-    members: list(`backpack briefcase crown gem glasses shirt top-hat`),
+    members: list(`backpack briefcase crown gem glasses shirt suitcase top-hat`),
   },
 
   // Home and living -----------------------------------------------------------------------------------------------
@@ -188,7 +188,7 @@ export const CATEGORIES = [
     label: 'Home and furniture',
     about: 'The house and what is in it, apart from the kitchen.',
     shops: 'Home & Interior',
-    members: list(`bed bench candle chair door home lamp lantern sofa stool vase washing-machine`),
+    members: list(`bed bench candle chair door home lamp lantern radiator sink sofa stool vase washing-machine`),
   },
   {
     id: 'food',
@@ -205,7 +205,7 @@ export const CATEGORIES = [
     label: 'Garden and outdoors',
     about: 'Gardening, camping and the things kept outside.',
     shops: 'Garden & Patio, Sports & Outdoor (camping)',
-    members: list(`bucket cactus fence flower rake shovel sprout tent tree watering-can`),
+    members: list(`barbecue bucket cactus fence flower rake shovel sprout tent tree watering-can`),
   },
 
   // Nature and world ----------------------------------------------------------------------------------------------
@@ -223,7 +223,7 @@ export const CATEGORIES = [
     label: 'Transport',
     about: 'Vehicles and what keeps them moving or safe.',
     shops: 'Motor Transport',
-    members: list(`anchor car life-buoy rocket sailboat train`),
+    members: list(`anchor bicycle car fuel-pump life-buoy rocket sailboat train`),
   },
   {
     id: 'weather',
@@ -247,7 +247,7 @@ export const CATEGORIES = [
     label: 'Tools and DIY',
     about: 'Things used to build, mend and measure.',
     shops: 'Do it yourself',
-    members: list(`flashlight hammer hard-hat ladder magnet paint-roller ruler screwdriver traffic-cone wrench`),
+    members: list(`drill flashlight hammer hard-hat ladder magnet paint-roller ruler screwdriver traffic-cone wrench`),
   },
   {
     id: 'health',
@@ -255,7 +255,7 @@ export const CATEGORIES = [
     label: 'Health and sport',
     about: 'Looking after a body: medicine, exercise, winning.',
     shops: 'Health & Beauty, Sports & Outdoor',
-    members: list(`award bandage dumbbell pill syringe target thermometer trophy`),
+    members: list(`award bandage dumbbell lipstick perfume pill syringe target thermometer trophy`),
   },
   {
     id: 'play',
@@ -263,7 +263,7 @@ export const CATEGORIES = [
     label: 'Games and toys',
     about: 'Play, parties and toys.',
     shops: 'Toys & Hobbies, Kids & Family, Gaming & Entertainment',
-    members: list(`balloon dice gamepad ghost kite party-popper`),
+    members: list(`balloon dice gamepad ghost kite party-popper puzzle`),
   },
   {
     id: 'learning',

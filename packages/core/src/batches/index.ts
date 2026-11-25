@@ -8,8 +8,9 @@ import * as batch10 from './batch-10.ts'
 import * as batch11 from './batch-11.ts'
 import * as batch12 from './batch-12.ts'
 import * as batch13 from './batch-13.ts'
+import * as batch14 from './batch-14.ts'
 
-const batches: readonly { recipes: Record<string, Recipe>; poses: Record<string, PoseSpec> }[] = [batch7, batch8, batch9, batch10, batch11, batch12, batch13]
+const batches: readonly { recipes: Record<string, Recipe>; poses: Record<string, PoseSpec> }[] = [batch7, batch8, batch9, batch10, batch11, batch12, batch13, batch14]
 
 export const recipes: Record<string, Recipe> = Object.assign({}, ...batches.map((b) => b.recipes))
 export const poses: Record<string, PoseSpec> = Object.assign({}, ...batches.map((b) => b.poses))

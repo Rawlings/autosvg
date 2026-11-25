@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="0.75" stroke-linecap="round" stroke-linejoin="round" data-motion="ride">
+  <circle data-ox="12" data-oy="19" data-c1="1" data-k1="2" data-n1="3" data-x1="0.8" data-c2="1" data-k2="1" data-w2="0.5" data-s2="0.03" cx="6.5" cy="15.5" r="3.5" />
+  <circle data-ox="12" data-oy="19" data-c1="1" data-k1="2" data-n1="3" data-x1="0.8" data-c2="1" data-k2="1" data-w2="0.5" data-s2="0.03" cx="17.5" cy="15.5" r="3.5" />
+  <path data-ox="12" data-oy="19" data-c1="1" data-k1="2" data-n1="3" data-x1="0.8" data-c2="1" data-k2="1" data-w2="0.5" data-s2="0.03" d="M6.5 15.5L10 8.5h5.5l2 7" />
+  <path data-ox="12" data-oy="19" data-c1="1" data-k1="2" data-n1="3" data-x1="0.8" data-c2="1" data-k2="1" data-w2="0.5" data-s2="0.03" d="M6.5 15.5h5L15.5 8.5" />
+  <path data-ox="12" data-oy="19" data-c1="1" data-k1="2" data-n1="3" data-x1="0.8" data-c2="1" data-k2="1" data-w2="0.5" data-s2="0.03" d="M10 8.5V7M8.5 7h3" />
+  <path data-ox="12" data-oy="19" data-c1="1" data-k1="2" data-n1="3" data-x1="0.8" data-c2="1" data-k2="1" data-w2="0.5" data-s2="0.03" d="M15.5 8.5V6h2" />
+</svg>

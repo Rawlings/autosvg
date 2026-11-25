@@ -119,3 +119,10 @@ Each entry says what was seen. No evidence, no lesson (see AGENTS.md).
 
 ### Process
 - Designing 20 icons' coordinates in one go took 6 min 40 s of 10 min 45 s, and 6 of 20 needed a fix. Draw one, look at it, then do the rest.
+
+### A shop-category batch: 17 drafted, 14 kept (batch-14)
+- Drawn from PriceRunner's product types (router, sim-card, turntable, tripod, suitcase, sink, radiator, barbecue, puzzle, perfume, lipstick, drill, fuel-pump, bicycle). `seed` named every geometry fault at once (a bit 0.5 over the 21.25 edge, a record 0.5px from its plinth because 4.5 was written for 4, rim ends 1px short of a basin, a cap 1px from a body), all fixed in one pass.
+- Three drafts passed every check and were dropped after looking at the sheet: `polaroid` read as a vintage computer, `dress` as a conical flask (a strap dress with a flared skirt is the `flask` silhouette), `baby-bottle` as a jar. Same as the earlier trashcan/mug case: checks measure geometry, only the sheet shows recognisability. Think of the nearest existing silhouette before drawing, not after.
+- Coverage counts arcs next to straight edges as corners that must follow the radius setting. A jigsaw piece's knobs are lobes, so `puzzle` is listed in `EXEMPT` (like cloud and link) instead of faking a radius.
+- Tooling slip: removing recipes from a batch with a regex that ran to the next `\n  ],` ate the recipe after it (suitcase), and `verify-vectors` then reported "3 rounded corners ignore the radius setting" for a file with no recipe. If coverage complains about a vector you did not touch, check that its recipe is still in the batch. Also: Biome rewrites `list(\`...\`)` onto several lines, so a script that edits `categories.ts` must not assume the backtick follows `list(`; check where each name landed (sim-card went into connectivity).
+- Motion is weak on `tripod` (legs fan 4 degrees) and `sink` (the drop moves 2.5 px); lint passes, the filmstrip shows it barely. Not fixed.

@@ -16,7 +16,7 @@ export interface LookState {
 }
 
 const DEFAULT_VECTOR = 'bell'
-const KEY = 'autosvg.look.v1'
+const KEY = 'autosvg.look.v4'
 const STYLE_KEYS = Object.keys(DEFAULT_STYLE) as (keyof Style)[]
 
 let state: LookState = { vector: DEFAULT_VECTOR, color: DEFAULT_COLOR }
