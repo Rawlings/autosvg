@@ -14,7 +14,7 @@ import { BEATS, CHANNEL_VAR, CHANNELS } from '@autosvg/core'
 import { cssDir } from './paths.ts'
 
 const out = new URL('poses.css', cssDir)
-const channels = Object.entries(CHANNEL_VAR) // [['1', '--icon-motion'], ...]
+const channels = Object.entries(CHANNEL_VAR) // [['1', '--autosvg-motion'], ...]
 const is = Array.from({ length: BEATS }, (_, i) => i + 1)
 const num = (name: string): string => `attr(data-${name} type(<number>), 0)`
 
@@ -58,10 +58,10 @@ const css = `/*
 
   This sheet reads those numbers with typed attr() and multiplies by the consumer's variables, set (as numbers) on the vector
   or any ancestor: a hover rule, a transition, an animation, a scroll timeline or a slider.
-    --icon-motion   0 to 1   a momentary gesture: it plays and settles back to rest
-    --icon-state    0, 1, 2  the state the vector is in: 0 is its normal look, 1 and up are its named states (the root
+    --autosvg-motion   0 to 1   a momentary gesture: it plays and settles back to rest
+    --autosvg-state    0, 1, 2  the state the vector is in: 0 is its normal look, 1 and up are its named states (the root
                              lists them: data-states="weak off"). A state persists; the beats in between are the transition
-    --icon-look-x   -1 to 1  (and --icon-look-y) for vectors that look around, such as the eyes
+    --autosvg-look-x   -1 to 1  (and --autosvg-look-y) for vectors that look around, such as the eyes
   Strokes that exist only in a state (data-st, data-b="0") are drawn on within their window. Motion and state live side
   by side: a vector can ring while it is off.
 

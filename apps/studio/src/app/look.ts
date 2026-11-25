@@ -1,7 +1,7 @@
 // The look that follows you from page to page: the vector you are carrying, the style numbers (stroke, radius, curve, caps,
 // joins) and a colour. It lives in one place, is kept between visits, and can be put in a link.
 //
-// The style numbers themselves belong to the engine (it publishes them as --icon-* on the page); this file saves and restores them.
+// The style numbers themselves belong to the engine (it publishes them as --autosvg-* on the page); this file saves and restores them.
 import { DEFAULT_STYLE, type Style } from '@autosvg/core'
 import { api, getSnapshot, subscribe as subscribeEngine, VECTORS } from '@autosvg/engine'
 import { useSyncExternalStore } from 'react'

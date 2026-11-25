@@ -1,12 +1,12 @@
 // Headless vector engine: the model behind the app and the window.autosvg API (for devtools and agents).
 import { STYLE } from '@autosvg/checks'
 import { DEFAULT_STYLE } from '@autosvg/core'
-import { defineIconGlyph, defineIconMorph, renderIcon } from '@autosvg/runtime'
+import { defineAutoSvg, defineAutoSvgMorph, renderIcon } from '@autosvg/runtime'
 import { VECTORS } from '@autosvg/vectors'
 import { type AutosvgApi, api, getSVG } from './api.ts'
 
-defineIconGlyph() // <icon-glyph>: every vector in the app is drawn through its real CSS-variable interface
-defineIconMorph() // <icon-morph>: any vector turning into any other
+defineAutoSvg() // <auto-svg>: every vector in the app is drawn through its real CSS-variable interface
+defineAutoSvgMorph() // <auto-svg-morph>: any vector turning into any other
 
 declare global {
   interface Window {

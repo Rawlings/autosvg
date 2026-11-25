@@ -1,8 +1,8 @@
 // Accessibility audit: how vectors are used in a page, checked on the live DOM.
 //
-//   decorative   every <icon-glyph> is hidden from assistive technology, or is a labelled image
+//   decorative   every <auto-svg> is hidden from assistive technology, or is a labelled image
 //   names        every control that holds a vector has an accessible name (text, aria-label, aria-labelledby or title)
-//   swap         the vectors inside an .icon-swap are hidden (the control carries the name and state)
+//   swap         the vectors inside an .autosvg-swap are hidden (the control carries the name and state)
 //   state        a switch, checkbox or radio says whether it is on (aria-checked); a radiogroup is named and has exactly one stop in the tab order
 //   size         every control is at least 24 by 24 CSS pixels (WCAG 2.2, target size minimum)
 //   motion       the page's CSS turns vector transitions and animations off under prefers-reduced-motion
@@ -25,7 +25,7 @@ const nameOf = (el: Element): string => {
     if (t) return t
   }
   const clone = el.cloneNode(true) as Element
-  for (const n of clone.querySelectorAll('icon-glyph, svg, [aria-hidden="true"]')) n.remove()
+  for (const n of clone.querySelectorAll('auto-svg, svg, [aria-hidden="true"]')) n.remove()
   const text = (clone.textContent ?? '').trim()
   if (text) return text
   return el.getAttribute('title')?.trim() ?? ''
@@ -74,7 +74,7 @@ export interface A11yReport {
 
 export function a11yAudit(root: ParentNode = document): A11yReport {
   const flagged: string[] = []
-  const glyphs = [...root.querySelectorAll('icon-glyph')]
+  const glyphs = [...root.querySelectorAll('auto-svg')]
   let decorative = 0
   let labelled = 0
   for (const g of glyphs) {
@@ -88,7 +88,7 @@ export function a11yAudit(root: ParentNode = document): A11yReport {
       )
   }
 
-  const controls = [...root.querySelectorAll(CONTROL)].filter((c) => c.querySelector('icon-glyph'))
+  const controls = [...root.querySelectorAll(CONTROL)].filter((c) => c.querySelector('auto-svg'))
   let tooSmall = 0
   for (const c of controls) {
     if (!nameOf(c)) flagged.push(`${describe(c)} holds a vector but has no accessible name`)
@@ -111,9 +111,9 @@ export function a11yAudit(root: ParentNode = document): A11yReport {
     if (custom.length && stops !== 1)
       flagged.push(`${describe(g)} has ${stops} radios in the tab order, it should have exactly 1 (roving tabindex)`)
   }
-  for (const s of root.querySelectorAll('.icon-swap')) {
+  for (const s of root.querySelectorAll('.autosvg-swap')) {
     if (s.getAttribute('aria-hidden') !== 'true')
-      flagged.push('an .icon-swap is not aria-hidden: the control around it should carry the name and state')
+      flagged.push('an .autosvg-swap is not aria-hidden: the control around it should carry the name and state')
   }
   const motion = reducedMotionHandled()
   if (!motion) flagged.push('no prefers-reduced-motion rule turns vector transitions or animations off')

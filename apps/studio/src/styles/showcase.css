@@ -1,10 +1,10 @@
-/* Showcase: vectors inside real components. Every animation here is CSS driving --icon-pose-* / --icon-swap. */
+/* Showcase: vectors inside real components. Every animation here is CSS driving --autosvg-pose-* / --autosvg-swap. */
 @keyframes sc-pose {
   from {
-    --icon-motion: 0;
+    --autosvg-motion: 0;
   }
   to {
-    --icon-motion: 1;
+    --autosvg-motion: 1;
   }
 }
 .sc-grid {
@@ -61,11 +61,11 @@
 }
 /* the CSS drivers */
 .sc-hover {
-  --icon-motion: 0;
-  transition: --icon-motion 240ms linear;
+  --autosvg-motion: 0;
+  transition: --autosvg-motion 240ms linear;
 }
 .sc-hover:is(:hover, :focus-visible) {
-  --icon-motion: 1;
+  --autosvg-motion: 1;
   transition-duration: var(--sc-dur, 1000ms);
 }
 /* a segmented switch */
@@ -114,7 +114,7 @@
     transition: none;
   }
   .sc-hover:is(:hover, :focus-visible) {
-    --icon-motion: 0;
+    --autosvg-motion: 0;
   }
 }
 /* real 3D: a canvas, a strip of vectors, a material and two numbers */
@@ -332,7 +332,7 @@
 @media (prefers-reduced-motion: reduce) {
   .sc-c-btn,
   .sc-c-tab {
-    --icon-motion: 0;
+    --autosvg-motion: 0;
   }
 }
 .page-head + .sc-hero {
@@ -385,7 +385,7 @@
   font: 11px / 1.4 var(--mono);
 }
 .fx-stage {
-  --s: var(--icon-stroke, 0.75);
+  --s: var(--autosvg-stroke, 0.75);
   --fx-deep: color-mix(in oklab, var(--look-ink) 50%, black);
   position: relative;
   display: grid;
@@ -399,7 +399,7 @@
 .fx-stack > * {
   grid-area: 1 / 1;
 }
-.fx-stage icon-glyph svg {
+.fx-stage auto-svg svg {
   overflow: visible;
 }
 @keyframes fx-spin {
@@ -468,8 +468,8 @@
   background: var(--k-0a0612);
   color: var(--k-ff5cdc);
 }
-.fx-neon icon-glyph {
-  --icon-stroke: calc(var(--s) * 1.15);
+.fx-neon auto-svg {
+  --autosvg-stroke: calc(var(--s) * 1.15);
   filter: drop-shadow(0 0 1.5px #fff) drop-shadow(0 0 8px var(--k-ff2fd0)) drop-shadow(0 0 24px var(--k-d400a8));
   animation: fx-flicker 4.5s steps(1) infinite;
 }
@@ -519,38 +519,38 @@
 }
 /* hollow tube, contours */
 .fx-hollow .fx-o {
-  --icon-stroke: calc(var(--s) * 4.2);
+  --autosvg-stroke: calc(var(--s) * 4.2);
 }
 .fx-hollow .fx-i {
-  --icon-stroke: calc(var(--s) * 2.1);
+  --autosvg-stroke: calc(var(--s) * 2.1);
   color: var(--sunken);
 }
-.fx-contour icon-glyph:nth-child(1) {
-  --icon-stroke: calc(var(--s) * 8.5);
+.fx-contour auto-svg:nth-child(1) {
+  --autosvg-stroke: calc(var(--s) * 8.5);
 }
-.fx-contour icon-glyph:nth-child(2) {
-  --icon-stroke: calc(var(--s) * 7);
+.fx-contour auto-svg:nth-child(2) {
+  --autosvg-stroke: calc(var(--s) * 7);
   color: var(--sunken);
 }
-.fx-contour icon-glyph:nth-child(3) {
-  --icon-stroke: calc(var(--s) * 5.4);
+.fx-contour auto-svg:nth-child(3) {
+  --autosvg-stroke: calc(var(--s) * 5.4);
   color: color-mix(in oklab, var(--look-ink), white 35%);
 }
-.fx-contour icon-glyph:nth-child(4) {
-  --icon-stroke: calc(var(--s) * 3.6);
+.fx-contour auto-svg:nth-child(4) {
+  --autosvg-stroke: calc(var(--s) * 3.6);
   color: var(--sunken);
 }
-.fx-contour icon-glyph:nth-child(5) {
-  --icon-stroke: calc(var(--s) * 1.6);
+.fx-contour auto-svg:nth-child(5) {
+  --autosvg-stroke: calc(var(--s) * 1.6);
   color: color-mix(in oklab, var(--look-ink), black 45%);
 }
-/* dotted, marching and drawn by hand: only --icon-dash and a dashoffset */
-.fx-dots icon-glyph {
-  --icon-stroke: calc(var(--s) * 0.95);
-  --icon-dash: 0 2.7;
-  --icon-cap: round;
+/* dotted, marching and drawn by hand: only --autosvg-dash and a dashoffset */
+.fx-dots auto-svg {
+  --autosvg-stroke: calc(var(--s) * 0.95);
+  --autosvg-dash: 0 2.7;
+  --autosvg-cap: round;
 }
-.fx-dots icon-glyph svg {
+.fx-dots auto-svg svg {
   animation: fx-march 1.1s linear infinite;
 }
 @keyframes fx-march {
@@ -558,11 +558,11 @@
     stroke-dashoffset: -2.7;
   }
 }
-.fx-draw icon-glyph {
-  --icon-stroke: calc(var(--s) * 1.4);
-  --icon-dash: 200;
+.fx-draw auto-svg {
+  --autosvg-stroke: calc(var(--s) * 1.4);
+  --autosvg-dash: 200;
 }
-.fx-draw icon-glyph svg {
+.fx-draw auto-svg svg {
   animation: fx-draw 4s ease-in-out infinite;
 }
 @keyframes fx-draw {
@@ -582,8 +582,8 @@
   background: var(--look-ink);
   color: #fff;
 }
-.fx-long icon-glyph {
-  --icon-stroke: calc(var(--s) * 1.6);
+.fx-long auto-svg {
+  --autosvg-stroke: calc(var(--s) * 1.6);
 }
 /* sticker */
 .fx-sticker {
@@ -597,12 +597,12 @@
   transition: transform 0.35s var(--ease);
 }
 .fx-sticker .fx-back {
-  --icon-stroke: calc(var(--s) * 5);
+  --autosvg-stroke: calc(var(--s) * 5);
   color: #fff;
   filter: drop-shadow(0 3px 5px rgb(0 0 0 / 0.35));
 }
 .fx-sticker .fx-front {
-  --icon-stroke: calc(var(--s) * 1.5);
+  --autosvg-stroke: calc(var(--s) * 1.5);
 }
 .fx-sticker:hover .fx-back,
 .fx-sticker:hover .fx-front {
@@ -613,8 +613,8 @@
   isolation: isolate;
   background: #08080c;
 }
-.fx-chroma icon-glyph {
-  --icon-stroke: calc(var(--s) * 1.2);
+.fx-chroma auto-svg {
+  --autosvg-stroke: calc(var(--s) * 1.2);
   mix-blend-mode: screen;
   animation: fx-glitch 2.8s steps(1) infinite;
 }
@@ -661,12 +661,12 @@
   color: #fff;
 }
 .fx-blue .fx-line {
-  --icon-stroke: calc(var(--s) * 0.55);
+  --autosvg-stroke: calc(var(--s) * 0.55);
 }
 .fx-blue .fx-halo {
-  --icon-stroke: calc(var(--s) * 1.9);
-  --icon-dash: 0.8 1.6;
-  --icon-cap: butt;
+  --autosvg-stroke: calc(var(--s) * 1.9);
+  --autosvg-dash: 0.8 1.6;
+  --autosvg-cap: butt;
   opacity: 0.32;
 }
 .fx-label {
@@ -681,8 +681,8 @@
   background: radial-gradient(circle at 50% 60%, var(--k-06303f), var(--k-020b12) 70%);
   color: var(--k-6ff7ff);
 }
-.fx-holo icon-glyph {
-  --icon-stroke: calc(var(--s) * 1.1);
+.fx-holo auto-svg {
+  --autosvg-stroke: calc(var(--s) * 1.1);
   filter: drop-shadow(0 0 3px var(--k-6ff7ff)) drop-shadow(0 0 14px var(--k-1fb6ff));
   animation: fx-holo 3.2s steps(1) infinite;
 }
@@ -735,8 +735,8 @@
 .fx-goo-ink {
   filter: url(#fx-goo-filter);
 }
-.fx-goo-ink icon-glyph {
-  --icon-stroke: var(--breath);
+.fx-goo-ink auto-svg {
+  --autosvg-stroke: var(--breath);
   animation: fx-goo 2.6s ease-in-out infinite alternate;
 }
 @keyframes fx-goo {
@@ -760,8 +760,8 @@
   background: #0e0b14;
   animation: fx-spread 5s ease-in-out infinite alternate;
 }
-.fx-echo icon-glyph {
-  --icon-stroke: calc(var(--s) * 0.8);
+.fx-echo auto-svg {
+  --autosvg-stroke: calc(var(--s) * 0.8);
 }
 .fx-e {
   display: grid;
@@ -795,11 +795,11 @@
   transform: rotate(calc(var(--i) * 60deg)) translateY(-54px);
   color: oklch(0.76 0.16 calc(var(--i) * 60 + 20));
 }
-.fx-kal-arm:nth-child(even) icon-glyph {
+.fx-kal-arm:nth-child(even) auto-svg {
   transform: scaleX(-1);
 }
-.fx-kal icon-glyph {
-  --icon-stroke: calc(var(--s) * 1.2);
+.fx-kal auto-svg {
+  --autosvg-stroke: calc(var(--s) * 1.2);
 }
 /* wallpaper, with a wave of motion */
 .fx-paper {
@@ -862,20 +862,20 @@
   color: var(--look-ink);
   transform: translateZ(56px);
 }
-.fx-tilt icon-glyph {
-  --icon-stroke: calc(var(--s) * 1.35);
+.fx-tilt auto-svg {
+  --autosvg-stroke: calc(var(--s) * 1.35);
 }
 /* letterpress */
 .fx-press {
   color: color-mix(in oklab, var(--sunken), var(--ink) 22%);
 }
-.fx-press icon-glyph {
-  --icon-stroke: calc(var(--s) * 1.25);
+.fx-press auto-svg {
+  --autosvg-stroke: calc(var(--s) * 1.25);
   filter: drop-shadow(0 1px 0 color-mix(in oklab, var(--sunken), white 85%)) drop-shadow(0 -1px 0 rgb(0 0 0 / 0.16));
 }
 /* breathing stroke */
-.fx-breath icon-glyph {
-  --icon-stroke: var(--breath);
+.fx-breath auto-svg {
+  --autosvg-stroke: var(--breath);
   animation: fx-breath 2.4s ease-in-out infinite alternate;
 }
 /* stitched */
@@ -883,16 +883,16 @@
   background: repeating-linear-gradient(45deg, rgb(255 255 255 / 0.03) 0 2px, transparent 2px 4px), var(--k-17304f);
 }
 .fx-stitch .fx-cloth {
-  --icon-stroke: calc(var(--s) * 2.3);
+  --autosvg-stroke: calc(var(--s) * 2.3);
   color: var(--k-2f5d98);
   filter: drop-shadow(0 1px 1px rgb(0 0 0 / 0.5));
 }
 .fx-stitch .fx-thread {
   position: relative;
   z-index: 1;
-  --icon-stroke: calc(var(--s) * 0.55);
-  --icon-dash: 1.6 1.2;
-  --icon-cap: butt;
+  --autosvg-stroke: calc(var(--s) * 0.55);
+  --autosvg-dash: 1.6 1.2;
+  --autosvg-cap: butt;
   color: var(--k-f6e7c1);
 }
 /* everything stands still under reduced motion */
@@ -917,7 +917,7 @@
 
 /* the carried vector's state and motion: numbers on the page, followed by every tile and by the 3D view */
 .showcase {
-  transition: --icon-state 700ms linear;
+  transition: --autosvg-state 700ms linear;
 }
 .sc-3d-probe {
   position: absolute;
@@ -943,10 +943,10 @@
   }
 }
 /* the other vectors on the page (the strip of vectors to jump to, the neighbours in the tab bar) stay at rest */
-.sc-3d-vector icon-glyph {
-  --icon-state: 0;
-  --icon-motion: 0;
+.sc-3d-vector auto-svg {
+  --autosvg-state: 0;
+  --autosvg-motion: 0;
 }
-.sc-c-tab:not([aria-pressed='true']) icon-glyph {
-  --icon-state: 0;
+.sc-c-tab:not([aria-pressed='true']) auto-svg {
+  --autosvg-state: 0;
 }

@@ -860,7 +860,7 @@ main {
   color: var(--ink);
   border-color: var(--ink-3);
 }
-.look-btn icon-glyph {
+.look-btn auto-svg {
   color: var(--look-ink);
 }
 .look-btn:focus-visible {

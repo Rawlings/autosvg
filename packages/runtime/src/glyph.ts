@@ -1,13 +1,13 @@
-// <icon-glyph>: draws any vector in the set from the settings held in CSS custom properties.
+// <auto-svg>: draws any vector in the set from the settings held in CSS custom properties.
 //
 // Two layers, and why:
 //  - Stroke weight, caps, joins, dash and colour are plain CSS (see css/icons.css). No JavaScript.
 //  - Geometry (corner radius, curve character) cannot be changed by CSS: a path's shape can't take
-//    var(). So <icon-glyph> reads the variables and redraws from the stored recipes.
+//    var(). So <auto-svg> reads the variables and redraws from the stored recipes.
 //
 // CSS variables (set them on any element; every vector inside follows):
-//   --icon-stroke  --icon-cap  --icon-join  --icon-dash  --icon-color  --icon-size     (CSS only)
-//   --icon-radius  --icon-curve                                                         (runtime)
+//   --autosvg-stroke  --autosvg-cap  --autosvg-join  --autosvg-dash  --autosvg-color  --autosvg-size     (CSS only)
+//   --autosvg-radius  --autosvg-curve                                                         (runtime)
 import { type Cap, DEFAULT_STYLE, type Join, POSES, type Style } from '@autosvg/core'
 import { renderIcon, resolve } from './render.ts'
 
@@ -26,16 +26,16 @@ export function readParams(el: Element): Style {
     return allowed.find((a) => a === value) ?? d
   }
   return {
-    stroke: num('--icon-stroke', DEFAULT_STYLE.stroke),
-    cap: word<Cap>('--icon-cap', CAPS, DEFAULT_STYLE.cap),
-    join: word<Join>('--icon-join', JOINS, DEFAULT_STYLE.join),
-    radius: num('--icon-radius', DEFAULT_STYLE.radius),
-    curve: num('--icon-curve', DEFAULT_STYLE.curve),
+    stroke: num('--autosvg-stroke', DEFAULT_STYLE.stroke),
+    cap: word<Cap>('--autosvg-cap', CAPS, DEFAULT_STYLE.cap),
+    join: word<Join>('--autosvg-join', JOINS, DEFAULT_STYLE.join),
+    radius: num('--autosvg-radius', DEFAULT_STYLE.radius),
+    curve: num('--autosvg-curve', DEFAULT_STYLE.curve),
   }
 }
 
-/** <icon-glyph name="home"></icon-glyph>: redraws itself when the geometry variables change. */
-class IconGlyph extends HTMLElement {
+/** <auto-svg name="home"></auto-svg>: redraws itself when the geometry variables change. */
+class AutoSvg extends HTMLElement {
   static observedAttributes = ['name', 'state']
   #key: string | undefined
 
@@ -49,9 +49,9 @@ class IconGlyph extends HTMLElement {
     else this.render()
   }
   /**
-   * Put the vector in its state. The state is a number, --icon-state, so the change can transition (see icons.css).
+   * Put the vector in its state. The state is a number, --autosvg-state, so the change can transition (see icons.css).
    * `state="off"` names it; a name such as `mic-off` means the same. A missing attribute leaves the variable alone, so
-   * CSS can drive --icon-state itself.
+   * CSS can drive --autosvg-state itself.
    */
   syncState(name: string | null): void {
     const found = name ? resolve(name) : null
@@ -61,10 +61,10 @@ class IconGlyph extends HTMLElement {
     if (wanted !== null)
       stop = wanted === '' ? 0 : (POSES[found?.base ?? name ?? '']?.states?.indexOf(wanted) ?? -1) + 1
     if (stop === null) {
-      this.style.removeProperty('--icon-state')
+      this.style.removeProperty('--autosvg-state')
       return
     }
-    this.style.setProperty('--icon-state', String(stop))
+    this.style.setProperty('--autosvg-state', String(stop))
   }
 
   render(): void {
@@ -102,13 +102,13 @@ let scheduled = false
 /** Redraw every glyph whose geometry variables changed. Cheap when nothing changed. Call it each frame during a CSS transition. */
 export function refreshVectors(): void {
   scheduled = false
-  for (const el of document.querySelectorAll<RenderedIcon>('icon-glyph, icon-morph')) el.render()
+  for (const el of document.querySelectorAll<RenderedIcon>('auto-svg, auto-svg-morph')) el.render()
 }
 
-/** Register <icon-glyph> and keep every glyph in step when a style or class attribute changes anywhere. */
-export function defineIconGlyph(): void {
-  if (customElements.get('icon-glyph')) return
-  customElements.define('icon-glyph', IconGlyph)
+/** Register <auto-svg> and keep every glyph in step when a style or class attribute changes anywhere. */
+export function defineAutoSvg(): void {
+  if (customElements.get('auto-svg')) return
+  customElements.define('auto-svg', AutoSvg)
   new MutationObserver(() => {
     if (scheduled) return
     scheduled = true
@@ -118,6 +118,6 @@ export function defineIconGlyph(): void {
 
 declare global {
   interface HTMLElementTagNameMap {
-    'icon-glyph': IconGlyph
+    'auto-svg': AutoSvg
   }
 }

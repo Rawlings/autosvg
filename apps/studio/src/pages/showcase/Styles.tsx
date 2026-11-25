@@ -1,5 +1,5 @@
 // The general-purpose treatments of one vector. Each is a tile; Industries.tsx files every one under the kind of business that would
-// reach for it. Nothing here is another file: it is the same SVG, a few numbers (--icon-stroke, --icon-dash) and some CSS.
+// reach for it. Nothing here is another file: it is the same SVG, a few numbers (--autosvg-stroke, --autosvg-dash) and some CSS.
 import { useRef } from 'react'
 import { Glyph } from '../../components/Glyph.tsx'
 import { cssVars } from '../../lib/css.ts'
@@ -72,7 +72,7 @@ export function Contours({ name }: Props) {
 
 export function Dotted({ name }: Props) {
   return (
-    <Fx name={name} title="Dotted, marching" how="--icon-dash: 0 2.7 · round caps · dashoffset" tone="fx-dots">
+    <Fx name={name} title="Dotted, marching" how="--autosvg-dash: 0 2.7 · round caps · dashoffset" tone="fx-dots">
       <Glyph name={name} size={150} />
     </Fx>
   )
@@ -80,7 +80,7 @@ export function Dotted({ name }: Props) {
 
 export function Drawn({ name }: Props) {
   return (
-    <Fx name={name} title="Drawn by hand" how="--icon-dash: 200 · dashoffset 200 → 0" tone="fx-draw">
+    <Fx name={name} title="Drawn by hand" how="--autosvg-dash: 200 · dashoffset 200 → 0" tone="fx-draw">
       <Glyph name={name} size={150} />
     </Fx>
   )
@@ -187,7 +187,7 @@ export function Wallpaper({ name }: Props) {
     <Fx
       name={name}
       title="Wallpaper, with a wave"
-      how="20 copies · animation-delay × --i · --icon-motion"
+      how="20 copies · animation-delay × --i · --autosvg-motion"
       tone="fx-paper"
     >
       {range(20).map((i) => (
@@ -254,7 +254,7 @@ export function Letterpress({ name }: Props) {
 
 export function Breathing({ name }: Props) {
   return (
-    <Fx name={name} title="Breathing stroke" how="--icon-stroke from a registered --breath" tone="fx-breath">
+    <Fx name={name} title="Breathing stroke" how="--autosvg-stroke from a registered --breath" tone="fx-breath">
       <Glyph name={name} size={150} />
     </Fx>
   )

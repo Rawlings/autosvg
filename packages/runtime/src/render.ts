@@ -1,5 +1,5 @@
 // Drawing a vector as SVG markup: no DOM, so Node scripts (the static export) and the browser share it.
-// <icon-glyph> (glyph.ts) is the element that calls this from the page's CSS variables.
+// <auto-svg> (glyph.ts) is the element that calls this from the page's CSS variables.
 import { bakeState, DEFAULT_STYLE, POSES, poseRootAttrs, RECIPES, type Style, withPose } from '@autosvg/core'
 import { getVector, onVectorChange } from '@autosvg/vectors'
 
@@ -18,7 +18,7 @@ onVectorChange(() => cache.clear()) // a saved or added vector is drawn from its
 /** What a name means: a vector (`state` 0) or a vector in one of its states. */
 export interface Resolved {
   base: string
-  /** the stop number of --icon-state; 0 for the vector itself */
+  /** the stop number of --autosvg-state; 0 for the vector itself */
   state: number
 }
 
@@ -51,7 +51,7 @@ export const stateNames = (): string[] => [...aliasTable().keys()].sort()
 
 /**
  * SVG for a vector at the given settings.
- *  inline: false  root carries the default look and the page's CSS variables restyle it (what <icon-glyph> uses)
+ *  inline: false  root carries the default look and the page's CSS variables restyle it (what <auto-svg> uses)
  *  inline: true   stroke, cap and join are written into the root, so the file stands alone (lint, measure, export)
  */
 export function renderIcon(
@@ -74,7 +74,7 @@ export function renderIcon(
     if (cache.size > 4000) cache.clear() // a CSS transition passes through many values; keep the cache bounded
     cache.set(key, shapes)
   }
-  // a standalone drawing of `mic-off` has the state baked in; <icon-glyph> keeps it live instead (see the state attribute)
+  // a standalone drawing of `mic-off` has the state baked in; <auto-svg> keeps it live instead (see the state attribute)
   if (state && inline) {
     const look = `stroke-width="${p.stroke}" stroke-linecap="${p.cap}" stroke-linejoin="${p.join}"`
     return `<svg xmlns="${SVG_NS}" viewBox="0 0 24 24" fill="none" stroke="currentColor" ${look}>\n${bakeState(shapes, state)}\n</svg>`

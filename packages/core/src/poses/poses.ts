@@ -4,7 +4,7 @@
 //   - a part that moves carries up to four beats, each a few data- numbers: which channel drives it, where in the
 //     channel's travel it plays, what curve (ramp, pulse, wave) and how much it rotates, moves, scales, fades or draws
 //   - the root says what each channel means:  data-pose-1="ring"
-//   - a consumer sets  --icon-pose-1 .. --icon-pose-4  (numbers) on any ancestor. That is all.
+//   - a consumer sets  --autosvg-pose-1 .. --autosvg-pose-4  (numbers) on any ancestor. That is all.
 // This table is the source; the saved .svg files are generated from it (tools/src/seed-poses.ts), and the
 // pose lint checks the two agree. Vocabulary: dsl.ts.
 
@@ -138,7 +138,7 @@ function attrsFor(spec: PoseSpec, index: number): string {
 /**
  * One element that exists only in a state (an accessory: the slash through a microphone, the dot on a bell, the rays of a
  * lit bulb, the check inside a cloud). It is invisible in the file (opacity="0") and the stylesheet introduces it when
- * --icon-state reaches its stop, and takes it away again when the state passes on.
+ * --autosvg-state reaches its stop, and takes it away again when the state passes on.
  *   d, circle [cx, cy, r], rect [x, y, w, h, rx]   what it is
  *   in   the state it belongs to (default 1); it appears between in-1 and in (t and w override the window)
  *   out  the state at which it goes away again, starting at out-1 (default: it stays); exitW is how long leaving takes (0.6: quicker than arriving)
@@ -160,7 +160,7 @@ function stateShape(e: StateAccessory, radius = 1): string {
     pivot ??= [e.circle[0], e.circle[1]]
   } else if (e.rect) {
     const [x, y, rw, rh, rxSpec = 0] = e.rect
-    // a corner radius is a number, or [base, max]: it then follows the --icon-radius setting like the rest of the vector
+    // a corner radius is a number, or [base, max]: it then follows the --autosvg-radius setting like the rest of the vector
     const rx = typeof rxSpec === 'number' ? rxSpec : FMT(Math.min(rxSpec[0] * radius, rxSpec[1]))
     tag = 'rect'
     geometry = ` x="${x}" y="${y}" width="${rw}" height="${rh}"${rx ? ` rx="${rx}"` : ''}`

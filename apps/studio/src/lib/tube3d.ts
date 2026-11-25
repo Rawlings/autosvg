@@ -103,7 +103,7 @@ const STEP = 0.55
 /**
  * Tubes from the vector as it is drawn right now, with whatever motion and state the page has set on it: every shape's own
  * transform (the pose CSS moves parts with rotate, translate and scale), how drawn on it is, and its opacity. `svg` is a
- * live `<icon-glyph>`'s drawing, laid out in the page (it can be invisible, it cannot be `display: none`).
+ * live `<auto-svg>`'s drawing, laid out in the page (it can be invisible, it cannot be `display: none`).
  */
 export function liveTubes(svg: SVGSVGElement): TubeData | undefined {
   const root = svg.getScreenCTM()

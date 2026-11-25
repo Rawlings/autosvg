@@ -10,10 +10,10 @@ const supportsD = (): boolean => typeof CSS !== 'undefined' && CSS.supports('d: 
 const ends = new WeakMap<SVGPathElement, { from: string; to: string }>()
 
 /**
- * <icon-morph from="sun" to="moon" state="to"></icon-morph>: any vector turning into any other, shape to shape.
- * --icon-morph (0 shows the first vector, 1 the second) is what moves it; `state="to"` is one way to set it.
+ * <auto-svg-morph from="sun" to="moon" state="to"></auto-svg-morph>: any vector turning into any other, shape to shape.
+ * --autosvg-morph (0 shows the first vector, 1 the second) is what moves it; `state="to"` is one way to set it.
  */
-class IconMorph extends HTMLElement {
+class AutoSvgMorph extends HTMLElement {
   static observedAttributes = ['from', 'to', 'state']
   #key: string | undefined
 
@@ -62,7 +62,7 @@ class IconMorph extends HTMLElement {
       svg.setAttribute('stroke', 'currentColor')
       for (const s of plan.strokes) {
         const path = document.createElementNS(SVG_NS, 'path')
-        // both ends ride on the stroke; morph.css picks one by --icon-morph and a CSS transition moves between them
+        // both ends ride on the stroke; morph.css picks one by --autosvg-morph and a CSS transition moves between them
         path.style.setProperty('--im-a', `path("${s.from}")`)
         path.style.setProperty('--im-b', `path("${s.to}")`)
         if (s.fade) {
@@ -87,12 +87,12 @@ class IconMorph extends HTMLElement {
   }
 }
 
-export function defineIconMorph(): void {
-  if (!customElements.get('icon-morph')) customElements.define('icon-morph', IconMorph)
+export function defineAutoSvgMorph(): void {
+  if (!customElements.get('auto-svg-morph')) customElements.define('auto-svg-morph', AutoSvgMorph)
 }
 
 declare global {
   interface HTMLElementTagNameMap {
-    'icon-morph': IconMorph
+    'auto-svg-morph': AutoSvgMorph
   }
 }

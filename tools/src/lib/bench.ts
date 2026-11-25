@@ -55,17 +55,17 @@ const drawScript = (names: string[], mode: 'sheet' | 'motion', nearest: Report['
   const c = window.autosvg
   const names = ${JSON.stringify(names)}
   const mode = ${JSON.stringify(mode)}
-  const glyph = (name, vars) => '<icon-glyph name="' + name + '" style="' + vars + '"></icon-glyph>'
+  const glyph = (name, vars) => '<auto-svg name="' + name + '" style="' + vars + '"></auto-svg>'
   const cells = names.map((name) => {
     const pose = c.poses[name]
     const states = pose?.states ?? []
     if (mode === 'sheet') {
-      const sizes = [16, 24, 48].map((px) => glyph(name, '--icon-size:' + px + 'px')).join('')
-      const near = (nearest[name] ?? []).slice(0, 2).map((x) => '<figure>' + glyph(x.name, '--icon-size:40px') + '<small>' + x.name + ' ' + Math.round(x.diff * 100) + '%</small></figure>').join('')
-      return '<div class="cell">' + glyph(name, '--icon-size:96px') + '<div class="row">' + sizes + '</div><b>' + name + '</b><div class="row" style="opacity:.8">' + near + '</div></div>'
+      const sizes = [16, 24, 48].map((px) => glyph(name, '--autosvg-size:' + px + 'px')).join('')
+      const near = (nearest[name] ?? []).slice(0, 2).map((x) => '<figure>' + glyph(x.name, '--autosvg-size:40px') + '<small>' + x.name + ' ' + Math.round(x.diff * 100) + '%</small></figure>').join('')
+      return '<div class="cell">' + glyph(name, '--autosvg-size:96px') + '<div class="row">' + sizes + '</div><b>' + name + '</b><div class="row" style="opacity:.8">' + near + '</div></div>'
     }
-    const motion = [0, 0.25, 0.5, 0.75, 1].map((v) => '<figure>' + glyph(name, '--icon-size:56px;--icon-motion:' + v) + '<small>' + v + '</small></figure>').join('')
-    const stops = states.length ? ['', ...states].map((s, i) => '<figure>' + glyph(name, '--icon-size:56px;--icon-state:' + i) + '<small>' + (s || 'normal') + '</small></figure>').join('') : ''
+    const motion = [0, 0.25, 0.5, 0.75, 1].map((v) => '<figure>' + glyph(name, '--autosvg-size:56px;--autosvg-motion:' + v) + '<small>' + v + '</small></figure>').join('')
+    const stops = states.length ? ['', ...states].map((s, i) => '<figure>' + glyph(name, '--autosvg-size:56px;--autosvg-state:' + i) + '<small>' + (s || 'normal') + '</small></figure>').join('') : ''
     return '<div class="strip"><b>' + name + ' <small>' + (pose?.labels?.[0] ?? '') + '</small></b><div class="row">' + motion + '</div>' + (stops ? '<div class="row">' + stops + '</div>' : '') + '</div>'
   })
   document.body.innerHTML = '<style>html,body{background:#fff;color:#111;margin:0;font:12px system-ui}' +

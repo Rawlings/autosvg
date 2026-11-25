@@ -874,7 +874,7 @@ export const POSES: Record<string, PoseSpec> = {
     ['wink'],
   ),
   // Off states: these vectors need no second vector. The slash (or the speaker's cross) exists only in the off state and is
-  // drawn on when --icon-off goes from 0 to 1; mic-off, eye-off and the like resolve to the same vector with it on.
+  // drawn on when --autosvg-off goes from 0 to 1; mic-off, eye-off and the like resolve to the same vector with it on.
   // Off: a slash is drawn through the eye. mic-off, bell-off, eye-off and the like are these vectors in their off state.
   eye: withStates(
     P(

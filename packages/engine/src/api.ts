@@ -47,11 +47,11 @@ const issueText = (r: LintResult): string => `${r.status}: ${r.label} | ${r.deta
 // ---------- style settings as CSS custom properties ----------
 
 const CSS_VARS: Record<keyof Style, string> = {
-  stroke: '--icon-stroke',
-  cap: '--icon-cap',
-  join: '--icon-join',
-  radius: '--icon-radius',
-  curve: '--icon-curve',
+  stroke: '--autosvg-stroke',
+  cap: '--autosvg-cap',
+  join: '--autosvg-join',
+  radius: '--autosvg-radius',
+  curve: '--autosvg-curve',
 }
 
 /** Publish the style as inline custom properties on <html>: the set's real interface. Every vector follows. */
@@ -90,7 +90,7 @@ export const api = {
   get vectors(): string[] {
     return VECTORS.map((i) => i.name)
   },
-  /** Names that are a vector in one of its states (mic-off, eye-off, lock-open, unlock ...): no files, the same vector drawn with --icon-state set. */
+  /** Names that are a vector in one of its states (mic-off, eye-off, lock-open, unlock ...): no files, the same vector drawn with --autosvg-state set. */
   aliases: stateNames(),
 
   /** Replace the artwork. Accepts inner shapes or a complete <svg>. */
@@ -272,7 +272,7 @@ export const api = {
   },
 
   /**
-   * Preview style: { stroke, cap, join, radius, curve }. Published as CSS custom properties (--icon-*) on
+   * Preview style: { stroke, cap, join, radius, curve }. Published as CSS custom properties (--autosvg-*) on
    * the gallery, which is how the set is meant to be consumed. The canvas and every check follow it.
    * It only visualises the difference; no file changes. radius and curve apply to vectors with a recipe.
    */

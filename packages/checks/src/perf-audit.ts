@@ -3,7 +3,7 @@
 //
 //   style      how long the browser takes to restyle posed shapes when a pose number changes
 //              (all vectors at once, and one vector on its own: the realistic hover case)
-//   render     how long <icon-glyph> takes to draw a vector from its recipe when radius or curve change
+//   render     how long <auto-svg> takes to draw a vector from its recipe when radius or curve change
 //   weight     bytes of pose data per vector, beats per vector, size of the one stylesheet
 import { DEFAULT_STYLE, POSES, poseBytes } from '@autosvg/core'
 import { clearVectorCache, renderIcon } from '@autosvg/runtime'
@@ -80,7 +80,7 @@ export interface PerfReport {
 export async function perfAudit(names: readonly string[] = VECTORS.map((i) => i.name)): Promise<PerfReport> {
   const box = document.createElement('div')
   box.style.cssText = 'position:absolute;left:-10000px;top:0;width:900px;contain:layout'
-  box.innerHTML = names.map((n) => `<span data-vector="${n}"><icon-glyph name="${n}"></icon-glyph></span>`).join('')
+  box.innerHTML = names.map((n) => `<span data-vector="${n}"><auto-svg name="${n}"></auto-svg></span>`).join('')
   document.body.append(box)
   const flagged: string[] = []
   try {
@@ -89,19 +89,20 @@ export async function perfAudit(names: readonly string[] = VECTORS.map((i) => i.
     const probe = shapes[0] ?? box
 
     // the whole set at once: what changing a pose number on a high ancestor costs
-    const recalcMsAll = +recalcMs((i) => box.style.setProperty('--icon-motion', i % 2 ? '0.3' : '0.6'), probe).toFixed(
-      2,
-    )
+    const recalcMsAll = +recalcMs(
+      (i) => box.style.setProperty('--autosvg-motion', i % 2 ? '0.3' : '0.6'),
+      probe,
+    ).toFixed(2)
     const recalcUsPerShape = shapes.length ? +((recalcMsAll * 1000) / shapes.length).toFixed(1) : 0
-    box.style.removeProperty('--icon-motion')
+    box.style.removeProperty('--autosvg-motion')
 
     // one vector at a time: the realistic hover
     const rows: VectorPerf[] = []
     for (const w of wrappers) {
       const name = w.dataset['vector'] ?? ''
       const p = w.querySelector('[data-c1]')
-      const ms = p ? recalcMs((i) => w.style.setProperty('--icon-motion', i % 2 ? '0.3' : '0.6'), p, 9) : 0
-      w.style.removeProperty('--icon-motion')
+      const ms = p ? recalcMs((i) => w.style.setProperty('--autosvg-motion', i % 2 ? '0.3' : '0.6'), p, 9) : 0
+      w.style.removeProperty('--autosvg-motion')
       const svg = renderIcon(name, DEFAULT_STYLE, { inline: true })
       const spec = POSES[name]
       rows.push({

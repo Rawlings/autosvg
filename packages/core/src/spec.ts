@@ -6,7 +6,7 @@
 export type Cap = 'butt' | 'round' | 'square'
 export type Join = 'miter' | 'round' | 'bevel'
 
-/** The look of the set: what a consumer can change with `--icon-*` variables. */
+/** The look of the set: what a consumer can change with `--autosvg-*` variables. */
 export interface Style {
   /** line weight */
   stroke: number

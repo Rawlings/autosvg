@@ -40,7 +40,7 @@ interface Props {
   /** The vector to show. When it changes the shape morphs into the new one. */
   vector: string
   onVector: (name: string) => void
-  /** The element that carries `--icon-state` and `--icon-motion` for the whole page. */
+  /** The element that carries `--autosvg-state` and `--autosvg-motion` for the whole page. */
   target: RefObject<HTMLElement | null>
 }
 
@@ -117,8 +117,8 @@ export function Tube3D({ vector, onVector, target }: Props) {
     if (svg && probe.current && s.t >= 1) {
       const css = getComputedStyle(probe.current)
       posed =
-        Math.abs(Number.parseFloat(css.getPropertyValue('--icon-motion'))) > 0.001 ||
-        Number.parseFloat(css.getPropertyValue('--icon-state')) > 0.001
+        Math.abs(Number.parseFloat(css.getPropertyValue('--autosvg-motion'))) > 0.001 ||
+        Number.parseFloat(css.getPropertyValue('--autosvg-state')) > 0.001
     }
     if (posed && svg) {
       const data = liveTubes(svg)

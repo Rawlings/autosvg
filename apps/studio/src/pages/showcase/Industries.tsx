@@ -343,7 +343,7 @@ export function Industries({ name }: { name: string }) {
         <Fx
           name={name}
           title="Monitor trace"
-          how="--icon-dash: 14 34 · a bright dash running the path"
+          how="--autosvg-dash: 14 34 · a bright dash running the path"
           tone="fx-monitor fx-stack"
         >
           <Glyph name={name} size={150} className="fx-trail" />
@@ -626,7 +626,7 @@ export function Industries({ name }: { name: string }) {
         <Fx
           name={name}
           title="Backlit dashboard"
-          how="--icon-dash: 2.2 0.35 · butt caps · glow behind glass"
+          how="--autosvg-dash: 2.2 0.35 · butt caps · glow behind glass"
           tone="fx-lcd fx-stack"
         >
           <Glyph name={name} size={150} className="fx-unlit" />

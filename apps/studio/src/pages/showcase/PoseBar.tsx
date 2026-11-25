@@ -11,7 +11,7 @@ interface Props {
 }
 
 /**
- * The carried vector's states and its motion, as buttons. They set `--icon-state` and `--icon-motion` on `target`, which is all an
+ * The carried vector's states and its motion, as buttons. They set `--autosvg-state` and `--autosvg-motion` on `target`, which is all an
  * vector needs: the 2D tiles follow by themselves, and the 3D view reads the same numbers from a copy of the vector.
  */
 export function PoseBar({ vector, target, onPose }: Props) {

@@ -5,18 +5,18 @@
 </p>
 
 <p align="center">
-  <a href="https://rawlings.github.io/autosvg/"><img alt="Live demo" src="https://img.shields.io/badge/LIVE%20DEMO-open%20the%20studio-39ff14?style=for-the-badge&labelColor=0a0a0a"></a>
+  <a href="https://rawlings.github.io/autosvg/"><img alt="Live demo" src="https://img.shields.io/badge/LIVE%20DEMO-open%20the%20studio-f5f5f5?style=for-the-badge&labelColor=0a0a0a"></a>
 </p>
 
 <p align="center">
-  <a href="https://github.com/Rawlings/autosvg/actions/workflows/deploy.yml"><img alt="Deploy" src="https://img.shields.io/github/actions/workflow/status/Rawlings/autosvg/deploy.yml?branch=main&style=flat-square&label=deploy&labelColor=0a0a0a"></a>
-  <img alt="303 vectors" src="https://img.shields.io/badge/vectors-303-39ff14?style=flat-square&labelColor=0a0a0a">
-  <img alt="28 categories" src="https://img.shields.io/badge/categories-28-39ff14?style=flat-square&labelColor=0a0a0a">
-  <img alt="Agent ready" src="https://img.shields.io/badge/agent--ready-MCP%20%2B%20JS%20API-39ff14?style=flat-square&labelColor=0a0a0a">
-  <img alt="Motion in pure CSS" src="https://img.shields.io/badge/motion-pure%20CSS-39ff14?style=flat-square&labelColor=0a0a0a">
-  <img alt="TypeScript strict" src="https://img.shields.io/badge/TypeScript-strict-3178c6?style=flat-square&labelColor=0a0a0a">
-  <a href="LICENSE"><img alt="MIT license" src="https://img.shields.io/github/license/Rawlings/autosvg?style=flat-square&labelColor=0a0a0a"></a>
-  <a href="https://github.com/Rawlings/autosvg/stargazers"><img alt="Stars" src="https://img.shields.io/github/stars/Rawlings/autosvg?style=flat-square&labelColor=0a0a0a"></a>
+  <a href="https://github.com/Rawlings/autosvg/actions/workflows/deploy.yml"><img alt="Deploy" src="https://img.shields.io/github/actions/workflow/status/Rawlings/autosvg/deploy.yml?branch=main&style=flat-square&label=deploy&labelColor=0a0a0a&color=525252"></a>
+  <img alt="303 vectors" src="https://img.shields.io/badge/vectors-303-525252?style=flat-square&labelColor=0a0a0a">
+  <img alt="28 categories" src="https://img.shields.io/badge/categories-28-525252?style=flat-square&labelColor=0a0a0a">
+  <img alt="Agent ready" src="https://img.shields.io/badge/agent--ready-MCP%20%2B%20JS%20API-525252?style=flat-square&labelColor=0a0a0a">
+  <img alt="Motion in pure CSS" src="https://img.shields.io/badge/motion-pure%20CSS-525252?style=flat-square&labelColor=0a0a0a">
+  <img alt="TypeScript strict" src="https://img.shields.io/badge/TypeScript-strict-525252?style=flat-square&labelColor=0a0a0a">
+  <a href="LICENSE"><img alt="MIT license" src="https://img.shields.io/github/license/Rawlings/autosvg?style=flat-square&labelColor=0a0a0a&color=525252"></a>
+  <a href="https://github.com/Rawlings/autosvg/stargazers"><img alt="Stars" src="https://img.shields.io/github/stars/Rawlings/autosvg?style=flat-square&labelColor=0a0a0a&color=525252"></a>
 </p>
 
 <h3 align="center">An agentic suite for producing vectors.</h3>
@@ -75,8 +75,8 @@ Four pages: **Library** to browse and play with every vector, **Studio** to draw
 ## Use a vector
 
 ```html
-<icon-glyph name="bell"></icon-glyph>
-<icon-glyph name="mic" state="off"></icon-glyph>
+<auto-svg name="bell"></auto-svg>
+<auto-svg name="mic" state="off"></auto-svg>
 ```
 
 That is a ringing, mutable microphone and a bell, themed by CSS variables and following your text colour. The full guide, with motion, state, morphing and export, is in [docs/USAGE.md](docs/USAGE.md).

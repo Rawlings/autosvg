@@ -8,7 +8,7 @@ const words = (name: string) => name.replace(/-/g, ' ')
 
 /**
  * The carried vector in real places, drawn with the shared look: the stroke, radius, curve, caps and joins set in the Look menu
- * reach every one of these through the --icon-* variables, with no code here that knows about them.
+ * reach every one of these through the --autosvg-* variables, with no code here that knows about them.
  */
 export function InPlace({ name }: { name: string }) {
   const label = words(name)
@@ -17,7 +17,7 @@ export function InPlace({ name }: { name: string }) {
       <Card
         title="At every size"
         note="The same drawing, 16 to 64 px, at the stroke and corner radius set in the Look menu."
-        driver="--icon-size · --icon-stroke"
+        driver="--autosvg-size · --autosvg-stroke"
       >
         <div className="sc-c-sizes">
           {SIZES.map((px) => (
@@ -31,7 +31,7 @@ export function InPlace({ name }: { name: string }) {
       <Card
         title="In buttons"
         note="Filled, outlined, vector only. Hover or focus one to play the vector's own gesture."
-        driver=".sc-hover:hover { --icon-motion: 1 }"
+        driver=".sc-hover:hover { --autosvg-motion: 1 }"
       >
         <div className="sc-c-buttons">
           <button type="button" className="sc-c-btn primary sc-hover">
@@ -50,7 +50,7 @@ export function InPlace({ name }: { name: string }) {
       <Card
         title="In a tab bar"
         note="Between two neighbours, so you can judge its weight and size beside other vectors."
-        driver="aria-current=page · --icon-motion"
+        driver="aria-current=page · --autosvg-motion"
       >
         <div className="sc-c-tabs" role="group" aria-label="Tab bar example">
           {[

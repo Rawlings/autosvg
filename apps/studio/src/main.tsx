@@ -1,8 +1,8 @@
-import '@autosvg/engine' // registers <icon-glyph> and window.autosvg before anything renders
+import '@autosvg/engine' // registers <auto-svg> and window.autosvg before anything renders
 import '@autosvg/runtime/css/icons.css'
 import '@autosvg/runtime/css/poses.css' // the one fixed stylesheet that turns pose data in each SVG into motion
-import '@autosvg/runtime/css/swap.css' // one vector turning into another, driven by --icon-swap
-import '@autosvg/runtime/css/morph.css' // any vector turning into any other, driven by --icon-morph
+import '@autosvg/runtime/css/swap.css' // one vector turning into another, driven by --autosvg-swap
+import '@autosvg/runtime/css/morph.css' // any vector turning into any other, driven by --autosvg-morph
 import '@autosvg/runtime/css/depth.css' // opt-in: a lit, glossy look and a cast shadow
 import './styles/tokens.css'
 import './styles/base.css'

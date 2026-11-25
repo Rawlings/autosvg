@@ -275,8 +275,8 @@
   color: var(--k-aab6cb);
   filter: drop-shadow(0 1px 0 rgb(255 255 255 / 0.45)) drop-shadow(0 -1px 0 rgb(0 0 0 / 0.7));
 }
-.fx-card-vector icon-glyph {
-  --icon-stroke: calc(var(--s) * 1.3);
+.fx-card-vector auto-svg {
+  --autosvg-stroke: calc(var(--s) * 1.3);
 }
 .fx-holofoil-stage {
   background: linear-gradient(145deg, #e9ebf0, #b9bec9);
@@ -310,8 +310,8 @@
     linear-gradient(135deg, var(--k-e6c46a), var(--k-b98f2e) 45%, var(--k-e8cf86) 60%, var(--k-a47a22));
   color: var(--k-5a3f0c);
 }
-.fx-brass icon-glyph {
-  --icon-stroke: calc(var(--s) * 1.6);
+.fx-brass auto-svg {
+  --autosvg-stroke: calc(var(--s) * 1.6);
   filter: drop-shadow(0 1px 0 rgb(255 240 190 / 0.7)) drop-shadow(0 -1px 0 rgb(0 0 0 / 0.45));
 }
 
@@ -387,8 +387,8 @@
   clip-path: polygon(50% 0, 93% 25%, 93% 75%, 50% 100%, 7% 75%, 7% 25%);
   background: radial-gradient(circle at 50% 35%, var(--k-2c1b52), var(--k-0f0a1f));
 }
-.fx-rare-hex icon-glyph {
-  --icon-stroke: calc(var(--s) * 1.15);
+.fx-rare-hex auto-svg {
+  --autosvg-stroke: calc(var(--s) * 1.15);
   position: relative;
   filter: drop-shadow(0 0 6px var(--k-ffb703)) drop-shadow(0 0 16px var(--k-fb5607));
 }
@@ -454,8 +454,8 @@
   background: #fff;
   box-shadow: 0 10px 26px -8px rgb(15 158 148 / 0.45);
 }
-.fx-pulse icon-glyph {
-  --icon-stroke: calc(var(--s) * 1.1);
+.fx-pulse auto-svg {
+  --autosvg-stroke: calc(var(--s) * 1.1);
 }
 .fx-monitor {
   background:
@@ -463,14 +463,14 @@
     repeating-linear-gradient(90deg, rgb(0 255 120 / 0.06) 0 1px, transparent 1px 22px), var(--k-020a06);
   color: var(--k-38ff8b);
 }
-.fx-monitor icon-glyph {
-  --icon-stroke: calc(var(--s) * 1.2);
+.fx-monitor auto-svg {
+  --autosvg-stroke: calc(var(--s) * 1.2);
 }
 .fx-trail {
   opacity: 0.22;
 }
 .fx-tracer {
-  --icon-dash: 14 34;
+  --autosvg-dash: 14 34;
   filter: drop-shadow(0 0 3px var(--k-38ff8b)) drop-shadow(0 0 9px var(--k-38ff8b));
 }
 .fx-tracer svg {
@@ -511,11 +511,11 @@
   color: #f4f1e8;
 }
 .fx-chalk {
-  --icon-stroke: calc(var(--s) * 1.15);
+  --autosvg-stroke: calc(var(--s) * 1.15);
   filter: url(#fx-chalk);
 }
 .fx-dust {
-  --icon-stroke: calc(var(--s) * 1.8);
+  --autosvg-stroke: calc(var(--s) * 1.8);
   opacity: 0.25;
   filter: blur(4px);
 }
@@ -535,8 +535,8 @@
   mix-blend-mode: multiply;
   transform: rotate(-9deg);
 }
-.fx-stamp icon-glyph {
-  --icon-stroke: calc(var(--s) * 1.4);
+.fx-stamp auto-svg {
+  --autosvg-stroke: calc(var(--s) * 1.4);
 }
 .fx-barber-stage {
   background: var(--k-1d3557);
@@ -557,12 +557,12 @@
   background: repeating-linear-gradient(0deg, transparent 0 23px, var(--k-cfe1f5) 23px 24px), var(--k-fbf3df);
 }
 .fx-wax-a {
-  --icon-stroke: calc(var(--s) * 1.8);
+  --autosvg-stroke: calc(var(--s) * 1.8);
   color: var(--k-ff7a1a);
   filter: url(#fx-crayon);
 }
 .fx-wax-b {
-  --icon-stroke: calc(var(--s) * 2.2);
+  --autosvg-stroke: calc(var(--s) * 2.2);
   color: var(--k-ffc400);
   filter: url(#fx-crayon);
   transform: translate(3px, 2px) rotate(1.5deg);
@@ -570,8 +570,8 @@
 .fx-balloon {
   background: linear-gradient(var(--k-bfe6ff), #f4fbff);
 }
-.fx-balloon icon-glyph {
-  --icon-stroke: calc(var(--s) * 3.1);
+.fx-balloon auto-svg {
+  --autosvg-stroke: calc(var(--s) * 3.1);
   color: var(--k-ff4f9a);
   animation: fx-float 3s ease-in-out infinite alternate;
 }
@@ -684,18 +684,18 @@
   border: 2px dashed var(--k-f6e7c1);
   border-radius: 50%;
 }
-.fx-felt icon-glyph {
+.fx-felt auto-svg {
   grid-area: 1 / 1;
 }
 .fx-sat {
-  --icon-stroke: calc(var(--s) * 2.1);
+  --autosvg-stroke: calc(var(--s) * 2.1);
   color: var(--k-f4c430);
   filter: drop-shadow(0 1px 1px rgb(0 0 0 / 0.5));
 }
 .fx-hi {
-  --icon-stroke: calc(var(--s) * 0.5);
-  --icon-dash: 1 1.2;
-  --icon-cap: butt;
+  --autosvg-stroke: calc(var(--s) * 0.5);
+  --autosvg-dash: 1 1.2;
+  --autosvg-cap: butt;
   position: relative;
   z-index: 1;
   color: var(--k-fff6c8);
@@ -750,8 +750,8 @@
     #f7f6f0;
   color: #111;
 }
-.fx-tech > icon-glyph {
-  --icon-stroke: calc(var(--s) * 0.6);
+.fx-tech > auto-svg {
+  --autosvg-stroke: calc(var(--s) * 0.6);
 }
 .fx-dims {
   position: absolute;
@@ -825,12 +825,12 @@
   pointer-events: none;
 }
 .fx-pink {
-  --icon-stroke: calc(var(--s) * 1.6);
+  --autosvg-stroke: calc(var(--s) * 1.6);
   color: var(--k-ff48b0);
   mix-blend-mode: multiply;
 }
 .fx-blue-ink {
-  --icon-stroke: calc(var(--s) * 1.6);
+  --autosvg-stroke: calc(var(--s) * 1.6);
   color: var(--k-0078bf);
   mix-blend-mode: multiply;
   transform: translate(5px, 4px);
@@ -851,12 +851,12 @@
   background: linear-gradient(#9b9b96, #7d7d79);
 }
 .fx-paint {
-  --icon-stroke: calc(var(--s) * 2);
+  --autosvg-stroke: calc(var(--s) * 2);
   color: var(--k-39ff14);
   filter: url(#fx-spray);
 }
 .fx-over {
-  --icon-stroke: calc(var(--s) * 3);
+  --autosvg-stroke: calc(var(--s) * 3);
   color: var(--k-39ff14);
   opacity: 0.55;
   filter: blur(8px);
@@ -922,8 +922,8 @@
   box-shadow: 0 0 0 3px var(--k-f1c0c4);
   color: #fff;
 }
-.fx-label-disc icon-glyph {
-  --icon-stroke: calc(var(--s) * 1.2);
+.fx-label-disc auto-svg {
+  --autosvg-stroke: calc(var(--s) * 1.2);
 }
 
 /* ---- travel and nature ---- */
@@ -962,16 +962,16 @@
   mix-blend-mode: multiply;
 }
 .fx-wash-a {
-  --icon-stroke: calc(var(--s) * 3.2);
+  --autosvg-stroke: calc(var(--s) * 3.2);
   color: var(--k-3b82f6);
 }
 .fx-wash-b {
-  --icon-stroke: calc(var(--s) * 2.5);
+  --autosvg-stroke: calc(var(--s) * 2.5);
   color: var(--k-22c55e);
   transform: translate(6px, 4px);
 }
 .fx-wash-c {
-  --icon-stroke: calc(var(--s) * 1.9);
+  --autosvg-stroke: calc(var(--s) * 1.9);
   color: var(--k-f59e0b);
   transform: translate(-5px, 6px);
 }
@@ -983,20 +983,20 @@
   color: #3a3a3a;
 }
 .fx-pen-a {
-  --icon-stroke: calc(var(--s) * 0.55);
+  --autosvg-stroke: calc(var(--s) * 0.55);
   opacity: 0.9;
   filter: url(#fx-sketch);
 }
 .fx-pen-b {
-  --icon-stroke: calc(var(--s) * 0.45);
+  --autosvg-stroke: calc(var(--s) * 0.45);
   opacity: 0.6;
   filter: url(#fx-sketch-b);
 }
 .fx-topo {
   background: var(--k-e8dcc0);
 }
-.fx-topo icon-glyph {
-  --icon-stroke: calc(var(--s) * 0.4);
+.fx-topo auto-svg {
+  --autosvg-stroke: calc(var(--s) * 0.4);
 }
 .fx-contour-ring {
   display: grid;
@@ -1063,8 +1063,8 @@
   color: #fff;
   filter: drop-shadow(0 0 8px var(--k-9ec5ff));
 }
-.fx-warp-core icon-glyph {
-  --icon-stroke: calc(var(--s) * 1.1);
+.fx-warp-core auto-svg {
+  --autosvg-stroke: calc(var(--s) * 1.1);
 }
 
 /* ---- safety and automotive ---- */
@@ -1120,10 +1120,10 @@
   color: var(--k-fff2a0);
   mask: radial-gradient(circle 72px at var(--px) var(--py), #000 0 35%, transparent 100%);
 }
-.fx-torch icon-glyph {
-  --icon-stroke: calc(var(--s) * 1.5);
+.fx-torch auto-svg {
+  --autosvg-stroke: calc(var(--s) * 1.5);
 }
-.fx-torch-lit icon-glyph {
+.fx-torch-lit auto-svg {
   filter: drop-shadow(0 0 6px var(--k-ffe14d));
 }
 .fx-torch::after {
@@ -1148,13 +1148,13 @@
   color: var(--k-ffb000);
 }
 .fx-unlit {
-  --icon-stroke: calc(var(--s) * 1.5);
+  --autosvg-stroke: calc(var(--s) * 1.5);
   opacity: 0.08;
 }
 .fx-segments {
-  --icon-stroke: calc(var(--s) * 1.5);
-  --icon-dash: 2.2 0.35;
-  --icon-cap: butt;
+  --autosvg-stroke: calc(var(--s) * 1.5);
+  --autosvg-dash: 2.2 0.35;
+  --autosvg-cap: butt;
   filter: drop-shadow(0 0 3px var(--k-ffb000)) drop-shadow(0 0 10px var(--k-ff8a00));
   animation: fx-lcd 3s steps(1) infinite;
 }
@@ -1296,7 +1296,7 @@
 .fx-rare-hex::before {
   background: radial-gradient(circle at 50% 35%, color-mix(in oklab, var(--c) 26%, #0f0a1f), #0f0a1f);
 }
-.fx-rare-hex icon-glyph {
+.fx-rare-hex auto-svg {
   filter: drop-shadow(0 0 6px var(--c)) drop-shadow(0 0 16px var(--c));
 }
 .fx-spark {
@@ -1323,7 +1323,7 @@
 .fx-balloon {
   background: linear-gradient(color-mix(in oklab, var(--c-x) 30%, white), color-mix(in oklab, var(--c-x) 6%, white));
 }
-.fx-balloon icon-glyph {
+.fx-balloon auto-svg {
   color: var(--c);
 }
 .fx-kal-arm {
@@ -1361,7 +1361,7 @@
   background: color-mix(in oklab, var(--c) 8%, #060309);
   color: var(--c-l);
 }
-.fx-neon icon-glyph {
+.fx-neon auto-svg {
   filter: drop-shadow(0 0 1.5px #fff) drop-shadow(0 0 8px var(--c)) drop-shadow(0 0 24px var(--c-d));
 }
 .fx-e {
@@ -1391,7 +1391,7 @@
   background: radial-gradient(circle at 50% 60%, color-mix(in oklab, var(--c) 35%, #020b12), #020b12 70%);
   color: var(--c-l);
 }
-.fx-holo icon-glyph {
+.fx-holo auto-svg {
   filter: drop-shadow(0 0 3px var(--c-l)) drop-shadow(0 0 14px var(--c));
 }
 .fx-holo::after {

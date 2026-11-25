@@ -64,7 +64,7 @@ export interface Part {
 
 /**
  * A shape that exists only in a state. `d`, `circle` [cx, cy, r] or `rect` [x, y, w, h, rx] say what it is; `rx` is a number,
- * or [base, max] to follow the --icon-radius setting.
+ * or [base, max] to follow the --autosvg-radius setting.
  */
 export interface StateAccessory {
   d?: string
@@ -99,18 +99,18 @@ export interface PoseSpec {
 
 /**
  * The four channels a vector can respond to, each a CSS number a consumer sets on the vector or any ancestor:
- *   1  --icon-motion   a momentary gesture, 0 to 1 (a bell rings, an arrow lunges). It plays and settles back to rest.
- *   2  --icon-state    which state the vector is in, 0 for its normal look and 1, 2, ... for its named states (off, open,
+ *   1  --autosvg-motion   a momentary gesture, 0 to 1 (a bell rings, an arrow lunges). It plays and settles back to rest.
+ *   2  --autosvg-state    which state the vector is in, 0 for its normal look and 1, 2, ... for its named states (off, open,
  *                      weak). A state persists; entering and leaving it is the number moving, and the beats in between
  *                      are the transition. Stops are whole numbers, but any value in between is a valid frame.
- *   3  --icon-look-x   -1 to 1, for vectors that look around (the eyes)
- *   4  --icon-look-y
+ *   3  --autosvg-look-x   -1 to 1, for vectors that look around (the eyes)
+ *   4  --autosvg-look-y
  */
 export const CHANNEL_VAR = {
-  1: '--icon-motion',
-  2: '--icon-state',
-  3: '--icon-look-x',
-  4: '--icon-look-y',
+  1: '--autosvg-motion',
+  2: '--autosvg-state',
+  3: '--autosvg-look-x',
+  4: '--autosvg-look-y',
 } as const satisfies Record<Channel, string>
 export const STATE = 2
 
@@ -146,7 +146,7 @@ export const S = (from: number, at: readonly number[], spec: PoseSpec): PoseSpec
 export const simple = (spec: PoseSpec): PoseSpec => ({ ...spec, simple: true })
 
 /**
- * Give a vector named states. `names` are the stops after the normal look: ['off'] means --icon-state 1 is "off";
+ * Give a vector named states. `names` are the stops after the normal look: ['off'] means --autosvg-state 1 is "off";
  * ['weak', 'off'] means 1 is weak and 2 is off. What changes in a state is written as ordinary beats on channel 2
  * (ramps only: a state holds). `add` are strokes that exist only in a state (a slash through a microphone): invisible in
  * the file (opacity="0"), brought in at their state (see stateShape in poses.js for the options: in, out, kind, circle, rect).

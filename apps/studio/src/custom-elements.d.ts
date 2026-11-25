@@ -6,8 +6,8 @@ type Element<Own> = DetailedHTMLProps<HTMLAttributes<HTMLElement>, HTMLElement> 
 declare module 'react' {
   namespace JSX {
     interface IntrinsicElements {
-      'icon-glyph': Element<{ name?: string; state?: string; depth?: string }>
-      'icon-morph': Element<{ from?: string; to?: string; state?: string }>
+      'auto-svg': Element<{ name?: string; state?: string; depth?: string }>
+      'auto-svg-morph': Element<{ from?: string; to?: string; state?: string }>
     }
   }
 }
