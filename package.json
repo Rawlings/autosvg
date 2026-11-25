@@ -8,7 +8,7 @@
   "type": "module",
   "packageManager": "pnpm@12.15.0",
   "engines": {
-    "node": ">=22.18",
+    "node": ">=26",
     "pnpm": ">=12"
   },
   "scripts": {
@@ -17,12 +17,13 @@
     "preview": "pnpm --filter @autosvg/studio preview",
     "seed": "pnpm --filter @autosvg/tools seed",
     "seed:check": "pnpm --filter @autosvg/tools seed:check",
+    "categories:check": "pnpm --filter @autosvg/tools categories:check",
     "css": "pnpm --filter @autosvg/tools css",
     "export": "pnpm --filter @autosvg/tools export",
     "typecheck": "pnpm -r --parallel typecheck",
     "lint": "biome check .",
     "format": "biome check --write .",
-    "check": "pnpm lint && pnpm typecheck && pnpm seed:check",
+    "check": "pnpm lint && pnpm typecheck && pnpm seed:check && pnpm categories:check",
     "verify-vectors": "pnpm --filter @autosvg/tools verify-vectors",
     "quick": "pnpm --filter @autosvg/tools quick",
     "geom": "pnpm --filter @autosvg/tools geom",

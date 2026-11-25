@@ -16,3 +16,5 @@ export const getVector = registry.get
 export const registerVector = registry.register
 /** Be told when {@link registerVector} changes the set. Returns the way to stop. */
 export const onVectorChange = registry.onChange
+
+export * from './categories.ts'

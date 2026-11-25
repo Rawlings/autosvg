@@ -19,37 +19,46 @@ interface RouterValue {
 
 const Ctx = createContext<RouterValue | null>(null)
 
+/** Where the app is served from: `/` on a dev server, `/autosvg/` on GitHub Pages (set by Vite's `base`). Pages and links never see it. */
+export const BASE = import.meta.env.BASE_URL.replace(/\/$/, '')
+
+/** The address as the pages see it (no base), and as the browser holds it (base first). */
+const inApp = (pathname: string): string =>
+  BASE && pathname.startsWith(BASE) ? pathname.slice(BASE.length) || '/' : pathname
+export const withBase = (to: string): string => (to.startsWith('/') ? BASE + to : to)
+const here = (): string => inApp(location.pathname) + location.search
+
 // old links looked like /#bell; keep them working
 function initial(): string {
   const hash = location.hash.slice(1)
-  if (location.pathname === '/' && /^[a-z0-9-]+$/.test(hash)) {
-    history.replaceState(null, '', `/studio/${hash}`)
+  if (inApp(location.pathname) === '/' && /^[a-z0-9-]+$/.test(hash)) {
+    history.replaceState(null, '', withBase(`/studio/${hash}`))
   }
   // the Motion page became part of the Library's detail: old links land there, with the vector
-  if (location.pathname === '/motion') history.replaceState(null, '', `/${location.search}`)
-  return location.pathname + location.search
+  if (inApp(location.pathname) === '/motion') history.replaceState(null, '', withBase(`/${location.search}`))
+  return here()
 }
 
 export function Router({ children }: { children: ReactNode }) {
   const [url, setUrl] = useState(initial)
 
   useEffect(() => {
-    const onPop = () => setUrl(location.pathname + location.search)
+    const onPop = () => setUrl(here())
     addEventListener('popstate', onPop)
     return () => removeEventListener('popstate', onPop)
   }, [])
 
   const navigate = useCallback<RouterValue['navigate']>((to, { replace = false } = {}) => {
-    if (to === location.pathname + location.search) return
+    if (to === here()) return
     const go = () => {
-      if (replace) history.replaceState(null, '', to)
-      else history.pushState(null, '', to)
+      if (replace) history.replaceState(null, '', withBase(to))
+      else history.pushState(null, '', withBase(to))
       setUrl(to)
       if (!replace) scrollTo(0, 0)
     }
     // a change of page is a view transition: whatever carries the same `view-transition-name` on both pages
     // (the carried vector's stage) travels between them instead of cutting
-    const samePage = to.split('?')[0] === location.pathname
+    const samePage = to.split('?')[0] === inApp(location.pathname)
     const still = matchMedia('(prefers-reduced-motion: reduce)').matches
     if (replace || samePage || still || !document.startViewTransition) go()
     else document.startViewTransition(() => flushSync(go))
@@ -78,7 +87,7 @@ export function Link({ to, replace = false, children, ...rest }: LinkProps) {
   const { navigate } = useRouter()
   return (
     <a
-      href={to}
+      href={withBase(to)}
       onClick={(e) => {
         if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return
         e.preventDefault()

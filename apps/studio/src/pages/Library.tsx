@@ -2,6 +2,7 @@ import type { Status } from '@autosvg/checks'
 import { DEFAULT_STYLE, POSES, RECIPES } from '@autosvg/core'
 import { api, lintSVG, overall, renderIcon, VECTORS } from '@autosvg/engine'
 import { resolve, stateNames } from '@autosvg/runtime'
+import { bySection, categoryOf } from '@autosvg/vectors'
 import { useDeferredValue, useEffect, useMemo, useRef, useState } from 'react'
 import { useCopy, useEngine } from '../app/hooks.ts'
 import { Link, useRouter } from '../app/router.tsx'
@@ -28,6 +29,12 @@ const FILTERS: readonly (readonly [Filter, string])[] = [
   ['turns', 'Turns'],
   ['attention', 'Needs attention'],
 ]
+
+interface Group {
+  id: string
+  label: string
+  categories: { id: string; label: string; vectors: readonly { name: string }[] }[]
+}
 
 export default function Library() {
   const snap = useEngine()
@@ -58,7 +65,11 @@ export default function Library() {
         : [],
     )
     const matches = (name: string): boolean =>
-      !term || name.includes(term) || viaState.has(name) || !!SEARCH_TERMS[name]?.includes(term)
+      !term ||
+      name.includes(term) ||
+      viaState.has(name) ||
+      !!SEARCH_TERMS[name]?.includes(term) ||
+      !!categoryOf(name)?.label.toLowerCase().includes(term)
     const inFilter = (name: string): boolean => {
       if (filter === 'all') return true
       if (filter === 'attention') return status[name] !== 'pass'
@@ -67,7 +78,48 @@ export default function Library() {
     return VECTORS.filter((i) => matches(i.name) && inFilter(i.name))
   }, [q, filter, status])
 
+  // with no search, the grid reads in the set's own order: sections, then categories; a vector nobody filed shows last
+  const groups = useMemo(() => {
+    if (q.trim()) return null
+    const sections: Group[] = bySection().map((s) => ({
+      id: s.id,
+      label: s.label,
+      categories: s.categories
+        .map((c) => ({ id: c.id, label: c.label, vectors: shown.filter((v) => categoryOf(v.name)?.id === c.id) }))
+        .filter((c) => c.vectors.length),
+    }))
+    const unfiled = shown.filter((v) => !categoryOf(v.name))
+    if (unfiled.length)
+      sections.push({
+        id: 'unfiled',
+        label: 'Not in a category yet',
+        categories: [{ id: 'unfiled', label: 'Unfiled', vectors: unfiled }],
+      })
+    return sections.filter((s) => s.categories.length)
+  }, [q, shown])
+
   const select = (name: string | null) => navigate(name ? `/?vector=${name}` : '/', { replace: true })
+
+  const grid = (list: readonly { name: string }[]) => (
+    <ul className="grid" style={cssVars({ '--tile': `${snap.tile}px` })}>
+      {list.map((i) => (
+        <li key={i.name}>
+          <button
+            type="button"
+            className="tile"
+            aria-pressed={selected === i.name}
+            data-status={status[i.name]}
+            onClick={() => select(selected === i.name ? null : i.name)}
+            onDoubleClick={() => navigate(`/showcase?vector=${i.name}`)}
+            title={status[i.name] === 'pass' ? i.name : `${i.name}: ${status[i.name]}`}
+          >
+            <Glyph name={i.name} size={snap.tile} />
+            <span className="tile-name">{i.name}</span>
+          </button>
+        </li>
+      ))}
+    </ul>
+  )
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -151,24 +203,23 @@ export default function Library() {
           </div>
 
           {shown.length ? (
-            <ul className="grid" style={cssVars({ '--tile': `${snap.tile}px` })}>
-              {shown.map((i) => (
-                <li key={i.name}>
-                  <button
-                    type="button"
-                    className="tile"
-                    aria-pressed={selected === i.name}
-                    data-status={status[i.name]}
-                    onClick={() => select(selected === i.name ? null : i.name)}
-                    onDoubleClick={() => navigate(`/showcase?vector=${i.name}`)}
-                    title={status[i.name] === 'pass' ? i.name : `${i.name}: ${status[i.name]}`}
-                  >
-                    <Glyph name={i.name} size={snap.tile} />
-                    <span className="tile-name">{i.name}</span>
-                  </button>
-                </li>
-              ))}
-            </ul>
+            groups ? (
+              groups.map((section) => (
+                <div key={section.id} className="lib-section">
+                  <h2 className="lib-section-head">{section.label}</h2>
+                  {section.categories.map((c) => (
+                    <section key={c.id} aria-label={c.label}>
+                      <h3 className="lib-cat-head">
+                        {c.label} <span>{c.vectors.length}</span>
+                      </h3>
+                      {grid(c.vectors)}
+                    </section>
+                  ))}
+                </div>
+              ))
+            ) : (
+              grid(shown)
+            )
           ) : (
             <p className="empty">No vectors match “{q}”.</p>
           )}

@@ -16,3 +16,5 @@ export const VECTORS = registry.all
 export const getVector = registry.get
 export const registerVector = registry.register
 export const onVectorChange = registry.onChange
+
+export * from './categories.ts'

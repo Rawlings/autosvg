@@ -15,6 +15,7 @@
     "quick": "node src/quick.ts",
     "geom": "node src/geom.ts",
     "batches": "node src/batches.ts",
+    "categories:check": "node src/check-categories.ts",
     "shot": "node src/shot.ts"
   },
   "dependencies": {

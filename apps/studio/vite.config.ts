@@ -3,6 +3,8 @@ import { defineConfig } from 'vite'
 import { saveVectors } from './save-vectors.ts'
 
 export default defineConfig({
+  // GitHub Pages serves the repo at /autosvg/; the deploy workflow sets BASE_PATH. Locally it stays /.
+  base: process.env['BASE_PATH'] ?? '/',
   plugins: [react(), saveVectors()],
   server: {
     port: 5173,

@@ -6,6 +6,7 @@ import { DEFAULT_STYLE, type Style } from '@autosvg/core'
 import { api, getSnapshot, subscribe as subscribeEngine, VECTORS } from '@autosvg/engine'
 import { useSyncExternalStore } from 'react'
 import { DEFAULT_COLOR, isColor } from '../lib/materials.ts'
+import { withBase } from './router.tsx'
 
 export interface LookState {
   /** The vector being carried between pages. */
@@ -72,7 +73,7 @@ export function shareLink(path: string): string {
   const params = styleParams()
   params.set('vector', state.vector)
   if (state.color !== DEFAULT_COLOR) params.set('color', state.color.slice(1))
-  return `${location.origin}${path}?${params}`
+  return `${location.origin}${withBase(path)}?${params}`
 }
 
 const LOOK_PARAMS = [...STYLE_KEYS, 'color'] as const

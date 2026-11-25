@@ -164,6 +164,31 @@ main {
   grid-template-columns: repeat(auto-fill, minmax(calc(var(--tile) + 64px), 1fr));
   gap: 4px;
 }
+.lib-section {
+  padding-top: 8px;
+}
+.lib-section + .lib-section {
+  margin-top: 64px;
+}
+.lib-section-head {
+  margin: 0 0 4px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--line-strong);
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+.lib-cat-head {
+  margin: 36px 0 4px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink-2);
+}
+.lib-cat-head span {
+  margin-left: 8px;
+  color: var(--ink-3);
+  font-weight: 400;
+}
 .tile {
   position: relative;
   display: grid;
