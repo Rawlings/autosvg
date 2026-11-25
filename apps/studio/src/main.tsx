@@ -1,4 +1,4 @@
-import '@autosvg/engine' // registers <auto-svg> and window.autosvg before anything renders
+import '@autosvg/engine' // registers <autosvg-glyph> and window.autosvg before anything renders
 import '@autosvg/runtime/css/icons.css'
 import '@autosvg/runtime/css/poses.css' // the one fixed stylesheet that turns pose data in each SVG into motion
 import '@autosvg/runtime/css/swap.css' // one vector turning into another, driven by --autosvg-swap

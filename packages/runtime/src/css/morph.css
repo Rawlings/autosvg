@@ -1,7 +1,7 @@
 /*
   Vector morph: one vector turning into another, shape to shape. Works for any two vectors in the set.
 
-    <auto-svg-morph from="sun" to="moon"></auto-svg-morph>
+    <autosvg-morph from="sun" to="moon"></autosvg-morph>
 
   One number says which vector is shown, --autosvg-morph (0 the first vector, 1 the second): set state="to", or set --autosvg-morph: 1 on
   the element or any ancestor (a hover rule, a class, aria-pressed). Changing it is a CSS transition: every stroke of the first
@@ -21,16 +21,16 @@
   initial-value: 0;
 }
 
-auto-svg-morph {
+autosvg-morph {
   display: inline-flex;
   width: var(--autosvg-size, 24px);
   height: var(--autosvg-size, 24px);
   color: var(--autosvg-color, inherit);
 }
-auto-svg-morph[state='to'] {
+autosvg-morph[state='to'] {
   --autosvg-morph: 1;
 }
-auto-svg-morph svg {
+autosvg-morph svg {
   width: 100%;
   height: 100%;
   fill: none;
@@ -40,7 +40,7 @@ auto-svg-morph svg {
   stroke-linejoin: var(--autosvg-join, round);
 }
 /* every stroke carries both ends as variables (set by src/morph.js); the number picks one and a transition does the rest */
-auto-svg-morph path {
+autosvg-morph path {
   d: var(--im-a);
   opacity: var(--im-oa, 1);
   transition:
@@ -48,13 +48,13 @@ auto-svg-morph path {
     opacity var(--autosvg-morph-duration, 420ms) var(--autosvg-morph-easing, cubic-bezier(0.4, 0, 0.2, 1));
 }
 @container style(--autosvg-morph: 1) {
-  auto-svg-morph path {
+  autosvg-morph path {
     d: var(--im-b);
     opacity: var(--im-ob, 1);
   }
 }
 @media (prefers-reduced-motion: reduce) {
-  auto-svg-morph path {
+  autosvg-morph path {
     transition-duration: 1ms;
   }
 }

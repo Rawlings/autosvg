@@ -10,10 +10,10 @@ const supportsD = (): boolean => typeof CSS !== 'undefined' && CSS.supports('d: 
 const ends = new WeakMap<SVGPathElement, { from: string; to: string }>()
 
 /**
- * <auto-svg-morph from="sun" to="moon" state="to"></auto-svg-morph>: any vector turning into any other, shape to shape.
+ * <autosvg-morph from="sun" to="moon" state="to"></autosvg-morph>: any vector turning into any other, shape to shape.
  * --autosvg-morph (0 shows the first vector, 1 the second) is what moves it; `state="to"` is one way to set it.
  */
-class AutoSvgMorph extends HTMLElement {
+class AutosvgMorph extends HTMLElement {
   static observedAttributes = ['from', 'to', 'state']
   #key: string | undefined
 
@@ -87,12 +87,12 @@ class AutoSvgMorph extends HTMLElement {
   }
 }
 
-export function defineAutoSvgMorph(): void {
-  if (!customElements.get('auto-svg-morph')) customElements.define('auto-svg-morph', AutoSvgMorph)
+export function defineAutosvgMorph(): void {
+  if (!customElements.get('autosvg-morph')) customElements.define('autosvg-morph', AutosvgMorph)
 }
 
 declare global {
   interface HTMLElementTagNameMap {
-    'auto-svg-morph': AutoSvgMorph
+    'autosvg-morph': AutosvgMorph
   }
 }

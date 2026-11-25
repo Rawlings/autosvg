@@ -34,7 +34,7 @@ A pnpm workspace in TypeScript (strict), formatted and linted with Biome. Rules 
 packages/
   vectors/     the vector files (svg/), the source of truth, and the list of them as a module
   core/      the rules and the drawing: spec tokens, geometry, parametric recipes, the pose table. No DOM
-  runtime/   what a consumer loads: <auto-svg>, <auto-svg-morph> and the stylesheets (css/)
+  runtime/   what a consumer loads: <autosvg-glyph>, <autosvg-morph> and the stylesheets (css/)
   checks/    everything that judges a vector: rule lint, raster measurement, Paper.js shape analysis, audits
   engine/    the headless model behind the app, and window.autosvg for devtools and agents
 apps/
@@ -46,10 +46,10 @@ Each package depends only on the ones above it in this list (`core` on nothing, 
 
 ## Using the vectors in your own project
 
-The packages are not published yet; inside this workspace, depend on `@autosvg/runtime` and load the runtime and the stylesheets, then use `<auto-svg>`:
+The packages are not published yet; inside this workspace, depend on `@autosvg/runtime` and load the runtime and the stylesheets, then use `<autosvg-glyph>`:
 
 ```js
-import '@autosvg/runtime/register' // defines <auto-svg> and <auto-svg-morph>
+import '@autosvg/runtime/register' // defines <autosvg-glyph> and <autosvg-morph>
 import '@autosvg/runtime/css/icons.css' // --autosvg-* variables, off and state transitions
 import '@autosvg/runtime/css/poses.css' // the one stylesheet that turns each vector's data into motion
 import '@autosvg/runtime/css/swap.css' // optional: one vector turning into another (fade and turn)
@@ -57,9 +57,9 @@ import '@autosvg/runtime/css/morph.css' // optional: one vector turning into ano
 ```
 
 ```html
-<auto-svg name="bell"></auto-svg>
-<auto-svg name="mic" state="off"></auto-svg>       <!-- or name="mic-off" -->
-<auto-svg name="arrow-left"></auto-svg>             <!-- the arrow, turned -->
+<autosvg-glyph name="bell"></autosvg-glyph>
+<autosvg-glyph name="mic" state="off"></autosvg-glyph>       <!-- or name="mic-off" -->
+<autosvg-glyph name="arrow-left"></autosvg-glyph>             <!-- the arrow, turned -->
 ```
 
 An icon is decorative by default (`aria-hidden="true"`); put the name and state on the button that holds it. Give it an `aria-label` and it becomes a labelled image.
@@ -139,7 +139,7 @@ A lit, glossy look and a cast shadow for a few large icons. Load `depth.css` and
 ```
 
 ```html
-<auto-svg name="bell" depth="tube shadow" style="--autosvg-size: 96px"></auto-svg>
+<autosvg-glyph name="bell" depth="tube shadow" style="--autosvg-size: 96px"></autosvg-glyph>
 ```
 
 `depth="tube"` lights the strokes as glossy tubes (an SVG lighting filter, tuned for about 48 to 160 px), `depth="shadow"` casts a shadow. `--autosvg-lift` (0 to 1) floats the icon: the shadow moves away and softens, and a transition on that number is the animation. `--autosvg-light` (degrees) turns the shadow. Chromium shows all of it; elsewhere the icon is flat. Use it on dozens of icons, not hundreds: see the cost note at the top of `depth.css`.
@@ -149,7 +149,7 @@ A lit, glossy look and a cast shadow for a few large icons. Load `depth.css` and
 For two icons that really differ (a sun and a moon, a menu and a cross). Any two icons in the set work, with nothing drawn for the pair:
 
 ```html
-<auto-svg-morph from="sun" to="moon" state="to"></auto-svg-morph>
+<autosvg-morph from="sun" to="moon" state="to"></autosvg-morph>
 ```
 
 Like everything else it is one number, `--autosvg-morph` (0 shows the first icon, 1 the second), set by `state="to"` or by any CSS on the element or an ancestor (`:hover { --autosvg-morph: 1 }`); changing it is a CSS transition (`--autosvg-morph-duration`, `--autosvg-morph-easing`). It is a switch with a transition, not a scrubber, so it does not follow a scroll timeline. Every stroke of the first icon moves into a stroke of the second; a stroke with nothing to become shrinks and fades. How: CSS can animate a path's `d` only between two paths with the same commands, so `packages/runtime/src/morph/` pairs the strokes of the two icons (nearest first), rewrites each pair with the same number of cubic curves, picks the start point and direction that line up best, and stores both ends of each stroke as CSS variables, so a plain transition on `d` does the moving (no stylesheet rules are made per pair). Planning a pair takes about a millisecond and is cached. `autosvg.morphPlan(a, b)` returns the plan, including `rough: true` when the two have little in common (most of the ink fades instead of moving); `data-fit="rough"` is set on the element, and the plain swap suits such a pair better. Needs CSS `d` (Chrome, Edge, Firefox); elsewhere the icon changes instantly.
@@ -165,7 +165,7 @@ renderIcon('mic-off', { stroke: 0.75 }, { inline: true }) // a plain static SVG 
 
 ### Weight
 
-Measured with a production build of the runtime entry (every icon, every recipe, the state table, `<auto-svg>`): about 283 KB minified, 48 KB gzipped for 235 icons, which is roughly 0.2 KB gzipped per icon. `<auto-svg-morph>` adds about 12 KB (4 KB gzipped). The styles are 14.6 KB for `poses.css` (2.9 KB gzipped), 2.9 KB for `icons.css` (1.3 KB gzipped) and 2.3 KB for `morph.css` (1 KB gzipped), and they do not grow with the icon count. Per-icon motion is a handful of `data-` attributes in the SVG (about 350 bytes on average).
+Measured with a production build of the runtime entry (every icon, every recipe, the state table, `<autosvg-glyph>`): about 283 KB minified, 48 KB gzipped for 235 icons, which is roughly 0.2 KB gzipped per icon. `<autosvg-morph>` adds about 12 KB (4 KB gzipped). The styles are 14.6 KB for `poses.css` (2.9 KB gzipped), 2.9 KB for `icons.css` (1.3 KB gzipped) and 2.3 KB for `morph.css` (1 KB gzipped), and they do not grow with the icon count. Per-icon motion is a handful of `data-` attributes in the SVG (about 350 bytes on average).
 
 ## Browser support
 

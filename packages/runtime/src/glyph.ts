@@ -1,9 +1,9 @@
-// <auto-svg>: draws any vector in the set from the settings held in CSS custom properties.
+// <autosvg-glyph>: draws any vector in the set from the settings held in CSS custom properties.
 //
 // Two layers, and why:
 //  - Stroke weight, caps, joins, dash and colour are plain CSS (see css/icons.css). No JavaScript.
 //  - Geometry (corner radius, curve character) cannot be changed by CSS: a path's shape can't take
-//    var(). So <auto-svg> reads the variables and redraws from the stored recipes.
+//    var(). So <autosvg-glyph> reads the variables and redraws from the stored recipes.
 //
 // CSS variables (set them on any element; every vector inside follows):
 //   --autosvg-stroke  --autosvg-cap  --autosvg-join  --autosvg-dash  --autosvg-color  --autosvg-size     (CSS only)
@@ -34,8 +34,8 @@ export function readParams(el: Element): Style {
   }
 }
 
-/** <auto-svg name="home"></auto-svg>: redraws itself when the geometry variables change. */
-class AutoSvg extends HTMLElement {
+/** <autosvg-glyph name="home"></autosvg-glyph>: redraws itself when the geometry variables change. */
+class AutosvgGlyph extends HTMLElement {
   static observedAttributes = ['name', 'state']
   #key: string | undefined
 
@@ -102,13 +102,13 @@ let scheduled = false
 /** Redraw every glyph whose geometry variables changed. Cheap when nothing changed. Call it each frame during a CSS transition. */
 export function refreshVectors(): void {
   scheduled = false
-  for (const el of document.querySelectorAll<RenderedIcon>('auto-svg, auto-svg-morph')) el.render()
+  for (const el of document.querySelectorAll<RenderedIcon>('autosvg-glyph, autosvg-morph')) el.render()
 }
 
-/** Register <auto-svg> and keep every glyph in step when a style or class attribute changes anywhere. */
-export function defineAutoSvg(): void {
-  if (customElements.get('auto-svg')) return
-  customElements.define('auto-svg', AutoSvg)
+/** Register <autosvg-glyph> and keep every glyph in step when a style or class attribute changes anywhere. */
+export function defineAutosvgGlyph(): void {
+  if (customElements.get('autosvg-glyph')) return
+  customElements.define('autosvg-glyph', AutosvgGlyph)
   new MutationObserver(() => {
     if (scheduled) return
     scheduled = true
@@ -118,6 +118,6 @@ export function defineAutoSvg(): void {
 
 declare global {
   interface HTMLElementTagNameMap {
-    'auto-svg': AutoSvg
+    'autosvg-glyph': AutosvgGlyph
   }
 }

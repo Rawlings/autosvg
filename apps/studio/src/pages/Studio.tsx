@@ -181,8 +181,8 @@ function Usage({ name }: { name: string }) {
   const [copied, copy] = useCopy()
   const states = POSES[name]?.states ?? []
   const snippet = states.length
-    ? `<auto-svg name="${name}"></auto-svg>\n<auto-svg name="${name}" state="${states[0]}"></auto-svg>`
-    : `<auto-svg name="${name}"></auto-svg>`
+    ? `<autosvg-glyph name="${name}"></autosvg-glyph>\n<autosvg-glyph name="${name}" state="${states[0]}"></autosvg-glyph>`
+    : `<autosvg-glyph name="${name}"></autosvg-glyph>`
   return (
     <section>
       <h2>Use</h2>

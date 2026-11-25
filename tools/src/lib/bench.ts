@@ -55,7 +55,7 @@ const drawScript = (names: string[], mode: 'sheet' | 'motion', nearest: Report['
   const c = window.autosvg
   const names = ${JSON.stringify(names)}
   const mode = ${JSON.stringify(mode)}
-  const glyph = (name, vars) => '<auto-svg name="' + name + '" style="' + vars + '"></auto-svg>'
+  const glyph = (name, vars) => '<autosvg-glyph name="' + name + '" style="' + vars + '"></autosvg-glyph>'
   const cells = names.map((name) => {
     const pose = c.poses[name]
     const states = pose?.states ?? []
